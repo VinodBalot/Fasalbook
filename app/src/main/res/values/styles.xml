@@ -1,0 +1,200 @@
+<resources>
+    <!-- Base application theme.-->
+    <style name="AppThemeOld" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:textColorSecondary">@color/colorWhite</item>
+    </style>
+
+    <style name="ToolbarColoredBackArrow" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/colorWhite</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+
+    <style name="AppThemeStatusBarPrimaryColor" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowDisablePreview">true</item>
+    </style>
+
+    <style name="AppThemeBlackStatusBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="colorPrimary">@color/colorBlack</item>
+        <item name="colorPrimaryDark">@color/colorBlack</item>
+        <item name="colorAccent">@color/colorBlack</item>
+    </style>
+
+    <style name="TV_Normal_HW_MW_TC_B">
+
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">@dimen/txtSizeNormal</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+
+    </style>
+
+
+    <style name="TV_Normal_HW_WM_TC_B">
+
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">@dimen/txtSizeNormal</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+
+    </style>
+
+    <style name="TV_Normal_HW_WW_TC_B">
+
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">@dimen/txtSizeNormal</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+
+    </style>
+
+    <style name="HW_WM">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+
+    </style>
+
+    <style name="HW_MW">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+
+    </style>
+
+    <style name="HW_WW">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+
+    </style>
+
+    <style name="HW_MM">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+
+    </style>
+
+    <style name="HW_W0">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+    </style>
+
+    <style name="HW_MM_O_V">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+
+    </style>
+
+    <style name="HW_WM_O_V">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:orientation">vertical</item>
+
+    </style>
+
+    <!--<style name="buttonRec" parent="HW_WM">
+            <item name="android:background">@drawable/bg_button_shape</item>
+            <item name="android:minHeight">@dimen/_45sdp</item>
+            <item name="android:textColor">@color/white</item>
+            <item name="android:gravity">center</item>
+            <item name="android:textSize">@dimen/txtSizeButton</item>
+        </style>
+
+        <style name="buttonRecSignUp" parent="HW_WM">
+            <item name="android:background">@drawable/bg_button_shape_light</item>
+            <item name="android:minHeight">@dimen/_45sdp</item>
+            <item name="android:textColor">@color/white</item>
+            <item name="android:gravity">center</item>
+            <item name="android:textSize">@dimen/txtSizeButton</item>
+        </style>
+
+        <style name="buttonRecBlack" parent="HW_WM">
+            <item name="android:background">@drawable/bg_button_shape_black_rec</item>
+            <item name="android:minHeight">@dimen/_45sdp</item>
+            <item name="android:textColor">@color/white</item>
+            <item name="android:gravity">center</item>
+            <item name="android:textSize">@dimen/txtSizeButton</item>
+        </style>
+
+        <style name="customMenu">
+            <item name="android:background">@drawable/bg_rec_border_grey</item>
+        </style>-->
+
+    <style name="OTP_EDT">
+        <item name="android:layout_width">@dimen/_40sdp</item>
+        <item name="android:layout_height">@dimen/_40sdp</item>
+        <item name="android:layout_marginRight">@dimen/_5sdp</item>
+        <item name="android:background">@color/colorEditBGLogin</item>
+        <item name="android:gravity">center</item>
+        <item name="android:inputType">number</item>
+        <item name="android:maxLength">1</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">@dimen/txtSizeXLarge</item>
+    </style>
+
+    <style name="view_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/colorEditBGLogin</item>
+    </style>
+
+    <style name="CustomRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:minHeight">18dp</item>
+        <item name="android:maxHeight">18dp</item>
+    </style>
+
+    <style name="AppThemeOld.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppThemeOld.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppThemeOld.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+    <!--&lt;!&ndash;Spinner Style&ndash;&gt;
+            <style name="SpinnerTheme" parent="android:Widget.Spinner">
+                <item name="android:layout_width">match_parent</item>
+                <item name="android:layout_height">wrap_content</item>
+                <item name="android:background">@drawable/bg_spinner</item>
+            </style>
+            &lt;!&ndash;TabLayout Style&ndash;&gt;
+            <style name="TabLayoutTextStyle" parent="TextAppearance.Design.Tab">
+                <item name="android:textStyle">bold</item>
+                <item name="android:textSize">@dimen/_12sdp</item>
+        </style>-->
+
+
+</resources>

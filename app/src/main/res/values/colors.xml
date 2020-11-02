@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1c6912</color>
+    <color name="colorPrimaryDark">#1c6912</color>
+    <color name="colorAccent">#1c6912</color>
+    <color name="colorRedTheme">#ED212D</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorTranparentWhite">#00FFFFFF</color>
+    <color name="colorBlack">#020202</color>
+    <color name="colorGreen">#00b300</color>
+    <!-- color caetogry -->
+    <color name="colorDental">#27A8E1</color>
+    <color name="colorEyecare">#FE6C53</color>
+    <color name="colorayurved">#615DD7</color>
+    <color name="colorHomepathuy">#182D3F</color>
+    <color name="colorHomepathuy2">#FE467C</color>
+    <color name="colorLight">#F89DB8</color>
+    <color name="colorPrimaryLight">#C6464F</color>
+    <color name="colorRedTranparent">#FBDAE4</color>
+    <color name="colorRedLightTranparent">#FBE4EB</color>
+
+    <color name="colorshimmer">#dddddd</color>
+    <color name="colorEditBGLogin">#F0F0F0</color>
+    <color name="colorSearchBg">#FBDAE4</color>
+    <color name="colorRating">#FFC107</color>
+
+
+    <color name="colorFacebook">#3b5998</color>
+    <color name="colorTwitter">#00acee</color>
+    <color name="colorWhatsapp">#4FCE5D</color>
+
+
+    <color name="grey_50">#FAFAFA</color>
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_200">#EEEEEE</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_400">#BDBDBD</color>
+    <color name="grey_500">#9E9E9E</color>
+    <color name="grey_600">#757575</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_800">#424242</color>
+    <color name="grey_900">#212121</color>
+    <color name="edt_background_color">#eeeeee</color>
+
+    <color name="colorLeftGradient">#4fb051</color>
+    <color name="colorRightGradient">#8cc34b</color>
+    <color name="colorDarkGradient">#1c6912</color>
+
+
+    <color name="colorLightOrange">#F6EFD7</color>
+    <color name="colorLightYellow">#FFFAEC</color>
+    <color name="colorStatusBarMP">#454F4E</color>
+    <color name="colorBlackTrans">#99000000</color>
+    <color name="colorWhiteTrans">#00F6F5F5</color>
+    <color name="colorLightBlue">#EDF0F7</color>
+
+    <color name="background_color">#EDF1F3</color>
+
+    <color name="white_opcity_0">#00ffffff</color>
+    <color name="white_opcity_64">#40FFFFFF</color>
+    <color name="white_opcity_128">#80ffffff</color>
+
+    <color name="baseColor">#ef9300</color>
+
+    <color name="start_color">#5AC1AE</color>
+    <color name="center_color">#40B8C8</color>
+    <color name="end_color">#2CB1DA</color>
+
+
+    <color name="red_400">#EF5350</color>
+    <color name="red_500">#F44336</color>
+    <color name="red_600">#E53935</color>
+    <color name="red_800">#C62828</color>
+
+
+    <color name="green_100">#C8E6C9</color>
+    <color name="green_300">#81C784</color>
+    <color name="green_500">#4CAF50</color>
+    <color name="green_700">#388E3C</color>
+
+
+</resources>

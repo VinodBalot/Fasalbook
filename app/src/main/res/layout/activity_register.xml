@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gradient">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:id="@+id/rlHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_20sdp">
+
+                <com.wasfat.utils.CustomFontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/bg_button_dark_gradient"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/_20sdp"
+                    android:paddingRight="@dimen/_20sdp"
+                    android:text="Registration"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16sdp"
+                    app:CustomFontName="ProximaNovaBold" />
+
+
+            </RelativeLayout>
+
+            <ScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/btnSubmit"
+                android:layout_below="@+id/rlHeader"
+                android:layout_marginLeft="@dimen/_20sdp"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:id="@+id/llRegistrationMain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:orientation="vertical">
+
+                    <com.wasfat.utils.CustomFontEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@color/white"
+                        android:hint="Name"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/white">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/_10sdp"
+                            android:text="Sex"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14sdp" />
+
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/_20sdp"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Male" />
+
+                            <RadioButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="@dimen/_10sdp"
+                                android:text="Female" />
+
+                        </RadioGroup>
+
+
+                    </LinearLayout>
+
+
+                    <com.wasfat.utils.CustomFontEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@color/white"
+                        android:hint="Date of Birth"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/edtState"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:clickable="true"
+                            android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
+                            android:drawableTint="@color/colorBlack"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="@string/select_state"
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:paddingRight="@dimen/_10sdp"
+                            android:textColorHint="@color/colorBlack" />
+
+                        <Spinner
+                            android:id="@+id/spinnerState"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_40sdp"
+                            android:hint="State"
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:paddingRight="@dimen/_10sdp"
+                            android:textColorHint="@color/colorBlack"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@color/white">
+
+                        <EditText
+                            android:id="@+id/edtCity"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:clickable="true"
+                            android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
+                            android:drawableTint="@color/colorBlack"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="@string/select_City"
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:paddingRight="@dimen/_10sdp"
+                            android:textColorHint="@color/colorBlack" />
+
+                    </LinearLayout>
+
+
+                    <com.wasfat.utils.CustomFontEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@color/white"
+                        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
+                        android:hint="District"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                    <com.wasfat.utils.CustomFontEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@color/white"
+                        android:hint="Block"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                    <com.wasfat.utils.CustomFontEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@color/white"
+                        android:hint="Village/Colony"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                    <com.wasfat.utils.CustomFontEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@color/white"
+                        android:hint="Pin code"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                    <com.wasfat.utils.CustomFontEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@color/white"
+                        android:hint="Mobile No"
+                        android:inputType="number"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                    <com.wasfat.utils.CustomFontEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@color/white"
+                        android:hint="Email"
+                        android:inputType="textEmailAddress"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                    <com.wasfat.utils.CustomFontEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@color/white"
+                        android:hint="Name of Company/Firm/Group"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+            <com.wasfat.utils.CustomFontButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorDarkGradient"
+                android:text="Submit"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16sdp"
+                app:CustomFontName="ProximaNovaBold" />
+
+        </RelativeLayout>
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

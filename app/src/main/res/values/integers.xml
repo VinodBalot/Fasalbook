@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="think100">200</integer>
+    <integer name="ligh200">200</integer>
+    <integer name="demi300">300</integer>
+    <integer name="Normal400">400</integer>
+    <integer name="Medium500">500</integer>
+    <integer name="semiBold600">600</integer>
+    <integer name="Bold700">700</integer>
+    <integer name="Black800">800</integer>
+    <integer name="ExtraBlack900">900</integer>
+
+</resources>

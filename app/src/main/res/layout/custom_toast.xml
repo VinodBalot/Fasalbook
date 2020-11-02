@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.appcompat.widget.AppCompatCheckedTextView
+        android:id="@+id/txtMessage"
+        style="@style/HW_WW"
+        android:gravity="center"
+        android:padding="@dimen/_10sdp"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/txtSizeNormal" />
+</layout>

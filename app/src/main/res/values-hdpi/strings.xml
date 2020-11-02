@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="enter_full_name">Please enter name of item</string>
+    <string name="enter_unit_value">Please enter unit value</string>
+    <string name="enter_quantity">Please enter quantity</string>
+    <string name="label_product_not_found">Product not found</string>
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="CustomFontName" format="enum">
+        <enum name="ProximaNovaBold" value="1"/>
+        <enum name="ProximaNovaLight" value="2"/>
+        <enum name="ProximaNovaReg" value="3"/>
+        <enum name="ProximaNovaRegIt" value="4"/>
+        <enum name="ProximaNovaThin" value="5"/>
+        <enum name="ProximaNovaXbold" value="6"/>
+    </attr>
+    <declare-styleable name="CircleImageView">
+        <attr name="civ_border_width" format="dimension" />
+        <attr name="civ_border_color" format="color" />
+        <attr name="civ_border_overlay" format="boolean" />
+        <attr name="civ_fill_color" format="color" />
+    </declare-styleable>
+
+</resources>

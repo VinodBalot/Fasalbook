@@ -1,0 +1,64 @@
+<resources>
+    <string name="app_name">Fasalbook</string>
+
+
+    <!-- Custom font name -->
+    <string name="ProximaNovaBold">ProximaNovaBold</string>
+    <string name="ProximaNovaLight">ProximaNovaLight</string>
+    <string name="ProximaNovaReg">ProximaNovaReg</string>
+    <string name="ProximaNovaRegIt">ProximaNovaRegIt</string>
+    <string name="ProximaNovaThin">ProximaNovaThin</string>
+    <string name="ProximaNovaXbold">ProximaNovaXbold</string>
+    <declare-styleable name="CustomFontTextView">
+        <attr name="CustomFontName" />
+    </declare-styleable>
+    <declare-styleable name="CustomFontEditText">
+        <attr name="CustomFontName" />
+    </declare-styleable>
+    <declare-styleable name="CustomFontButton">
+        <attr name="CustomFontName" />
+    </declare-styleable>
+
+    <string name="label_name">Name</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+
+
+    <string name="label_govt_schemes">Govt. Schemes</string>
+    <string name="label_knowledge_center">Knowladge Center</string>
+    <string name="label_share_ideas">Share Ideas</string>
+    <string name="label_events">Events</string>
+    <string name="label_sell">Sell</string>
+    <string name="label_buy">Buy</string>
+
+    <string name="label_profile">Profile</string>
+    <string name="label_changepassword">Change Password</string>
+    <string name="label_aboutapp">About App</string>
+    <string name="label_shareapp">Share App</string>
+    <string name="label_logout">Logout</string>
+    <string name="label_suggestion">Suggestions</string>
+
+
+    <string name="label_agriculture">Agriculture</string>
+    <string name="label_landscap_gardening">Landscape and Gardening</string>
+    <string name="label_farm_tourism">Farm Tourism</string>
+    <string name="label_other_services">Other Services</string>
+    <string name="label_organic">Organic</string>
+    <string name="label_nonorganic">Non-Organic</string>
+    <string name="label_logout_message">Are you sure you want to logout ?</string>
+    <string name="label_ok">OK</string>
+    <string name="label_cancel">CANCEL</string>
+    <string name="select_state">Select State</string>
+    <string name="select_City">Select City</string>
+
+
+</resources>
