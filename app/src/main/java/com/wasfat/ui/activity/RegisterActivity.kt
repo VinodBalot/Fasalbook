@@ -2,10 +2,12 @@ package com.wasfat.ui.activity
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
@@ -15,29 +17,46 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ListView
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.adapters.TextViewBindingAdapter
-import androidx.lifecycle.ViewModelProvider
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.wasfat.R
 import com.wasfat.databinding.ActivityRegisterBinding
-import com.wasfat.network.ApiResponse
+import com.wasfat.network.RestApi
+import com.wasfat.network.RestApiFactory.getAddressClient
+import com.wasfat.network.RestApiFactory.getClient
 import com.wasfat.ui.base.BaseBindingActivity
-import com.wasfat.ui.pojo.StateResponse
-import com.wasfat.ui.pojo.StateResponseItem
+import com.wasfat.ui.pojo.*
 import com.wasfat.ui.viewModel.RegisterViewModel
 import com.wasfat.utils.Constants
 import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.UtilityMethod
+import kotlinx.android.synthetic.main.activity_register.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+
 
 class RegisterActivity : BaseBindingActivity() {
 
+    private var gender: Int = -1
+    private var cityId: Int = -1
+    private var stateId: Int = -1
+    private var blockId: Int = -1
     var binding: ActivityRegisterBinding? = null
     var onClickListener: View.OnClickListener? = null
-    var stateList: ArrayList<StateResponseItem> = ArrayList()
+    var stateList: ArrayList<Statelist> = ArrayList()
     var stateNameList: ArrayList<String> = ArrayList()
+    var cityList: ArrayList<Citylist> = ArrayList()
     var cityNameList: ArrayList<String> = ArrayList()
+    var blockList: ArrayList<Blocklist> = ArrayList()
+    var blockNameList: ArrayList<String> = ArrayList()
     var viewModel: RegisterViewModel? = null
+    val reqDataState: HashMap<String, Int> = HashMap()
+    val reqDataCity: HashMap<String, Int> = HashMap()
+    val reqDataBlock: HashMap<String, Int> = HashMap()
 
     companion object {
 
@@ -52,7 +71,7 @@ class RegisterActivity : BaseBindingActivity() {
 
     override fun setBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register)
-        viewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
+        // viewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
         binding!!.lifecycleOwner = this
 
     }
@@ -63,39 +82,15 @@ class RegisterActivity : BaseBindingActivity() {
 
     override fun initializeObject() {
         onClickListener = this
-        //  callGetStateListByCountryAPI()
-        viewModel!!.responseStateByCountryIdData.observe(this, androidx.lifecycle.Observer {
-            handleResult(it)
-        })
+        callGetStateListByCountryAPI()
     }
 
-    private fun handleResult(result: ApiResponse<StateResponse>?) {
-        when (result!!.status) {
-            ApiResponse.Status.ERROR -> {
-                ProgressDialog.hideProgressDialog()
-                UtilityMethod.showToastMessageFailed(mActivity!!, result.error!!.message!!)
-            }
-            ApiResponse.Status.LOADING -> {
-                ProgressDialog.showProgressDialog(this)
-            }
-            ApiResponse.Status.SUCCESS -> {
-                ProgressDialog.hideProgressDialog()
-                // stateList.addAll(result.data[0])
-                if (stateList.isNotEmpty()) {
-                    for (name in stateList) {
-                        stateNameList.add(name.StateName)
-                    }
-                    setAdapter()
-                }
-
-            }
-        }
-    }
 
     private fun selectDialog(
         title: String,
         stateList: List<String>,
-        edtState: EditText
+        edtState: EditText,
+        reqData: HashMap<String, Int>
     ) {
         val view1: View =
             (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(
@@ -117,15 +112,27 @@ class RegisterActivity : BaseBindingActivity() {
         lv.onItemClickListener =
             OnItemClickListener { parent: AdapterView<*>, view: View?, position: Int, id: Long ->
                 val entry = parent.adapter.getItem(position) as String
-                edtState.setText(entry)
-                // agentId = hashMap.get(entry)
+                if (title == getString(R.string.select_state)) {
+                    edtState.setText(entry)
+                    edtCity.setText("")
+                    edtBlock.setText("")
+                    stateId = reqData[entry]!!
+                    callGetCityListByStateAPI()
+                } else if (title == getString(R.string.select_City)) {
+                    edtCity.setText(entry)
+                    edtBlock.setText("")
+                    cityId = reqData[entry]!!
+                    callGetBlockListByStateAPI()
+                } else {
+                    edtBlock.setText(entry)
+                    blockId = reqData[entry]!!
+                }
                 dialog.cancel()
             }
         dialog.show()
-        edtSearch.addTextChangedListener(object : TextViewBindingAdapter.OnTextChanged)
         edtSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-
+                arrayAdapter.filter.filter(s.toString())
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -139,23 +146,122 @@ class RegisterActivity : BaseBindingActivity() {
 
     private fun callGetStateListByCountryAPI() {
         ProgressDialog.showProgressDialog(mActivity!!)
-        val myMap = HashMap<String, String>()
-        myMap["languageId"] = Constants.LANGUAGE
-        myMap["countryId"] = Constants.COUNTRYID
-        viewModel!!.getStateByCountryId(myMap)
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+        rootObject.addProperty("languageId", "1")
+        rootObject.addProperty("countryId", Constants.COUNTRYID)
+        var jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = getAddressClient()!!.create(RestApi::class.java)
+        val call1: Call<StateResponsePOJO> = apiService1.getStateListByCountryId(gsonObject)
+        call1.enqueue(object : Callback<StateResponsePOJO?> {
+            override fun onResponse(
+                call: Call<StateResponsePOJO?>,
+                response: Response<StateResponsePOJO?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+                        stateList = response.body()!!.statelist
+                        for (state in stateList) {
+                            stateNameList.add(state.Name)
+                            reqDataState[state.Name] = state.Id
+                        }
+                    }
+
+                }
+            }
+
+            override fun onFailure(call: Call<StateResponsePOJO?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
+
 
     }
 
-    private fun setAdapter() {
-        var stateAdapter =
-            ArrayAdapter(mActivity!!, android.R.layout.simple_spinner_item, stateNameList)
-        binding!!.spinnerState.adapter = stateAdapter
+
+    private fun callGetCityListByStateAPI() {
+        ProgressDialog.showProgressDialog(mActivity!!)
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+        rootObject.addProperty("languageId", "1")
+        rootObject.addProperty("stateId", stateId)
+        var jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = getAddressClient()!!.create(RestApi::class.java)
+        val call1: Call<CityResponsePOJO> = apiService1.getCityListByStateId(gsonObject)
+        call1.enqueue(object : Callback<CityResponsePOJO?> {
+            override fun onResponse(
+                call: Call<CityResponsePOJO?>,
+                response: Response<CityResponsePOJO?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+                        cityList = response.body()!!.citylist
+                        for (city in cityList) {
+                            cityNameList.add(city.Name)
+                            reqDataCity[city.Name] = city.Id
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<CityResponsePOJO?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
+
+
+    }
+
+    private fun callGetBlockListByStateAPI() {
+        ProgressDialog.showProgressDialog(mActivity!!)
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+        rootObject.addProperty("languageId", "1")
+        rootObject.addProperty("cityId", cityId)
+        var jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = getAddressClient()!!.create(RestApi::class.java)
+        val call1: Call<BlockResponsePOJO> = apiService1.getBlockListByStateId(gsonObject)
+        call1.enqueue(object : Callback<BlockResponsePOJO?> {
+            override fun onResponse(
+                call: Call<BlockResponsePOJO?>,
+                response: Response<BlockResponsePOJO?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+                        blockList = response.body()!!.blocklist
+                        for (block in blockList) {
+                            blockNameList.add(block.Name)
+                            reqDataBlock[block.Name] = block.Id
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<BlockResponsePOJO?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
     }
 
     override fun setListeners() {
         binding!!.btnSubmit.setOnClickListener(onClickListener)
         binding!!.edtState.setOnClickListener(onClickListener)
         binding!!.edtCity.setOnClickListener(onClickListener)
+        binding!!.edtBlock.setOnClickListener(onClickListener)
+        binding!!.edtDOB.setOnClickListener(onClickListener)
+        binding!!.rgSex.setOnCheckedChangeListener { group, checkedId ->
+            if (checkedId == R.id.rbMale) {
+                gender = 0
+            } else {
+                gender = 1
+            }
+        }
     }
 
 
@@ -163,73 +269,175 @@ class RegisterActivity : BaseBindingActivity() {
 
         when (view!!.id) {
             R.id.btnSubmit -> {
-                LoginActivity.startActivity(mActivity!!, null, false);
+                if (isValidFormData(
+                        binding!!.edtName.text.toString(),
+                        gender,
+                        binding!!.edtDOB.text.toString(),
+                        binding!!.edtMobile.text.toString(),
+                        binding!!.edtEmail.text.toString(),
+                        binding!!.edtPassword.text.toString(),
+                        binding!!.edtState.text.toString(),
+                        binding!!.edtCity.text.toString(),
+                        binding!!.edtBlock.text.toString(),
+                        binding!!.edtVillage.text.toString(),
+                        binding!!.edtPincode.text.toString(),
+                        binding!!.edtNameOFCompany.text.toString()
+                    )
+                ) {
+                    callAddRegisterDataAPI()
+                }
             }
             R.id.edtState -> {
-                stateNameList.clear()
-                stateNameList.add("Rajasthan")
-                stateNameList.add("Uttar pradesh")
-                stateNameList.add("Jammu Kashmir")
-                stateNameList.add("Gujrat")
-                stateNameList.add("Madhya pradesh")
-                stateNameList.add("Udisa")
-                stateNameList.add("Bihar")
-                stateNameList.add("jharkhand")
-                selectDialog(getString(R.string.select_state), stateNameList, binding!!.edtState)
+                selectDialog(
+                    getString(R.string.select_state),
+                    stateNameList,
+                    binding!!.edtState,
+                    reqDataState
+                )
             }
             R.id.edtCity -> {
-                cityNameList.clear()
-                cityNameList.add("Mumbai")
-                cityNameList.add("Jaipur")
-                cityNameList.add("Ahamdabad")
-                cityNameList.add("Surat")
-                cityNameList.add("Jodhpur")
-                cityNameList.add("Udaipur")
-                cityNameList.add("Jalore")
-                cityNameList.add("Alwar")
-                selectDialog(getString(R.string.select_state), cityNameList, binding!!.edtCity)
+                selectDialog(
+                    getString(R.string.select_City),
+                    cityNameList,
+                    binding!!.edtCity,
+                    reqDataCity
+                )
+            }
+            R.id.edtBlock -> {
+                selectDialog(
+                    getString(R.string.select_block),
+                    cityNameList,
+                    binding!!.edtCity,
+                    reqDataCity
+                )
+            }
+            R.id.edtDOB -> {
+                val c = Calendar.getInstance()
+                val year = c.get(Calendar.YEAR)
+                val month = c.get(Calendar.MONTH)
+                val day = c.get(Calendar.DAY_OF_MONTH)
+                val dialog = DatePickerDialog(
+                    mActivity!!,
+                    DatePickerDialog.OnDateSetListener { view, year, monthOfYear, dayOfMonth ->
+                        val month = monthOfYear + 1
+                        val date = "$dayOfMonth/$month/$year"
+                        binding!!.edtDOB.setText(date)
+                    },
+                    year,
+                    month,
+                    day
+                )
+                dialog.datePicker.maxDate = System.currentTimeMillis();
+                dialog.show()
+
             }
         }
 
     }
 
+    private fun callAddRegisterDataAPI() {
+        ProgressDialog.showProgressDialog(mActivity!!)
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+        rootObject.addProperty("FullName", binding!!.edtName.text.toString())
+        rootObject.addProperty("Village", binding!!.edtVillage.text.toString())
+        rootObject.addProperty("Address", binding!!.edtAddress.text.toString())
+        rootObject.addProperty("Sex", gender)
+        rootObject.addProperty("BlockId", blockId)
+        rootObject.addProperty("PostCode", binding!!.edtPincode.text.toString())
+        rootObject.addProperty("MobilePhone", binding!!.edtMobile.text.toString())
+        rootObject.addProperty("EmailId", binding!!.edtEmail.text.toString())
+        rootObject.addProperty("Password", binding!!.edtPassword.text.toString())
+        rootObject.addProperty("OfficeName", binding!!.edtNameOFCompany.text.toString())
+        var jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = getClient()!!.create(RestApi::class.java)
+        val call1: Call<RegisterResponse> = apiService1.registerUser(gsonObject)
+        call1.enqueue(object : Callback<RegisterResponse?> {
+            override fun onResponse(
+                call: Call<RegisterResponse?>,
+                response: Response<RegisterResponse?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+                        if (response.body()!!.Message == "Success") {
+                            UtilityMethod.showToastMessageSuccess(
+                                mActivity!!,
+                                getString(R.string.label_user_registerd)
+                            )
+                            val intent = Intent(mActivity!!, LoginActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                            startActivity(intent)
+                        } else {
+                            UtilityMethod.showToastMessageError(
+                                mActivity!!,
+                                getString(R.string.label_user_no_registerd)
+                            )
+                        }
+                    }
+                }
+            }
 
-    /*   private fun isValidFormData(
-           name: String,
-           password: String,
-           confirmPassword: String
-       ): Boolean {
+            override fun onFailure(call: Call<RegisterResponse?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
 
-           if (TextUtils.isEmpty(name)) {
-               UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_full_name))
-               return false
-           }
+    }
 
-           if (TextUtils.isEmpty(password)) {
-               UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_password))
-               return false
-           }
+    private fun isValidFormData(
+        name: String,
+        gender: Int,
+        dob: String,
+        mobile: String,
+        email: String,
+        password: String,
+        state: String,
+        city: String,
+        block: String,
+        village: String,
+        pincode: String,
+        nameOfCompany: String
+    ): Boolean {
+
+        if (TextUtils.isEmpty(name)) {
+            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_name))
+            return false
+        }
+        if (gender == -1) {
+            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_sex))
+            return false
+        }
+        if (TextUtils.isEmpty(dob)) {
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.enter_date_of_birth)
+            )
+            return false
+        }
+
+        if (TextUtils.isEmpty(mobile)) {
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.enter_mobile_number)
+            )
+            return false
+        }
 
 
-           *//* if (!UtilityMethod.isValidEmail(email)) {
-             UtilityMethod.showToastMessageError(
-                 mActivity!!,
-                 getString(R.string.enter_valid_email_id)
-             )
-             return false
-         }*//*
+        if (!UtilityMethod.isValidEmail(email)) {
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.enter_valid_email_id)
+            )
+            return false
+        }
 
-        *//*  val pattern: Pattern
-          val regex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$"
-          pattern = Pattern.compile(regex)
-  *//*
-        *//*    if (!pattern.matcher(password).matches()) {
-                UtilityMethod.showToastMessageError(
-                    mActivity!!,
-                    getString(R.string.password_should_contain_char_digit_special)
-                )
-                return false
-            }*//*
+        if (TextUtils.isEmpty(password)) {
+            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_password))
+            return false
+        }
 
         if (password.length < 6) {
             UtilityMethod.showToastMessageError(
@@ -239,20 +447,80 @@ class RegisterActivity : BaseBindingActivity() {
             return false
         }
 
-
-
-        if (TextUtils.isEmpty(confirmPassword)) {
-            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_cpassword))
+        if (TextUtils.isEmpty(state)) {
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.label_select_state)
+            )
             return false
         }
-        if (password != confirmPassword) {
-            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.password_not_match))
+
+
+        if (TextUtils.isEmpty(city)) {
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.label_select_city)
+            )
             return false
         }
+
+        if (TextUtils.isEmpty(block)) {
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.label_select_block)
+            )
+            return false
+        }
+
+        if (TextUtils.isEmpty(village)) {
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.label_enter_village_name)
+            )
+            return false
+        }
+
+        if (TextUtils.isEmpty(pincode)) {
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.label_enter_pin_code)
+            )
+            return false
+        }
+
+        if (pincode.length < 6) {
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.minimum_6_characters)
+            )
+            return false
+        }
+
+
+        if (TextUtils.isEmpty(nameOfCompany)) {
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.label_enter_company_name)
+            )
+            return false
+        }
+
+/*
+          val pattern: Pattern
+          val regex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$"
+          pattern = Pattern.compile(regex)
+
+            if (!pattern.matcher(password).matches()) {
+                UtilityMethod.showToastMessageError(
+                    mActivity!!,
+                    getString(R.string.password_should_contain_char_digit_special)
+                )
+                return false
+            }*/
+
 
         return true
     }
-    */
 
 
 }

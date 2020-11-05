@@ -59,6 +59,29 @@
     <string name="label_cancel">CANCEL</string>
     <string name="select_state">Select State</string>
     <string name="select_City">Select City</string>
+    <string name="enter_mobile_number">Please enter mobile number</string>
+    <string name="enter_valid_email_id">Please enter valid email address</string>
+    <string name="enter_full_name">Please enter name of item</string>
+    <string name="enter_unit_value">Please enter unit value</string>
+    <string name="enter_quantity">Please enter quantity</string>
+    <string name="label_product_not_found">Product not found</string>
+    <string name="enter_password">PLease enter password</string>
+    <string name="minimum_6_characters">Please enter at least 6 characters</string>
+    <string name="label_select_state">Please select state</string>
+    <string name="label_select_city">Please select city</string>
+    <string name="label_select_block">Please select block</string>
+    <string name="label_enter_village_name">Please enter village name</string>
+    <string name="label_enter_pin_code">Please enter pin code</string>
+    <string name="label_enter_company_name">Please enter company  name</string>
+    <string name="enter_sex">Please select gender</string>
+    <string name="enter_date_of_birth">Please select Date of birth</string>
+    <string name="select_block">Select Block</string>
+    <string name="enter_name">Please enter name</string>
+    <string name="label_user_registerd">Register Successful</string>
+    <string name="label_user_no_registerd">User not registered</string>
+    <string name="enter_old_password">Please enter old password</string>
+    <string name="label_password_doesnot_match">Password doesn\'t match</string>
+    <string name="label_password_change_successful">Password change successful</string>
 
 
 </resources>

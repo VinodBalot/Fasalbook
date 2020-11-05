@@ -14,7 +14,7 @@ object Constants {
 
 
     @JvmField
-    var LANGUAGE = "en"
+    var LANGUAGE = "1"
 
     @JvmField
     var COUNTRYID = "42"

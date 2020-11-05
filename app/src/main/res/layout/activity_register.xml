@@ -51,6 +51,7 @@
                     android:orientation="vertical">
 
                     <com.wasfat.utils.CustomFontEditText
+                        android:id="@+id/edtName"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:background="@color/white"
@@ -74,6 +75,7 @@
                             android:textSize="@dimen/_14sdp" />
 
                         <RadioGroup
+                            android:id="@+id/rgSex"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -81,11 +83,13 @@
                             android:orientation="horizontal">
 
                             <RadioButton
+                                android:id="@+id/rbMale"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Male" />
 
                             <RadioButton
+                                android:id="@+id/rbFemale"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/_10sdp"
@@ -98,11 +102,48 @@
 
 
                     <com.wasfat.utils.CustomFontEditText
+                        android:id="@+id/edtDOB"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:background="@color/white"
+                        android:editable="false"
+                        android:focusable="false"
                         android:hint="Date of Birth"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                    <com.wasfat.utils.CustomFontEditText
+                        android:id="@+id/edtMobile"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@color/white"
+                        android:hint="Mobile No"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                    <com.wasfat.utils.CustomFontEditText
+                        android:id="@+id/edtEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@color/white"
+                        android:hint="Email"
+                        android:inputType="textEmailAddress"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                    <com.wasfat.utils.CustomFontEditText
+                        android:id="@+id/edtPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@color/white"
+                        android:hint="Password"
+                        android:inputType="textPassword"
                         android:paddingLeft="@dimen/_10sdp"
                         android:textColorHint="@color/colorBlack" />
 
@@ -164,27 +205,44 @@
                     </LinearLayout>
 
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
+                        android:background="@color/white">
+
+                        <EditText
+                            android:id="@+id/edtBlock"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@null"
+                            android:clickable="true"
+                            android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
+                            android:drawableTint="@color/colorBlack"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:hint="@string/select_block"
+                            android:paddingLeft="@dimen/_10sdp"
+                            android:paddingRight="@dimen/_10sdp"
+                            android:textColorHint="@color/colorBlack" />
+
+                    </LinearLayout>
+
+
                     <com.wasfat.utils.CustomFontEditText
+                        android:id="@+id/edtAddress"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:background="@color/white"
-                        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
-                        android:hint="District"
+                        android:hint="Address"
                         android:paddingLeft="@dimen/_10sdp"
                         android:paddingRight="@dimen/_10sdp"
                         android:textColorHint="@color/colorBlack" />
 
-                    <com.wasfat.utils.CustomFontEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_marginTop="@dimen/_3sdp"
-                        android:background="@color/white"
-                        android:hint="Block"
-                        android:paddingLeft="@dimen/_10sdp"
-                        android:textColorHint="@color/colorBlack" />
 
                     <com.wasfat.utils.CustomFontEditText
+                        android:id="@+id/edtVillage"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
@@ -195,35 +253,18 @@
                         android:textColorHint="@color/colorBlack" />
 
                     <com.wasfat.utils.CustomFontEditText
+                        android:id="@+id/edtPincode"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:background="@color/white"
                         android:hint="Pin code"
-                        android:paddingLeft="@dimen/_10sdp"
-                        android:textColorHint="@color/colorBlack" />
-
-                    <com.wasfat.utils.CustomFontEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_marginTop="@dimen/_3sdp"
-                        android:background="@color/white"
-                        android:hint="Mobile No"
                         android:inputType="number"
                         android:paddingLeft="@dimen/_10sdp"
                         android:textColorHint="@color/colorBlack" />
 
                     <com.wasfat.utils.CustomFontEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_marginTop="@dimen/_3sdp"
-                        android:background="@color/white"
-                        android:hint="Email"
-                        android:inputType="textEmailAddress"
-                        android:paddingLeft="@dimen/_10sdp"
-                        android:textColorHint="@color/colorBlack" />
-
-                    <com.wasfat.utils.CustomFontEditText
+                        android:id="@+id/edtNameOFCompany"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"

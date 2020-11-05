@@ -29,7 +29,7 @@ class SplashActivity : AppCompatActivity() {
 
         Handler().postDelayed({
             if (SessionManager.getInstance(this@SplashActivity).isLogin) {
-                var intent = Intent(this, LoginActivity::class.java)
+                var intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
             } else {
                 LoginActivity.startActivity(this@SplashActivity, null, true)

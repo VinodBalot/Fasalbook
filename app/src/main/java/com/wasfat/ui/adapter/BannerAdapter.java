@@ -39,7 +39,7 @@ public class BannerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         View view = LayoutInflater.from(context).inflate(R.layout.banner_item, container, false);
         ImageView img = (ImageView) view.findViewById(R.id.ima1);
-        Glide.with(context).load(bannerResponseItems.get(position).getBannerURL() + "/" + bannerResponseItems.get(position).getImageName()).into(img);
+        Glide.with(context).load(bannerResponseItems.get(position).getImageName()).placeholder(R.drawable.no_image_available).into(img);
         container.addView(view);
         return view;
     }

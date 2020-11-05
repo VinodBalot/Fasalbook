@@ -1,8 +1,6 @@
 package com.wasfat.ui.pojo
 
-data class BannerResponse(
-    val bannerResponseItem: ArrayList<BannerResponseItem>
-)
+class BannerResponse : ArrayList<BannerResponseItem>()
 data class BannerResponseItem(
     val AltText: String,
     val BannerName: String,

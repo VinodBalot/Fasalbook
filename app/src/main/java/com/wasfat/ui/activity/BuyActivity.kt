@@ -45,6 +45,7 @@ class BuyActivity : BaseBindingActivity() {
 
     override fun setListeners() {
         binding!!.rlAgriculture.setOnClickListener(onClickListener)
+        binding!!.imvBack.setOnClickListener(onClickListener)
 
     }
 
@@ -52,9 +53,12 @@ class BuyActivity : BaseBindingActivity() {
     override fun onClick(view: View?) {
 
         when (view!!.id) {
-               R.id.rlAgriculture -> {
-                   AgricultureActivity.startActivity(mActivity!!, null, false)
-               }
+            R.id.rlAgriculture -> {
+                AgricultureActivity.startActivity(mActivity!!, null, false)
+            }
+            R.id.imvBack -> {
+                finish()
+            }
         }
 
     }

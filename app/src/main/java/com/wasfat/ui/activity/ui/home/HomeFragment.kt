@@ -31,13 +31,15 @@ import kotlin.collections.ArrayList
 class HomeFragment : Fragment(), View.OnClickListener {
 
     private lateinit var homeViewModel: HomeViewModel
-    var viewpager: ViewPager? = null
     var adapter: PagerAdapter? = null
-
     private var currentPage = 0
+
     private val NUM_PAGES = 0
     var bannerList: ArrayList<BannerResponseItem> = ArrayList()
-
+    private var indicator: CircleIndicator? = null
+    var viewpager: ViewPager? = null
+    var llSell: LinearLayout? = null
+    var llBuy: LinearLayout? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +67,10 @@ class HomeFragment : Fragment(), View.OnClickListener {
             ) {
                 if (response.body() != null) {
                     ProgressDialog.hideProgressDialog()
-                    bannerList = response.body()!!.bannerResponseItem
+                    bannerList = response.body()!!
+                    if (bannerList.isNotEmpty()) {
+                        setAdapter()
+                    }
                 }
             }
 
@@ -78,22 +83,18 @@ class HomeFragment : Fragment(), View.OnClickListener {
         })
     }
 
-    private fun initializeView(view: View) {
-        val viewpager = view.findViewById(R.id.pager) as ViewPager
-        val llSell = view.findViewById(R.id.llSell) as LinearLayout
-        val llBuy = view.findViewById(R.id.llBuy) as LinearLayout
+    private fun setAdapter() {
         adapter = BannerAdapter(activity, bannerList)
         viewpager!!.adapter = adapter
-        llSell.setOnClickListener {
+        llSell!!.setOnClickListener {
             SellActivity.startActivity(requireActivity(), null, false)
         }
-        llBuy.setOnClickListener {
+        llBuy!!.setOnClickListener {
             BuyActivity.startActivity(requireActivity(), null, false)
         }
 
-        val indicator = view.findViewById(R.id.indicator) as CircleIndicator
-        indicator.setViewPager(viewpager)
-        viewpager.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        indicator!!.setViewPager(viewpager)
+        viewpager!!.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
                 currentPage = position
             }
@@ -109,9 +110,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 if (state == ViewPager.SCROLL_STATE_IDLE) {
                     val pageCount: Int = bannerList.size
                     if (currentPage === 0) {
-                        viewpager.setCurrentItem(pageCount - 1, false)
+                        viewpager!!.setCurrentItem(pageCount - 1, false)
                     } else if (currentPage === pageCount - 1) {
-                        viewpager.setCurrentItem(0, false)
+                        viewpager!!.setCurrentItem(0, false)
                     }
                 }
             }
@@ -121,7 +122,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
             if (currentPage === NUM_PAGES) {
                 currentPage = 0
             }
-            viewpager.setCurrentItem(currentPage++, true)
+            viewpager!!.setCurrentItem(currentPage++, true)
         }
         val swipeTimer = Timer()
         swipeTimer.schedule(object : TimerTask() {
@@ -129,6 +130,13 @@ class HomeFragment : Fragment(), View.OnClickListener {
                 handler.post(update)
             }
         }, 1000, 1000)
+    }
+
+    private fun initializeView(view: View) {
+        viewpager = view.findViewById(R.id.pager) as ViewPager
+        llSell = view.findViewById(R.id.llSell) as LinearLayout
+        llBuy = view.findViewById(R.id.llBuy) as LinearLayout
+        indicator = view.findViewById(R.id.indicator) as CircleIndicator
     }
 
     override fun onClick(view: View?) {

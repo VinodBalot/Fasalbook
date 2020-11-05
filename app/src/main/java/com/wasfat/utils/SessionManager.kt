@@ -72,6 +72,15 @@ class SessionManager : BaseObservable() {
         }
 
 
+    var userId: String?
+        get() = shared!!.getString("userId", "")
+
+        set(userId) {
+            editor!!.putString("userId", userId)
+            editor!!.commit()
+        }
+
+
     var deliveryAddress: String?
         get() = shared!!.getString("deliveryAddress", "")
 

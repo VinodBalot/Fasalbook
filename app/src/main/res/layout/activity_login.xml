@@ -47,15 +47,18 @@
                     android:orientation="vertical">
 
                     <com.wasfat.utils.CustomFontEditText
+                        android:id="@+id/edtMobile"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:background="@color/white"
-                        android:hint=" Email"
-                        android:inputType="textEmailAddress"
+                        android:hint=" Mobile Number"
+                        android:inputType="number"
+                        android:maxLength="10"
                         android:paddingLeft="@dimen/_10sdp"
                         android:textColorHint="@color/colorBlack" />
 
                     <com.wasfat.utils.CustomFontEditText
+                        android:id="@+id/edtPassword"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_5sdp"
