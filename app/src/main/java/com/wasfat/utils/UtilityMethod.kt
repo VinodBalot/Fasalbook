@@ -317,16 +317,19 @@ object UtilityMethod {
     }
 
     fun showToastMessageError(activity: Activity, message: String) {
-        val toast = Toast(activity)
-        toast.duration = Toast.LENGTH_LONG;
-        val toastView = LayoutInflater.from(activity).inflate(R.layout.custom_toast, null)
-        toastView.background = ContextCompat.getDrawable(activity, R.drawable.bg_round_red)
 
-        val txtMessage = toastView.findViewById<TextView>(R.id.txtMessage)
-        txtMessage.text = message
+        Toast.makeText(activity,message,Toast.LENGTH_SHORT).show();
 
-        toast.view = toastView
-        toast.show()
+//        val toast = Toast(activity)
+//        toast.duration = Toast.LENGTH_LONG;
+//        val toastView = LayoutInflater.from(activity).inflate(R.layout.custom_toast, null)
+//        toastView.background = ContextCompat.getDrawable(activity, R.drawable.bg_round_red)
+//
+//        val txtMessage = toastView.findViewById<TextView>(R.id.txtMessage)
+//        txtMessage.text = message
+//
+//        toast.view = toastView
+//        toast.show()
     }
 
     @JvmStatic
