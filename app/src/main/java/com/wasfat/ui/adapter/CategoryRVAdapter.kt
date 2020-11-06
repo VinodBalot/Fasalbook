@@ -12,6 +12,7 @@ class CategoryRVAdapter(
     private val onClickListener: View.OnClickListener?,
     private val categoryList: ArrayList<String>
 ) : RecyclerBaseAdapter() {
+
     override fun getLayoutIdForPosition(position: Int): Int = R.layout.view_category_list_item
 
     override fun getViewModel(position: Int): Any? = 0//items[position]

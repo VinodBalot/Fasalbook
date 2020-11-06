@@ -244,7 +244,6 @@ class RegisterActivity : BaseBindingActivity() {
                     }
                 }
             }
-
             override fun onFailure(call: Call<BlockResponsePOJO?>, t: Throwable) {
 
                 Log.d("RegisterActivity", "onFailure: " + t.localizedMessage)

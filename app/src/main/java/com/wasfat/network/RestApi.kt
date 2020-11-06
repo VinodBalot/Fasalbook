@@ -47,6 +47,10 @@ interface RestApi {
     fun changePassword(@Body jsonData: JsonObject): Call<ChangePasswordResponse>
 
 
+    @Headers("Content-Type: application/json")
+    @POST("category/homecategory")
+    fun getCategories(@Body jsonData: JsonObject): Call<CategoryResponsePOJO>
+
     /*
   @Headers("Content-Type: application/json")
   @POST("signup")

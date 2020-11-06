@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import com.google.gson.JsonObject
@@ -129,11 +130,15 @@ class LoginActivity : BaseBindingActivity() {
             ) {
                 ProgressDialog.hideProgressDialog()
                 if (response.body() != null) {
+
+                    Log.d("LoginActivity", "onResponse: " + response.message())
+                    Log.d("LoginActivity", "onResponse: " + response.body())
+                    Log.d("LoginActivity", "onResponse: " + response.javaClass)
                     if (response.isSuccessful) {
                         if (response.body()!!.IsValidated) {
                             UtilityMethod.showToastMessageSuccess(
                                 mActivity!!,
-                                getString(R.string.label_user_registerd)
+                                getString(R.string.label_user_login_successful)
                             )
                             sessionManager!!.userId = binding!!.edtMobile.text.toString()
                             sessionManager!!.setLogin(true)
@@ -143,7 +148,7 @@ class LoginActivity : BaseBindingActivity() {
                         } else {
                             UtilityMethod.showToastMessageError(
                                 mActivity!!,
-                                getString(R.string.label_user_no_registerd)
+                                getString(R.string.label_user_login_failed)
                             )
                         }
                     }

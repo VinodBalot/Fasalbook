@@ -107,7 +107,7 @@ class ChangePasswordActivity : BaseBindingActivity() {
             return false
         }
 
-        if (newPassword == confirmPassword) {
+        if (newPassword != confirmPassword) {
             UtilityMethod.showToastMessageError(
                 mActivity!!,
                 getString(R.string.label_password_doesnot_match)
