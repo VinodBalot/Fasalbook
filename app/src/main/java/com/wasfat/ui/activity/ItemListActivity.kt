@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -16,35 +17,49 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.wasfat.R
 import com.wasfat.databinding.ActivityFoodGainBinding
+import com.wasfat.network.RestApi
+import com.wasfat.network.RestApiFactory
 import com.wasfat.ui.adapter.ImageListRVAdapter
+import com.wasfat.ui.adapter.OrganicRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
 import com.wasfat.ui.home.adapter.ItemRVAdapter
+import com.wasfat.ui.pojo.Category
+import com.wasfat.ui.pojo.CategoryResponsePOJO
+import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.UtilityMethod
 import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 class ItemListActivity : BaseBindingActivity() {
 
     var binding: ActivityFoodGainBinding? = null
     var onClickListener: View.OnClickListener? = null
-    var categoryList: ArrayList<String> = ArrayList()
+    var categoryList: ArrayList<Category> = ArrayList()
+
     var imageList: ArrayList<String> = ArrayList()
     var imageListRVAdapter: ImageListRVAdapter? = null
     var rlImage: RelativeLayout? = null
     var rvImage: RecyclerView? = null
     var imvAddMore: ImageView? = null
 
+    lateinit var  parentCategory : Category
+
     //  var viewModel: VendorViewModel? = null
     val RequestPermissionCode = 7
 
     companion object {
 
-        fun startActivity(activity: Activity, bundle: Bundle?, isClear: Boolean) {
+        fun startActivity(activity: Activity, category: Category, isClear: Boolean) {
             val intent = Intent(activity, ItemListActivity::class.java)
-            if (bundle != null) intent.putExtra("bundle", bundle)
+            intent.putExtra("category", category)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -60,21 +75,28 @@ class ItemListActivity : BaseBindingActivity() {
 
     override fun createActivityObject() {
         mActivity = this
+
+        //Getting parent category from parent
+        parentCategory = (intent.getSerializableExtra("category") as? Category)!!
+
     }
 
     override fun initializeObject() {
         onClickListener = this
+        binding!!.textTitle.text = parentCategory.CategoryName
+
         setAdapter()
+
     }
 
     private fun setAdapter() {
         val layoutManager1 = LinearLayoutManager(this)
         binding!!.rvProduct.layoutManager = layoutManager1
         binding!!.rvProduct.setHasFixedSize(true)
-        val itemRVAdapter = ItemRVAdapter(mActivity, onClickListener)
-        binding!!.rvProduct.adapter = itemRVAdapter
-    }
 
+        fetchCategoriesOfParentFromAPI()
+
+    }
 
     override fun setListeners() {
         binding!!.imvBack.setOnClickListener(onClickListener)
@@ -90,11 +112,57 @@ class ItemListActivity : BaseBindingActivity() {
             R.id.fabAdd -> {
                 callAddFoodGrainsDialog()
             }
-            R.id.llMain -> {
-                ItemDetailsActivity.startActivity(mActivity!!, null, false)
-            }
         }
     }
+
+
+    private fun categoryItemClicked(category: Category) {
+
+        ItemDetailsActivity.startActivity(mActivity!!, null, false)
+    }
+
+    private fun fetchCategoriesOfParentFromAPI(){
+
+        ProgressDialog.showProgressDialog(mActivity!!)
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+
+        rootObject.addProperty("CategoryId",parentCategory.PKID)
+        rootObject.addProperty("LanguageId", "1")
+
+        var jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+        val call1: Call<CategoryResponsePOJO> = apiService1.getCategoriesByParentId(gsonObject)
+        call1.enqueue(object : Callback<CategoryResponsePOJO?> {
+            override fun onResponse(
+                call: Call<CategoryResponsePOJO?>,
+                response: Response<CategoryResponsePOJO?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+
+                        categoryList = response.body()!!.categoryList
+
+                        val itemRVAdapter = ItemRVAdapter(mActivity,
+                            { category -> categoryItemClicked(category) },
+                            categoryList)
+
+                        binding!!.rvProduct.adapter = itemRVAdapter
+
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<CategoryResponsePOJO?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
+
+    }
+
+
 
     private fun callAddFoodGrainsDialog() {
         val view = layoutInflater.inflate(R.layout.bottomsheet_dialog_add_food_gain, null)

@@ -82,13 +82,13 @@ class AgricultureActivity : BaseBindingActivity() {
             R.id.imvBack -> {
                 finish()
             }
-            R.id.llView ->{
-                val bundle = Bundle()
-                bundle.putString("agriculture","Organic")
-                OrganicAgricultureActivity.startActivity(mActivity!!, bundle,false)
-            }
         }
 
+    }
+
+    private fun categoryItemClicked(category: Category) {
+
+        OrganicAgricultureActivity.startActivity(mActivity!!, category,false)
     }
 
     private fun fetchCategoriesOfParentFromAPI(){
@@ -115,7 +115,9 @@ class AgricultureActivity : BaseBindingActivity() {
 
                         categoryList = response.body()!!.categoryList
 
-                        val agricultureRVAdapter = AgricultureRVAdapter(mActivity, onClickListener, categoryList)
+                        val agricultureRVAdapter = AgricultureRVAdapter(mActivity,
+                            { category -> categoryItemClicked(category) }
+                            , categoryList)
                         binding!!.rvCategories.adapter = agricultureRVAdapter
 
                     }

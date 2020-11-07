@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.item_category_2_list.view.*
 
 class AgricultureRVAdapter(
     private val context: Activity?,
-    private val onClickListener: View.OnClickListener?,
+    private val onClickListener: (Category) -> Unit,
     private val categoryList: ArrayList<Category>
 ) : RecyclerBaseAdapter() {
     override fun getLayoutIdForPosition(position: Int): Int = R.layout.item_category_2_list
@@ -20,7 +20,7 @@ class AgricultureRVAdapter(
     override fun putViewDataBinding(viewDataBinding: ViewDataBinding, position: Int) {
         viewDataBinding.root.txtCategory2Name.text = categoryList[position].CategoryName
         viewDataBinding.root.llView.tag = position
-        viewDataBinding.root.llView.setOnClickListener(onClickListener)
+        viewDataBinding.root.llView.setOnClickListener { onClickListener(categoryList[position]) }
     }
 
     override fun getItemCount(): Int = categoryList.size//items.size

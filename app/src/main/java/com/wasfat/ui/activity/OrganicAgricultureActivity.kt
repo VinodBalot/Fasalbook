@@ -3,26 +3,39 @@ package com.wasfat.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.wasfat.R
 import com.wasfat.databinding.ActivityOrganicAgricultureBinding
+import com.wasfat.network.RestApi
+import com.wasfat.network.RestApiFactory
+import com.wasfat.ui.adapter.AgricultureRVAdapter
 import com.wasfat.ui.adapter.OrganicRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
+import com.wasfat.ui.pojo.Category
+import com.wasfat.ui.pojo.CategoryResponsePOJO
+import com.wasfat.utils.ProgressDialog
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class OrganicAgricultureActivity : BaseBindingActivity() {
 
     var binding: ActivityOrganicAgricultureBinding? = null
     var onClickListener: View.OnClickListener? = null
-    var categoryList: ArrayList<String> = ArrayList()
+    var categoryList: ArrayList<Category> = ArrayList()
+    lateinit var  parentCategory : Category
     //  var viewModel: VendorViewModel? = null
 
     companion object {
 
-        fun startActivity(activity: Activity, bundle: Bundle?, isClear: Boolean) {
+        fun startActivity(activity: Activity, category: Category, isClear: Boolean) {
             val intent = Intent(activity, OrganicAgricultureActivity::class.java)
-            if (bundle != null) intent.putExtra("bundle", bundle)
+            intent.putExtra("category", category)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -38,40 +51,32 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
 
     override fun createActivityObject() {
         mActivity = this
+
+        //Getting parent category from parent
+        parentCategory = (intent.getSerializableExtra("category") as? Category)!!
+
     }
 
     override fun initializeObject() {
         onClickListener = this
-        if (intent.extras != null) {
-            binding!!.textTitle.text =
-                intent.getBundleExtra("bundle")!!.getString("agriculture").toString()
-        }
+
+        binding!!.textTitle.text = parentCategory.CategoryName
+
         setAdapter()
     }
 
     private fun setAdapter() {
 
-        //Dummy data
-        categoryList.add("Food Grains")
-        categoryList.add("Vegetable")
-        categoryList.add("Fruits")
-        categoryList.add("Herbs & Exotic Vegies")
-        categoryList.add("Dry Fruits")
-        categoryList.add("Plantation Crops")
-        categoryList.add("Spice & Condiments")
-        categoryList.add("Medicinal Plants")
-        categoryList.add("Oil Seed & Fiber Crops")
-        categoryList.add("Fodder Crops")
-
         val layoutManager1 = LinearLayoutManager(mActivity)
         binding!!.rvCategory.layoutManager = layoutManager1
         binding!!.rvCategory.setHasFixedSize(true)
-        val organicRVAdapter = OrganicRVAdapter(mActivity, onClickListener, categoryList)
-        binding!!.rvCategory.adapter = organicRVAdapter
+
+        fetchCategoriesOfParentFromAPI()
 
     }
 
     override fun setListeners() {
+
         binding!!.imvBack.setOnClickListener(onClickListener)
 
     }
@@ -83,10 +88,54 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
             R.id.imvBack -> {
                 finish()
             }
-            R.id.llView -> {
-                ItemListActivity.startActivity(mActivity!!, null, false)
-            }
         }
+
+    }
+
+    private fun categoryItemClicked(category: Category) {
+
+        Log.d("c", "categoryItemClicked: " + category.CategoryName + "  " + category.PKID)
+
+        ItemListActivity.startActivity(mActivity!!, category, false)
+    }
+
+    private fun fetchCategoriesOfParentFromAPI(){
+
+        ProgressDialog.showProgressDialog(mActivity!!)
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+
+        rootObject.addProperty("CategoryId",parentCategory.PKID)
+        rootObject.addProperty("LanguageId", "1")
+
+        var jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+        val call1: Call<CategoryResponsePOJO> = apiService1.getCategoriesByParentId(gsonObject)
+        call1.enqueue(object : Callback<CategoryResponsePOJO?> {
+            override fun onResponse(
+                call: Call<CategoryResponsePOJO?>,
+                response: Response<CategoryResponsePOJO?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+
+                        categoryList = response.body()!!.categoryList
+
+                        val organicRVAdapter = OrganicRVAdapter(mActivity,
+                            { category -> categoryItemClicked(category) },
+                            categoryList)
+                        binding!!.rvCategory.adapter = organicRVAdapter
+
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<CategoryResponsePOJO?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
 
     }
 
