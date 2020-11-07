@@ -49,7 +49,11 @@ interface RestApi {
 
     @Headers("Content-Type: application/json")
     @POST("category/homecategory")
-    fun getCategories(@Body jsonData: JsonObject): Call<CategoryResponsePOJO>
+    fun getHomeCategories(@Body jsonData: JsonObject): Call<CategoryResponsePOJO>
+
+    @Headers("Content-Type: application/json")
+    @POST("category/GetCategoryByParentId")
+    fun getCategoriesByParentId(@Body jsonData: JsonObject): Call<CategoryResponsePOJO>
 
     /*
   @Headers("Content-Type: application/json")

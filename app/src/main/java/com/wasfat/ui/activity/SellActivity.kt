@@ -6,18 +6,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.wasfat.R
 import com.wasfat.databinding.ActivitySellBinding
 import com.wasfat.network.RestApi
-import com.wasfat.network.RestApiFactory
 import com.wasfat.network.RestApiFactory.getAddressClient
 import com.wasfat.ui.adapter.CategoryAdapter
-import com.wasfat.ui.adapter.CategoryRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
-import com.wasfat.ui.pojo.BlockResponsePOJO
 import com.wasfat.ui.pojo.Category
 import com.wasfat.ui.pojo.CategoryResponsePOJO
 import com.wasfat.utils.ProgressDialog
@@ -62,7 +58,7 @@ class SellActivity : BaseBindingActivity() {
 
 
     override fun setListeners() {
-       // binding!!.rlAgriculture.setOnClickListener(onClickListener)
+
         binding!!.imvBack.setOnClickListener(onClickListener)
 
     }
@@ -71,13 +67,16 @@ class SellActivity : BaseBindingActivity() {
     override fun onClick(view: View?) {
 
         when (view!!.id) {
-//            R.id.rlAgriculture -> {
-//                AgricultureActivity.startActivity(mActivity!!, null, false)
-//            }
             R.id.imvBack -> {
                 finish()
             }
         }
+
+    }
+
+    private fun categoryItemClicked(category: Category) {
+
+        AgricultureActivity.startActivity(mActivity!!, category, false)
 
     }
 
@@ -103,7 +102,7 @@ class SellActivity : BaseBindingActivity() {
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
         val apiService1 = getAddressClient()!!.create(RestApi::class.java)
-        val call1: Call<CategoryResponsePOJO> = apiService1.getCategories(gsonObject)
+        val call1: Call<CategoryResponsePOJO> = apiService1.getHomeCategories(gsonObject)
         call1.enqueue(object : Callback<CategoryResponsePOJO?>{
             override fun onResponse(
                 call: Call<CategoryResponsePOJO?>,
@@ -115,7 +114,9 @@ class SellActivity : BaseBindingActivity() {
 
                         categoryList = response.body()!!.categoryList
 
-                        val categoryAdapter = CategoryAdapter(categoryList)
+                        val categoryAdapter = CategoryAdapter(categoryList,
+                            { category -> categoryItemClicked(category) })
+
                         binding!!.rvCategories.adapter = categoryAdapter
 
                     }
