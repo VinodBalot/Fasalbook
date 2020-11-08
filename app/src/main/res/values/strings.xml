@@ -80,4 +80,10 @@
     <string name="enter_old_password">Please enter old password</string>
     <string name="label_password_doesnot_match">Password doesn\'t match</string>
     <string name="label_password_change_successful">Password change successful</string>
+
+    <string name="label_user_login_successful">Login Successful</string>
+    <string name="label_user_login_failed">Login Failed</string>
+
+    <string name="label_events_category">Events</string>
+
 </resources>

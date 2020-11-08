@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_gradient">
-
+        android:background="@drawable/bg_gradient"
+        tools:context=".ui.activity.EventCategoryActivity">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -33,10 +33,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Sell"
-                    app:CustomFontName="ProximaNovaBold"
+                    android:text="Organic"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_14sdp" />
+                    android:textSize="@dimen/_14sdp"
+                    app:CustomFontName="ProximaNovaBold" />
 
 
             </RelativeLayout>
@@ -47,15 +47,13 @@
                 android:layout_height="match_parent"
                 android:layout_above="@+id/btnSubmit"
                 android:layout_below="@+id/appbar"
-                android:layout_margin="@dimen/_5sdp"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCategories"
+                    android:id="@+id/rvEventCategories"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="match_parent" />
 
-                    />
 
             </LinearLayout>
 
@@ -78,6 +76,7 @@
 
         </RelativeLayout>
 
-
     </RelativeLayout>
+
+
 </layout>

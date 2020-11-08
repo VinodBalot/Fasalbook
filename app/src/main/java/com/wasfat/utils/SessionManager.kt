@@ -108,9 +108,6 @@ class SessionManager : BaseObservable() {
     }
 
 
-
-
-
     var authToken: String?
         get() = shared!!.getString(AUTH_TOKEN, "")
         set(authToken) {

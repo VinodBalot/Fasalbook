@@ -20,11 +20,13 @@
                 android:layout_weight="5">
 
                 <ImageView
+                    android:id="@+id/ivItemIcon"
                     android:layout_width="@dimen/_50sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:src="@drawable/wheat" />
 
                 <com.wasfat.utils.CustomFontTextView
+                    android:id="@+id/txtItemName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -38,6 +40,7 @@
             </LinearLayout>
 
             <com.wasfat.utils.CustomFontTextView
+                android:id="@+id/txtItemUnit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -49,6 +52,7 @@
                 app:CustomFontName="ProximaNovaReg" />
 
             <com.wasfat.utils.CustomFontTextView
+                android:id="@+id/txtItemQuantity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

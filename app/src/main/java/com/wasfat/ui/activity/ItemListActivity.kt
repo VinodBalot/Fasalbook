@@ -20,7 +20,7 @@ import com.wasfat.R
 import com.wasfat.databinding.ActivityFoodGainBinding
 import com.wasfat.ui.adapter.ImageListRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
-import com.wasfat.ui.home.adapter.ItemRVAdapter
+import com.wasfat.ui.pojo.Category
 import com.wasfat.utils.UtilityMethod
 import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
@@ -30,12 +30,14 @@ class ItemListActivity : BaseBindingActivity() {
 
     var binding: ActivityFoodGainBinding? = null
     var onClickListener: View.OnClickListener? = null
-    var categoryList: ArrayList<String> = ArrayList()
+    var categoryList: ArrayList<Category> = ArrayList()
     var imageList: ArrayList<String> = ArrayList()
     var imageListRVAdapter: ImageListRVAdapter? = null
     var rlImage: RelativeLayout? = null
     var rvImage: RecyclerView? = null
     var imvAddMore: ImageView? = null
+
+    lateinit var  parentCategory : Category
 
     //  var viewModel: VendorViewModel? = null
     val RequestPermissionCode = 7
@@ -44,14 +46,16 @@ class ItemListActivity : BaseBindingActivity() {
 
         fun startActivity(activity: Activity, bundle: Bundle?, isClear: Boolean) {
             val intent = Intent(activity, ItemListActivity::class.java)
-            if (bundle != null) intent.putExtra("bundle", bundle)
+            if(bundle != null ) intent.putExtra("bundle", bundle)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
         }
+
     }
 
     override fun setBinding() {
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_food_gain)
         //  viewModel = ViewModelProvider(this).get(VendorViewModel::class.java)
         binding!!.lifecycleOwner = this
@@ -60,27 +64,39 @@ class ItemListActivity : BaseBindingActivity() {
 
     override fun createActivityObject() {
         mActivity = this
+
+//        //Getting parent category from parent
+//        parentCategory = (intent.getSerializableExtra("category") as? Category)!!
+
     }
 
     override fun initializeObject() {
         onClickListener = this
+       // binding!!.textTitle.text = parentCategory.CategoryName
+
         setAdapter()
+
     }
 
     private fun setAdapter() {
+
         val layoutManager1 = LinearLayoutManager(this)
         binding!!.rvProduct.layoutManager = layoutManager1
         binding!!.rvProduct.setHasFixedSize(true)
-        val itemRVAdapter = ItemRVAdapter(mActivity, onClickListener)
-        binding!!.rvProduct.adapter = itemRVAdapter
-    }
 
+//        val itemRVAdapter = ItemRVAdapter(mActivity,
+//            { category -> categoryItemClicked(category) },
+//            categoryList)
+//
+//        binding!!.rvProduct.adapter = itemRVAdapter
+
+
+    }
 
     override fun setListeners() {
         binding!!.imvBack.setOnClickListener(onClickListener)
         binding!!.fabAdd.setOnClickListener(onClickListener)
     }
-
 
     override fun onClick(view: View?) {
         when (view!!.id) {
@@ -90,11 +106,15 @@ class ItemListActivity : BaseBindingActivity() {
             R.id.fabAdd -> {
                 callAddFoodGrainsDialog()
             }
-            R.id.llMain -> {
-                ItemDetailsActivity.startActivity(mActivity!!, null, false)
-            }
         }
     }
+
+
+//    private fun categoryItemClicked(category: Category) {
+//
+//        ItemDetailsActivity.startActivity(mActivity!!, null, false)
+//    }
+
 
     private fun callAddFoodGrainsDialog() {
         val view = layoutInflater.inflate(R.layout.bottomsheet_dialog_add_food_gain, null)

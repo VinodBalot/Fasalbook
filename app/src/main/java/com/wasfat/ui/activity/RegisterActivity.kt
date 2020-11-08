@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
@@ -45,6 +46,7 @@ class RegisterActivity : BaseBindingActivity() {
     private var cityId: Int = -1
     private var stateId: Int = -1
     private var blockId: Int = -1
+
     var binding: ActivityRegisterBinding? = null
     var onClickListener: View.OnClickListener? = null
     var stateList: ArrayList<Statelist> = ArrayList()
@@ -53,6 +55,7 @@ class RegisterActivity : BaseBindingActivity() {
     var cityNameList: ArrayList<String> = ArrayList()
     var blockList: ArrayList<Blocklist> = ArrayList()
     var blockNameList: ArrayList<String> = ArrayList()
+
     var viewModel: RegisterViewModel? = null
     val reqDataState: HashMap<String, Int> = HashMap()
     val reqDataCity: HashMap<String, Int> = HashMap()
@@ -168,7 +171,6 @@ class RegisterActivity : BaseBindingActivity() {
                             reqDataState[state.Name] = state.Id
                         }
                     }
-
                 }
             }
 
@@ -242,8 +244,10 @@ class RegisterActivity : BaseBindingActivity() {
                     }
                 }
             }
-
             override fun onFailure(call: Call<BlockResponsePOJO?>, t: Throwable) {
+
+                Log.d("RegisterActivity", "onFailure: " + t.localizedMessage)
+
                 ProgressDialog.hideProgressDialog()
             }
         })
@@ -271,17 +275,9 @@ class RegisterActivity : BaseBindingActivity() {
             R.id.btnSubmit -> {
                 if (isValidFormData(
                         binding!!.edtName.text.toString(),
-                        gender,
-                        binding!!.edtDOB.text.toString(),
-                        binding!!.edtMobile.text.toString(),
                         binding!!.edtEmail.text.toString(),
                         binding!!.edtPassword.text.toString(),
-                        binding!!.edtState.text.toString(),
-                        binding!!.edtCity.text.toString(),
-                        binding!!.edtBlock.text.toString(),
-                        binding!!.edtVillage.text.toString(),
-                        binding!!.edtPincode.text.toString(),
-                        binding!!.edtNameOFCompany.text.toString()
+                        binding!!.edtMobile.text.toString()
                     )
                 ) {
                     callAddRegisterDataAPI()
@@ -306,9 +302,9 @@ class RegisterActivity : BaseBindingActivity() {
             R.id.edtBlock -> {
                 selectDialog(
                     getString(R.string.select_block),
-                    cityNameList,
-                    binding!!.edtCity,
-                    reqDataCity
+                    blockNameList,
+                    binding!!.edtBlock,
+                    reqDataBlock
                 )
             }
             R.id.edtDOB -> {
@@ -370,6 +366,9 @@ class RegisterActivity : BaseBindingActivity() {
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             startActivity(intent)
                         } else {
+
+                            Log.d("RegisterActivity", "onResponse: " + response.message())
+                            Log.d("RegisterActivity", "onResponse: " + response.body())
                             UtilityMethod.showToastMessageError(
                                 mActivity!!,
                                 getString(R.string.label_user_no_registerd)
@@ -388,34 +387,26 @@ class RegisterActivity : BaseBindingActivity() {
 
     private fun isValidFormData(
         name: String,
-        gender: Int,
-        dob: String,
-        mobile: String,
         email: String,
         password: String,
-        state: String,
-        city: String,
-        block: String,
-        village: String,
-        pincode: String,
-        nameOfCompany: String
+        mobile: String
     ): Boolean {
 
         if (TextUtils.isEmpty(name)) {
             UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_name))
             return false
         }
-        if (gender == -1) {
-            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_sex))
-            return false
-        }
-        if (TextUtils.isEmpty(dob)) {
-            UtilityMethod.showToastMessageError(
-                mActivity!!,
-                getString(R.string.enter_date_of_birth)
-            )
-            return false
-        }
+//        if (gender == -1) {
+//            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_sex))
+//            return false
+//        }
+//        if (TextUtils.isEmpty(dob)) {
+//            UtilityMethod.showToastMessageError(
+//                mActivity!!,
+//                getString(R.string.enter_date_of_birth)
+//            )
+//            return false
+//        }
 
         if (TextUtils.isEmpty(mobile)) {
             UtilityMethod.showToastMessageError(
@@ -447,63 +438,63 @@ class RegisterActivity : BaseBindingActivity() {
             return false
         }
 
-        if (TextUtils.isEmpty(state)) {
-            UtilityMethod.showToastMessageError(
-                mActivity!!,
-                getString(R.string.label_select_state)
-            )
-            return false
-        }
+//        if (TextUtils.isEmpty(state)) {
+//            UtilityMethod.showToastMessageError(
+//                mActivity!!,
+//                getString(R.string.label_select_state)
+//            )
+//            return false
+//        }
+//
+//
+//        if (TextUtils.isEmpty(city)) {
+//            UtilityMethod.showToastMessageError(
+//                mActivity!!,
+//                getString(R.string.label_select_city)
+//            )
+//            return false
+//        }
+//
+//        if (TextUtils.isEmpty(block)) {
+//            UtilityMethod.showToastMessageError(
+//                mActivity!!,
+//                getString(R.string.label_select_block)
+//            )
+//            return false
+//        }
 
-
-        if (TextUtils.isEmpty(city)) {
-            UtilityMethod.showToastMessageError(
-                mActivity!!,
-                getString(R.string.label_select_city)
-            )
-            return false
-        }
-
-        if (TextUtils.isEmpty(block)) {
-            UtilityMethod.showToastMessageError(
-                mActivity!!,
-                getString(R.string.label_select_block)
-            )
-            return false
-        }
-
-        if (TextUtils.isEmpty(village)) {
-            UtilityMethod.showToastMessageError(
-                mActivity!!,
-                getString(R.string.label_enter_village_name)
-            )
-            return false
-        }
-
-        if (TextUtils.isEmpty(pincode)) {
-            UtilityMethod.showToastMessageError(
-                mActivity!!,
-                getString(R.string.label_enter_pin_code)
-            )
-            return false
-        }
-
-        if (pincode.length < 6) {
-            UtilityMethod.showToastMessageError(
-                mActivity!!,
-                getString(R.string.minimum_6_characters)
-            )
-            return false
-        }
-
-
-        if (TextUtils.isEmpty(nameOfCompany)) {
-            UtilityMethod.showToastMessageError(
-                mActivity!!,
-                getString(R.string.label_enter_company_name)
-            )
-            return false
-        }
+//        if (TextUtils.isEmpty(village)) {
+//            UtilityMethod.showToastMessageError(
+//                mActivity!!,
+//                getString(R.string.label_enter_village_name)
+//            )
+//            return false
+//        }
+//
+//        if (TextUtils.isEmpty(pincode)) {
+//            UtilityMethod.showToastMessageError(
+//                mActivity!!,
+//                getString(R.string.label_enter_pin_code)
+//            )
+//            return false
+//        }
+//
+//        if (pincode.length < 6) {
+//            UtilityMethod.showToastMessageError(
+//                mActivity!!,
+//                getString(R.string.minimum_6_characters)
+//            )
+//            return false
+//        }
+//
+//
+//        if (TextUtils.isEmpty(nameOfCompany)) {
+//            UtilityMethod.showToastMessageError(
+//                mActivity!!,
+//                getString(R.string.label_enter_company_name)
+//            )
+//            return false
+//        }
 
 /*
           val pattern: Pattern

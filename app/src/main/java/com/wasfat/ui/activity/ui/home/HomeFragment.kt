@@ -14,12 +14,14 @@ import com.wasfat.R
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory.getClient
 import com.wasfat.ui.activity.BuyActivity
+import com.wasfat.ui.activity.EventCategoryActivity
 import com.wasfat.ui.activity.SellActivity
 import com.wasfat.ui.adapter.BannerAdapter
 import com.wasfat.ui.pojo.BannerResponse
 import com.wasfat.ui.pojo.BannerResponseItem
 import com.wasfat.utils.Constants
 import com.wasfat.utils.ProgressDialog
+import kotlinx.android.synthetic.main.fragment_home.*
 import me.relex.circleindicator.CircleIndicator
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,6 +42,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     var viewpager: ViewPager? = null
     var llSell: LinearLayout? = null
     var llBuy: LinearLayout? = null
+    var llEvent: LinearLayout? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +58,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun callBannerImageAPI() {
-        ProgressDialog.showProgressDialog(activity!!)
+        ProgressDialog.showProgressDialog(requireActivity())
         val myMap = HashMap<String, String>()
         myMap["languageId"] = Constants.LANGUAGE
         val apiService1 = getClient()!!.create(RestApi::class.java)
@@ -91,6 +94,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
         llBuy!!.setOnClickListener {
             BuyActivity.startActivity(requireActivity(), null, false)
+        }
+        llEvent!!.setOnClickListener{
+            EventCategoryActivity.startActivity(requireActivity(),null,false)
         }
 
         indicator!!.setViewPager(viewpager)
@@ -136,6 +142,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         viewpager = view.findViewById(R.id.pager) as ViewPager
         llSell = view.findViewById(R.id.llSell) as LinearLayout
         llBuy = view.findViewById(R.id.llBuy) as LinearLayout
+        llEvent = view.findViewById(R.id.llEvent) as LinearLayout
         indicator = view.findViewById(R.id.indicator) as CircleIndicator
     }
 

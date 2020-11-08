@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.wasfat.R
+import com.wasfat.databinding.ActivityFoodGrainBinding
 import com.wasfat.databinding.ActivityOrganicAgricultureBinding
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory
@@ -23,9 +24,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class OrganicAgricultureActivity : BaseBindingActivity() {
+class FoodGrainActivity : BaseBindingActivity() {
 
-    var binding: ActivityOrganicAgricultureBinding? = null
+    var binding: ActivityFoodGrainBinding? = null
     var onClickListener: View.OnClickListener? = null
     var categoryList: ArrayList<Category> = ArrayList()
     lateinit var  parentCategory : Category
@@ -34,7 +35,7 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
     companion object {
 
         fun startActivity(activity: Activity, category: Category, isClear: Boolean) {
-            val intent = Intent(activity, OrganicAgricultureActivity::class.java)
+            val intent = Intent(activity, FoodGrainActivity::class.java)
             intent.putExtra("category", category)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -44,7 +45,7 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
     }
 
     override fun setBinding() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_organic_agriculture)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_food_grain)
         //  viewModel = ViewModelProvider(this).get(VendorViewModel::class.java)
         binding!!.lifecycleOwner = this
 
@@ -98,7 +99,7 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
 
         Log.d("c", "categoryItemClicked: " + category.CategoryName + "  " + category.PKID)
 
-        FoodGrainActivity.startActivity(mActivity!!, category, false)
+        ItemListActivity.startActivity(mActivity!!, null, false)
 
     }
 
