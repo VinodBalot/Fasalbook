@@ -1,5 +1,6 @@
 package com.wasfat.ui.activity
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
@@ -19,15 +20,16 @@ import com.wasfat.utils.ProgressDialog
 
 class WebViewActivity : AppCompatActivity() {
 
-    lateinit var event: Event
+    lateinit var url: String
+    lateinit var title : String
     lateinit var webView : WebView
 
 
     companion object {
 
-        fun startActivity(activity: Activity, event : Event, isClear: Boolean) {
+        fun startActivity(activity: Activity, bundle: Bundle, isClear: Boolean) {
             val intent = Intent(activity, WebViewActivity::class.java)
-            intent.putExtra("event", event)
+            intent.putExtra("bundle", bundle)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -45,9 +47,13 @@ class WebViewActivity : AppCompatActivity() {
 
     }
 
+     @SuppressLint("SetJavaScriptEnabled")
      private fun initialize() {
 
-         event = intent.getSerializableExtra("event") as Event
+         val bundle = intent.getBundleExtra("bundle") as Bundle
+
+         url = bundle.getString("url").toString()
+         title = bundle.getString("title").toString()
 
         val ivBack = findViewById<ImageView>(R.id.imvBack)
          ivBack.setOnClickListener{
@@ -55,14 +61,14 @@ class WebViewActivity : AppCompatActivity() {
          }
 
          val txtTitle = findViewById<TextView>(R.id.textTitle)
-         txtTitle.text = event.EventName
+         txtTitle.text = title
 
-         Log.d("WEBVIEW", "initialize: " + event.EventURL)
+         Log.d("WEBVIEW", "initialize: " + url)
 
          webView = findViewById(R.id.webView)
 
          webView.webViewClient = MyWebViewClient(this)
-         webView.loadUrl(event.EventURL)
+         webView.loadUrl(url)
 
          val webSettings = webView.settings
          webSettings.javaScriptEnabled = true

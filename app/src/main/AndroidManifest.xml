@@ -24,7 +24,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeOld">
-        <activity android:name=".ui.activity.WebViewActivity"></activity>
+        <activity android:name=".ui.activity.GovtSchemesActivity"></activity>
+        <activity android:name=".ui.activity.WebViewActivity" />
         <activity android:name=".ui.activity.EventActivity" />
         <activity android:name=".ui.activity.EventCategoryActivity" />
 

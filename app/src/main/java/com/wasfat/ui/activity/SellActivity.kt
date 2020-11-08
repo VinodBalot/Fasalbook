@@ -128,7 +128,6 @@ class SellActivity : BaseBindingActivity() {
             }
         })
 
-
     }
 
 

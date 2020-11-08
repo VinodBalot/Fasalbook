@@ -62,6 +62,9 @@ interface RestApi {
     @POST("events/list")
     fun getEventsById(@Body jsonData: JsonObject): Call<EventResponsePOJO>
 
+    @Headers("Content-Type: application/json")
+    @POST("govtschemes/list")
+    fun getGovtSchemesByStateId(@Body jsonData: JsonObject): Call<GovtSchemesResponsePOJO>
 
     /*
   @Headers("Content-Type: application/json")

@@ -49,7 +49,6 @@ class BuyActivity : BaseBindingActivity() {
 
     }
 
-
     override fun onClick(view: View?) {
 
         when (view!!.id) {
@@ -60,7 +59,6 @@ class BuyActivity : BaseBindingActivity() {
                 finish()
             }
         }
-
     }
 
 
