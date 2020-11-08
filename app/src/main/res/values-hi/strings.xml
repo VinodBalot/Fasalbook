@@ -87,4 +87,9 @@
     <string name="label_user_login_failed">Login Failed</string>
 
     <string name="label_events_category">Events</string>
+
+
+    <string name="label_sell_item_add_successful">Item added Successfully</string>
+    <string name="label_sell_item_add_unsuccessful">Item is not added</string>
+
 </resources>

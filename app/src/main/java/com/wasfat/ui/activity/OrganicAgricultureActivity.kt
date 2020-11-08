@@ -16,6 +16,7 @@ import com.wasfat.network.RestApiFactory
 import com.wasfat.ui.adapter.AgricultureRVAdapter
 import com.wasfat.ui.adapter.OrganicRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
+import com.wasfat.ui.pojo.BuySellType
 import com.wasfat.ui.pojo.Category
 import com.wasfat.ui.pojo.CategoryResponsePOJO
 import com.wasfat.utils.ProgressDialog
@@ -29,13 +30,15 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
     var onClickListener: View.OnClickListener? = null
     var categoryList: ArrayList<Category> = ArrayList()
     lateinit var  parentCategory : Category
+    lateinit var type: BuySellType
     //  var viewModel: VendorViewModel? = null
 
     companion object {
 
-        fun startActivity(activity: Activity, category: Category, isClear: Boolean) {
+        fun startActivity(activity: Activity, category: Category, type : BuySellType, isClear: Boolean) {
             val intent = Intent(activity, OrganicAgricultureActivity::class.java)
             intent.putExtra("category", category)
+            intent.putExtra("type",type)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -55,6 +58,8 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
 
         //Getting parent category from parent
         parentCategory = (intent.getSerializableExtra("category") as? Category)!!
+
+        type = intent.getSerializableExtra("type") as BuySellType
 
     }
 
@@ -98,7 +103,7 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
 
         Log.d("c", "categoryItemClicked: " + category.CategoryName + "  " + category.PKID)
 
-        FoodGrainActivity.startActivity(mActivity!!, category, false)
+        FoodGrainActivity.startActivity(mActivity!!, category, type, false)
 
     }
 

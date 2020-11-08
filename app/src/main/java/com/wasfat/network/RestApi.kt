@@ -66,6 +66,10 @@ interface RestApi {
     @POST("govtschemes/list")
     fun getGovtSchemesByStateId(@Body jsonData: JsonObject): Call<GovtSchemesResponsePOJO>
 
+    @Headers("Content-Type: application/json")
+    @POST("products/addedit")
+    fun addSellItem(@Body jsonData: JsonObject): Call<AddSellItemResponse>
+
     /*
   @Headers("Content-Type: application/json")
   @POST("signup")

@@ -14,6 +14,7 @@ import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory.getAddressClient
 import com.wasfat.ui.adapter.CategoryAdapter
 import com.wasfat.ui.base.BaseBindingActivity
+import com.wasfat.ui.pojo.BuySellType
 import com.wasfat.ui.pojo.Category
 import com.wasfat.ui.pojo.CategoryResponsePOJO
 import com.wasfat.utils.ProgressDialog
@@ -63,7 +64,6 @@ class SellActivity : BaseBindingActivity() {
 
     }
 
-
     override fun onClick(view: View?) {
 
         when (view!!.id) {
@@ -74,9 +74,10 @@ class SellActivity : BaseBindingActivity() {
 
     }
 
+
     private fun categoryItemClicked(category: Category) {
 
-        AgricultureActivity.startActivity(mActivity!!, category, false)
+        AgricultureActivity.startActivity(mActivity!!, category, BuySellType.SELL, false)
 
     }
 

@@ -16,14 +16,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.wasfat.R
 import com.wasfat.databinding.ActivityFoodGainBinding
+import com.wasfat.network.RestApi
+import com.wasfat.network.RestApiFactory
 import com.wasfat.ui.adapter.ImageListRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
+import com.wasfat.ui.pojo.AddSellItemResponse
+import com.wasfat.ui.pojo.BuySellType
 import com.wasfat.ui.pojo.Category
+import com.wasfat.ui.pojo.ChangePasswordResponse
+import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.UtilityMethod
 import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 class ItemListActivity : BaseBindingActivity() {
@@ -38,15 +49,17 @@ class ItemListActivity : BaseBindingActivity() {
     var imvAddMore: ImageView? = null
 
     lateinit var  parentCategory : Category
+    lateinit var type: BuySellType
 
     //  var viewModel: VendorViewModel? = null
     val RequestPermissionCode = 7
 
     companion object {
 
-        fun startActivity(activity: Activity, bundle: Bundle?, isClear: Boolean) {
+        fun startActivity(activity: Activity, category: Category, type : BuySellType, isClear: Boolean) {
             val intent = Intent(activity, ItemListActivity::class.java)
-            if(bundle != null ) intent.putExtra("bundle", bundle)
+            intent.putExtra("category",category)
+            intent.putExtra("type", type)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -65,8 +78,11 @@ class ItemListActivity : BaseBindingActivity() {
     override fun createActivityObject() {
         mActivity = this
 
-//        //Getting parent category from parent
-//        parentCategory = (intent.getSerializableExtra("category") as? Category)!!
+
+        type = intent.getSerializableExtra("type") as BuySellType
+
+        //Getting parent category from parent
+        parentCategory = (intent.getSerializableExtra("category") as? Category)!!
 
     }
 
@@ -74,8 +90,21 @@ class ItemListActivity : BaseBindingActivity() {
         onClickListener = this
        // binding!!.textTitle.text = parentCategory.CategoryName
 
+        if(type == BuySellType.BUY)
+            binding!!.fabAdd.visibility = View.GONE
+        else
+            setupFabButton()
+
         setAdapter()
 
+    }
+
+    private fun setupFabButton(){
+
+        binding!!.fabAdd.visibility = View.VISIBLE
+        binding!!.fabAdd.setOnClickListener{
+            callAddFoodGrainsDialog()
+        }
     }
 
     private fun setAdapter() {
@@ -90,12 +119,11 @@ class ItemListActivity : BaseBindingActivity() {
 //
 //        binding!!.rvProduct.adapter = itemRVAdapter
 
-
     }
 
     override fun setListeners() {
         binding!!.imvBack.setOnClickListener(onClickListener)
-        binding!!.fabAdd.setOnClickListener(onClickListener)
+
     }
 
     override fun onClick(view: View?) {
@@ -103,20 +131,17 @@ class ItemListActivity : BaseBindingActivity() {
             R.id.imvBack -> {
                 finish()
             }
-            R.id.fabAdd -> {
-                callAddFoodGrainsDialog()
-            }
         }
     }
 
 
 //    private fun categoryItemClicked(category: Category) {
-//
 //        ItemDetailsActivity.startActivity(mActivity!!, null, false)
 //    }
 
 
     private fun callAddFoodGrainsDialog() {
+
         val view = layoutInflater.inflate(R.layout.bottomsheet_dialog_add_food_gain, null)
         val imvClose = view.findViewById(R.id.imvClose) as ImageView
         imvAddMore = view.findViewById(R.id.imvAddMore) as ImageView
@@ -163,9 +188,66 @@ class ItemListActivity : BaseBindingActivity() {
                     edtQty.text.toString()
                 )
             ) {
+                addItemThroughAPI(
+                    edtName.text.toString(),
+                    edtUnit.text.toString(),
+                    edtQty.text.toString()
+                )
                 dialog.dismiss()
             }
         }
+    }
+
+    private fun addItemThroughAPI(
+        name: String,
+        unit: String,
+        qty: String
+    ){
+
+        ProgressDialog.showProgressDialog(mActivity!!)
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+        rootObject.addProperty("ProductId", 0)
+        rootObject.addProperty("ProductName", name )
+        rootObject.addProperty("CategoryId", parentCategory.PKID )
+        rootObject.addProperty("Qty", qty)
+        rootObject.addProperty("UnitId", unit)
+        rootObject.addProperty("UserId",sessionManager!!.userId)
+        rootObject.addProperty("Published","true")
+        var jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+
+        val call1: Call<AddSellItemResponse> = apiService1.addSellItem(gsonObject)
+        call1.enqueue(object : Callback<AddSellItemResponse?> {
+            override fun onResponse(
+                call: Call<AddSellItemResponse?>,
+                response: Response<AddSellItemResponse?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+                        if (response.body()!!.Response == "success") {
+                            UtilityMethod.showToastMessageSuccess(
+                                mActivity!!,
+                                getString(R.string.label_sell_item_add_successful)
+                            )
+                            finish()
+                        } else {
+                            UtilityMethod.showToastMessageError(
+                                mActivity!!,
+                                getString(R.string.label_sell_item_add_unsuccessful)
+                            )
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<AddSellItemResponse?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
+
     }
 
 
