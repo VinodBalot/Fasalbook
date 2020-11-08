@@ -84,4 +84,6 @@
     <string name="label_user_login_successful">Login Successful</string>
     <string name="label_user_login_failed">Login Failed</string>
 
+    <string name="label_events_category">Events</string>
+
 </resources>

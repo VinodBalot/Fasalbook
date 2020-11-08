@@ -46,7 +46,6 @@ interface RestApi {
     @POST("users/changepassword")
     fun changePassword(@Body jsonData: JsonObject): Call<ChangePasswordResponse>
 
-
     @Headers("Content-Type: application/json")
     @POST("category/homecategory")
     fun getHomeCategories(@Body jsonData: JsonObject): Call<CategoryResponsePOJO>
@@ -54,6 +53,15 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @POST("category/GetCategoryByParentId")
     fun getCategoriesByParentId(@Body jsonData: JsonObject): Call<CategoryResponsePOJO>
+
+    @Headers("Content-Type: application/json")
+    @POST("events/categorylist")
+    fun getEventCategories(@Body jsonData: JsonObject): Call<EventCategoryResponsePOJO>
+
+    @Headers("Content-Type: application/json")
+    @POST("events/list")
+    fun getEventsById(@Body jsonData: JsonObject): Call<EventResponsePOJO>
+
 
     /*
   @Headers("Content-Type: application/json")

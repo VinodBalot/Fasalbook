@@ -2,6 +2,7 @@ package com.wasfat.ui.activity
 
 import android.app.Activity
 import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -10,32 +11,32 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.wasfat.R
-import com.wasfat.databinding.ActivityOrganicAgricultureBinding
+import com.wasfat.databinding.ActivityEventCategoryBinding
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory
-import com.wasfat.ui.adapter.AgricultureRVAdapter
+import com.wasfat.ui.adapter.EventCategoryRVAdapter
 import com.wasfat.ui.adapter.OrganicRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
 import com.wasfat.ui.pojo.Category
 import com.wasfat.ui.pojo.CategoryResponsePOJO
+import com.wasfat.ui.pojo.EventCategory
+import com.wasfat.ui.pojo.EventCategoryResponsePOJO
 import com.wasfat.utils.ProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class OrganicAgricultureActivity : BaseBindingActivity() {
+class EventCategoryActivity : BaseBindingActivity() {
 
-    var binding: ActivityOrganicAgricultureBinding? = null
+    var binding : ActivityEventCategoryBinding? = null
     var onClickListener: View.OnClickListener? = null
-    var categoryList: ArrayList<Category> = ArrayList()
-    lateinit var  parentCategory : Category
-    //  var viewModel: VendorViewModel? = null
+    var categoryList: ArrayList<EventCategory> = ArrayList()
 
     companion object {
 
-        fun startActivity(activity: Activity, category: Category, isClear: Boolean) {
-            val intent = Intent(activity, OrganicAgricultureActivity::class.java)
-            intent.putExtra("category", category)
+        fun startActivity(activity: Activity, bundle: Bundle?, isClear: Boolean) {
+            val intent = Intent(activity, EventCategoryActivity::class.java)
+            if(bundle != null) intent.putExtra("bundle", bundle)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -44,17 +45,12 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
     }
 
     override fun setBinding() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_organic_agriculture)
-        //  viewModel = ViewModelProvider(this).get(VendorViewModel::class.java)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_event_category)
         binding!!.lifecycleOwner = this
-
     }
 
     override fun createActivityObject() {
         mActivity = this
-
-        //Getting parent category from parent
-        parentCategory = (intent.getSerializableExtra("category") as? Category)!!
 
     }
 
@@ -62,20 +58,9 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
 
         onClickListener = this
 
-        binding!!.textTitle.text = parentCategory.CategoryName
+        binding!!.textTitle.text = getText(R.string.label_events_category)
 
         setAdapter()
-
-    }
-
-    private fun setAdapter() {
-
-        val layoutManager1 = LinearLayoutManager(mActivity)
-        binding!!.rvCategory.layoutManager = layoutManager1
-        binding!!.rvCategory.setHasFixedSize(true)
-
-        fetchCategoriesOfParentFromAPI()
-
     }
 
     override fun setListeners() {
@@ -85,61 +70,73 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
     }
 
     override fun onClick(view: View?) {
-
         when (view!!.id) {
             R.id.imvBack -> {
                 finish()
             }
         }
+    }
+
+    private fun setAdapter() {
+
+        val layoutManager1 = LinearLayoutManager(mActivity)
+        binding!!.rvEventCategories.layoutManager = layoutManager1
+        binding!!.rvEventCategories.setHasFixedSize(true)
+
+        fetchEventCategoriesFromAPI()
 
     }
 
-    private fun categoryItemClicked(category: Category) {
+    private fun categoryItemClicked(category: EventCategory) {
 
         Log.d("c", "categoryItemClicked: " + category.CategoryName + "  " + category.PKID)
 
-        FoodGrainActivity.startActivity(mActivity!!, category, false)
+        EventActivity.startActivity(mActivity!!,category,false)
 
     }
 
-    private fun fetchCategoriesOfParentFromAPI(){
+    private fun fetchEventCategoriesFromAPI(){
 
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
 
-        rootObject.addProperty("CategoryId",parentCategory.PKID)
+        rootObject.addProperty("CategoryId","0")
         rootObject.addProperty("LanguageId", "1")
 
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+
         val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
-        val call1: Call<CategoryResponsePOJO> = apiService1.getCategoriesByParentId(gsonObject)
-        call1.enqueue(object : Callback<CategoryResponsePOJO?> {
+        val call1: Call<EventCategoryResponsePOJO> = apiService1.getEventCategories(gsonObject)
+
+        call1.enqueue(object : Callback<EventCategoryResponsePOJO?> {
             override fun onResponse(
-                call: Call<CategoryResponsePOJO?>,
-                response: Response<CategoryResponsePOJO?>
+                call: Call<EventCategoryResponsePOJO?>,
+                response: Response<EventCategoryResponsePOJO?>
             ) {
                 ProgressDialog.hideProgressDialog()
                 if (response.body() != null) {
                     if (response.isSuccessful) {
 
-                        categoryList = response.body()!!.categoryList
+                        categoryList = response.body()!!.eventCategoryList
 
-                        val organicRVAdapter = OrganicRVAdapter(mActivity,
+                        val eventRVAdapter = EventCategoryRVAdapter(mActivity,
                             { category -> categoryItemClicked(category) },
                             categoryList)
-                        binding!!.rvCategory.adapter = organicRVAdapter
+
+                        binding!!.rvEventCategories.adapter = eventRVAdapter
 
                     }
                 }
             }
 
-            override fun onFailure(call: Call<CategoryResponsePOJO?>, t: Throwable) {
+            override fun onFailure(call: Call<EventCategoryResponsePOJO?>, t: Throwable) {
                 ProgressDialog.hideProgressDialog()
             }
         })
 
     }
+
 
 }

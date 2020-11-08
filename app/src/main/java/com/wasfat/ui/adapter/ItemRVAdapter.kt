@@ -13,6 +13,7 @@ class ItemRVAdapter(
     private val onClickListener:(Category) -> Unit,
     private val items: ArrayList<Category>
 ) : RecyclerBaseAdapter() {
+
     override fun getLayoutIdForPosition(position: Int): Int = R.layout.view_item_list
 
     override fun getViewModel(position: Int): Any? = 0//items[position]
@@ -20,6 +21,7 @@ class ItemRVAdapter(
     override fun putViewDataBinding(viewDataBinding: ViewDataBinding, position: Int) {
 
         try {
+
             viewDataBinding.root.txtItemName.text = items[position].CategoryName
             viewDataBinding.root.llMain.tag = position
             viewDataBinding.root.llMain.setOnClickListener{ onClickListener(items[position]) }
