@@ -46,14 +46,14 @@
                 android:inputType="textCapWords"
                 android:paddingLeft="@dimen/_10sdp" />
 
-            <com.wasfat.utils.CustomFontEditText
-                android:id="@+id/edtUnit"
+            <Spinner
+                android:id="@+id/spinnerUnit"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:spinnerMode="dropdown"
                 android:background="@drawable/bg_backgound_corner_grey"
                 android:hint="Unit"
-                android:inputType="textCapWords"
                 android:paddingLeft="@dimen/_10sdp" />
 
 

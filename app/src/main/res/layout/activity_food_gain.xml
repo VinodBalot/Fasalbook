@@ -86,7 +86,6 @@
                         android:textSize="@dimen/_14sdp"
                         app:CustomFontName="ProximaNovaBold" />
 
-
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

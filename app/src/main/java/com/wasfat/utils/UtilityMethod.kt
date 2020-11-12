@@ -31,6 +31,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import java.lang.Byte.decode
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -267,6 +268,12 @@ object UtilityMethod {
         return filename
     }
 
+    fun imageEncoder(filePath: String): String{
+        val bytes = File(filePath).readBytes()
+        val base64 = android.util.Base64.encodeToString(bytes, 0)
+        return base64
+    }
+
 
     fun calculateInSampleSize(
         options: BitmapFactory.Options,
@@ -318,7 +325,7 @@ object UtilityMethod {
 
     fun showToastMessageError(activity: Activity, message: String) {
 
-        Toast.makeText(activity,message,Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
 
 //        val toast = Toast(activity)
 //        toast.duration = Toast.LENGTH_LONG;

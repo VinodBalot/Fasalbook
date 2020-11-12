@@ -17,6 +17,7 @@ import com.google.android.material.navigation.NavigationView
 import com.wasfat.R
 import com.wasfat.utils.Constants
 import com.wasfat.utils.SessionManager
+import kotlin.system.exitProcess
 
 
 class HomeActivity : AppCompatActivity() {
@@ -91,7 +92,6 @@ class HomeActivity : AppCompatActivity() {
             logoutDialog()
         }
 
-
     }
 
     fun logoutDialog() {
@@ -105,6 +105,7 @@ class HomeActivity : AppCompatActivity() {
             dialogInterface.dismiss()
             sessionManager!!.setLogin(false)
             LoginActivity.startActivity(this, null, false)
+            finish()
         }
         dialogBuilder.setNegativeButton(
             resources.getString(R.string.label_cancel)

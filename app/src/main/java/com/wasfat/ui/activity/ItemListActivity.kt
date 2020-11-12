@@ -4,8 +4,9 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Bundle
+import android.graphics.Bitmap
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -23,18 +24,24 @@ import com.wasfat.databinding.ActivityFoodGainBinding
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory
 import com.wasfat.ui.adapter.ImageListRVAdapter
+import com.wasfat.ui.adapter.OrganicRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
-import com.wasfat.ui.pojo.AddSellItemResponse
-import com.wasfat.ui.pojo.BuySellType
-import com.wasfat.ui.pojo.Category
-import com.wasfat.ui.pojo.ChangePasswordResponse
+import com.wasfat.ui.home.adapter.ItemRVAdapter
+import com.wasfat.ui.pojo.*
+import com.wasfat.ui.pojo.Unit
 import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.UtilityMethod
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.ByteArrayOutputStream
 import java.io.File
 
 class ItemListActivity : BaseBindingActivity() {
@@ -42,11 +49,16 @@ class ItemListActivity : BaseBindingActivity() {
     var binding: ActivityFoodGainBinding? = null
     var onClickListener: View.OnClickListener? = null
     var categoryList: ArrayList<Category> = ArrayList()
+    var productList: ArrayList<UserProduct> = ArrayList()
+    var unitList: ArrayList<Unit> = ArrayList()
+    var unitNameList: ArrayList<String> = ArrayList()
     var imageList: ArrayList<String> = ArrayList()
     var imageListRVAdapter: ImageListRVAdapter? = null
     var rlImage: RelativeLayout? = null
     var rvImage: RecyclerView? = null
     var imvAddMore: ImageView? = null
+
+    lateinit var itemRVAdapter : ItemRVAdapter
 
     lateinit var  parentCategory : Category
     lateinit var type: BuySellType
@@ -56,9 +68,14 @@ class ItemListActivity : BaseBindingActivity() {
 
     companion object {
 
-        fun startActivity(activity: Activity, category: Category, type : BuySellType, isClear: Boolean) {
+        fun startActivity(
+            activity: Activity,
+            category: Category,
+            type: BuySellType,
+            isClear: Boolean
+        ) {
             val intent = Intent(activity, ItemListActivity::class.java)
-            intent.putExtra("category",category)
+            intent.putExtra("category", category)
             intent.putExtra("type", type)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -78,7 +95,6 @@ class ItemListActivity : BaseBindingActivity() {
     override fun createActivityObject() {
         mActivity = this
 
-
         type = intent.getSerializableExtra("type") as BuySellType
 
         //Getting parent category from parent
@@ -88,13 +104,15 @@ class ItemListActivity : BaseBindingActivity() {
 
     override fun initializeObject() {
         onClickListener = this
-       // binding!!.textTitle.text = parentCategory.CategoryName
+
+        binding!!.textTitle.text = parentCategory.CategoryName
 
         if(type == BuySellType.BUY)
             binding!!.fabAdd.visibility = View.GONE
         else
             setupFabButton()
 
+        getUnitListFromAPI()
         setAdapter()
 
     }
@@ -113,11 +131,57 @@ class ItemListActivity : BaseBindingActivity() {
         binding!!.rvProduct.layoutManager = layoutManager1
         binding!!.rvProduct.setHasFixedSize(true)
 
-//        val itemRVAdapter = ItemRVAdapter(mActivity,
-//            { category -> categoryItemClicked(category) },
-//            categoryList)
-//
-//        binding!!.rvProduct.adapter = itemRVAdapter
+
+        fetchItemsFromAPI()
+
+    }
+
+
+    private fun fetchItemsFromAPI(){
+
+        ProgressDialog.showProgressDialog(mActivity!!)
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+
+        rootObject.addProperty("UserId",sessionManager!!.userId)
+       // rootObject.addProperty("LanguageId", "1")
+
+        var jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+
+        val call1: Call<UserProductsResponsePOJO> = apiService1.getUserProducts(gsonObject)
+        call1.enqueue(object : Callback<UserProductsResponsePOJO?> {
+            override fun onResponse(
+                call: Call<UserProductsResponsePOJO?>,
+                response: Response<UserProductsResponsePOJO?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+
+                    if (response.isSuccessful) {
+
+                        productList = response.body()!!.productList
+
+                        Log.d("ITEMS", "onResponse: " + productList)
+
+                        itemRVAdapter = ItemRVAdapter(
+                            mActivity!!,
+                            { product -> categoryItemClicked(product) },
+                            productList, unitList
+                        )
+
+                        binding!!.rvProduct.adapter = itemRVAdapter
+
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<UserProductsResponsePOJO?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+                Log.d("ITEMS", "onResponse: " + t.localizedMessage)
+            }
+        })
 
     }
 
@@ -135,10 +199,45 @@ class ItemListActivity : BaseBindingActivity() {
     }
 
 
-//    private fun categoryItemClicked(category: Category) {
-//        ItemDetailsActivity.startActivity(mActivity!!, null, false)
-//    }
+    private fun categoryItemClicked(product: UserProduct) {
 
+        ItemDetailsActivity.startActivity(mActivity!!, product, unitNameList[product.UnitId.toInt()], false)
+
+    }
+
+    private fun getUnitListFromAPI(){
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+        val call1: Call<UnitListResponsePOJO> = apiService1.getProductUnitList()
+
+        call1.enqueue(object : Callback<UnitListResponsePOJO?> {
+            override fun onResponse(
+                call: Call<UnitListResponsePOJO?>,
+                response: Response<UnitListResponsePOJO?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+
+                        var list: ArrayList<Unit> = response.body()!!.unitList
+
+                        list.forEach {
+                            unitNameList.add(it.Name)
+                            unitList.add(it)
+                        }
+
+                        Log.d("UNITS", "onResponse: " + unitList)
+
+
+
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<UnitListResponsePOJO?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
+    }
 
     private fun callAddFoodGrainsDialog() {
 
@@ -146,7 +245,7 @@ class ItemListActivity : BaseBindingActivity() {
         val imvClose = view.findViewById(R.id.imvClose) as ImageView
         imvAddMore = view.findViewById(R.id.imvAddMore) as ImageView
         val edtName = view.findViewById(R.id.edtName) as EditText
-        val edtUnit = view.findViewById(R.id.edtUnit) as EditText
+        val spinnerUnit = view.findViewById(R.id.spinnerUnit) as Spinner
         val edtQty = view.findViewById(R.id.edtQty) as EditText
         rlImage = view.findViewById(R.id.rlImage) as RelativeLayout
         rvImage = view.findViewById(R.id.rvImage) as RecyclerView
@@ -162,6 +261,15 @@ class ItemListActivity : BaseBindingActivity() {
         rvImage!!.setHasFixedSize(true)
         imageListRVAdapter = ImageListRVAdapter(mActivity, onClickListener, imageList)
         rvImage!!.adapter = imageListRVAdapter
+
+
+        val adapter = ArrayAdapter(
+            this,
+            R.layout.support_simple_spinner_dropdown_item,
+            unitNameList
+        )
+        spinnerUnit.adapter = adapter
+        adapter.notifyDataSetChanged()
 
         imvClose.setOnClickListener {
             dialog!!.dismiss()
@@ -184,13 +292,13 @@ class ItemListActivity : BaseBindingActivity() {
         btnAdd.setOnClickListener {
             if (isValidFormData(
                     edtName.text.toString(),
-                    edtUnit.text.toString(),
+                    spinnerUnit.selectedItem.toString(),
                     edtQty.text.toString()
                 )
             ) {
                 addItemThroughAPI(
                     edtName.text.toString(),
-                    edtUnit.text.toString(),
+                    unitList.get(spinnerUnit.selectedItemPosition),
                     edtQty.text.toString()
                 )
                 dialog.dismiss()
@@ -198,22 +306,31 @@ class ItemListActivity : BaseBindingActivity() {
         }
     }
 
+
     private fun addItemThroughAPI(
         name: String,
-        unit: String,
+        unit: Unit,
         qty: String
     ){
+
+        val image1 = UtilityMethod.imageEncoder(imageList[0])
+        val image2 = UtilityMethod.imageEncoder(imageList[1])
+        val image3 = UtilityMethod.imageEncoder(imageList[2])
 
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
         rootObject.addProperty("ProductId", 0)
-        rootObject.addProperty("ProductName", name )
-        rootObject.addProperty("CategoryId", parentCategory.PKID )
+        rootObject.addProperty("ProductName", name)
+        rootObject.addProperty("CategoryId", parentCategory.PKID)
         rootObject.addProperty("Qty", qty)
-        rootObject.addProperty("UnitId", unit)
-        rootObject.addProperty("UserId",sessionManager!!.userId)
-        rootObject.addProperty("Published","true")
+        rootObject.addProperty("UnitId", unit.Id)
+        rootObject.addProperty("UserId", sessionManager!!.userId)
+        rootObject.addProperty("Published", "true")
+        rootObject.addProperty("Image1", image1)
+        rootObject.addProperty("Image2", image2)
+        rootObject.addProperty("Image3", image3)
+
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
         val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
@@ -393,6 +510,16 @@ class ItemListActivity : BaseBindingActivity() {
 
         if (TextUtils.isEmpty(qty)) {
             UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_quantity))
+            return false
+        }
+
+        if(imageList.size != 3){
+
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.label_add_item_images_count_warning)
+            )
+
             return false
         }
 

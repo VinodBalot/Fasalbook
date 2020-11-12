@@ -70,6 +70,14 @@ interface RestApi {
     @POST("products/addedit")
     fun addSellItem(@Body jsonData: JsonObject): Call<AddSellItemResponse>
 
+    @Headers("Content-Type: application/json")
+    @POST("products/unitlist")
+    fun getProductUnitList(): Call<UnitListResponsePOJO>
+
+    @Headers("Content-Type: application/json")
+    @POST("products/useragriproducts")
+    fun getUserProducts(@Body jsonData: JsonObject): Call<UserProductsResponsePOJO>
+
     /*
   @Headers("Content-Type: application/json")
   @POST("signup")
