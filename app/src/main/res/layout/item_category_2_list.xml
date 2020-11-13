@@ -16,6 +16,7 @@
             app:cardCornerRadius="@dimen/_5sdp">
 
             <RelativeLayout
+                android:background="@drawable/bg_ripple_mask"
                 android:id="@+id/rlOrganic"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
