@@ -234,8 +234,6 @@ class ItemListActivity : BaseBindingActivity() {
 
     private fun deleteSelectedItem(product: UserProduct){
 
-       // Toast.makeText(mActivity!!,"DELETE OPERATION HERE ",Toast.LENGTH_SHORT).show()
-
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()

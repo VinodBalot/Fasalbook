@@ -14,7 +14,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
-
+            android:padding="@dimen/_10sdp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/bg_ripple_mask"
