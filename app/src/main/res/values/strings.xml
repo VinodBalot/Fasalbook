@@ -93,4 +93,10 @@
 
     <string name="label_add_item_images_count_warning">Please add only 3 Images</string>
 
+    <string name="label_add_item_dialog_title">Add Item</string>
+    <string name="label_edit_item_dialog_title">Edit Item</string>
+
+    <string name="label_edit_item_dialog_button">Save</string>
+    <string name="label_add_item_dialog_button">Add</string>
+
 </resources>

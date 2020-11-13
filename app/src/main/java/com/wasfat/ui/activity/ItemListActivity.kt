@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.text.Editable
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
@@ -121,7 +122,7 @@ class ItemListActivity : BaseBindingActivity() {
 
         binding!!.fabAdd.visibility = View.VISIBLE
         binding!!.fabAdd.setOnClickListener{
-            callAddFoodGrainsDialog()
+            addOrEditItemDialog(null)
         }
     }
 
@@ -201,7 +202,39 @@ class ItemListActivity : BaseBindingActivity() {
 
     private fun categoryItemClicked(product: UserProduct) {
 
-        ItemDetailsActivity.startActivity(mActivity!!, product, unitNameList[product.UnitId.toInt()], false)
+        showItemSelectionDialog(product)
+
+    }
+
+    private fun showItemSelectionDialog(product: UserProduct) {
+
+        val options = arrayOf<CharSequence>("Edit Item", "Delete Item", "Details", "Cancel")
+        val builder = AlertDialog.Builder(this@ItemListActivity)
+        builder.setTitle("Item Menu")
+        builder.setItems(options) { dialog, item ->
+            if (options[item] == "Edit Item") {
+
+                addOrEditItemDialog(product)
+
+            } else if (options[item] == "Details") {
+
+                ItemDetailsActivity.startActivity(mActivity!!, product, unitNameList[product.UnitId.toInt()], false)
+
+            } else if (options[item] == "Delete Item") {
+
+                deleteSelectedItem(product)
+
+            } else if (options[item] == "Cancel") {
+                dialog.dismiss()
+            }
+        }
+        builder.show()
+    }
+
+
+    private fun deleteSelectedItem(product: UserProduct){
+
+        Toast.makeText(mActivity!!,"DELETE OPERATION HERE ",Toast.LENGTH_SHORT).show()
 
     }
 
@@ -239,9 +272,10 @@ class ItemListActivity : BaseBindingActivity() {
         })
     }
 
-    private fun callAddFoodGrainsDialog() {
+    private fun addOrEditItemDialog(product: UserProduct?) {
 
         val view = layoutInflater.inflate(R.layout.bottomsheet_dialog_add_food_gain, null)
+        val txtDialogTitle = view.findViewById(R.id.txtDialogTitle) as TextView
         val imvClose = view.findViewById(R.id.imvClose) as ImageView
         imvAddMore = view.findViewById(R.id.imvAddMore) as ImageView
         val edtName = view.findViewById(R.id.edtName) as EditText
@@ -252,16 +286,55 @@ class ItemListActivity : BaseBindingActivity() {
         val edtSpecification = view.findViewById(R.id.edtSpecification) as EditText
         val btnAdd = view.findViewById(R.id.btnAdd) as Button
         val dialog = BottomSheetDialog(mActivity!!)
+        imageList.clear()
         dialog!!.setContentView(view)
         dialog!!.show()
 
+        imageList.clear()
+
+
+        if(product == null){
+            //Add new Item
+            txtDialogTitle.text = getString(R.string.label_add_item_dialog_title)
+            btnAdd.setText(R.string.label_add_item_dialog_button)
+
+        }else{
+            //Edit current Item
+            txtDialogTitle.text = getString(R.string.label_edit_item_dialog_title)
+            edtName.setText(product.ProductName)
+            edtSpecification.setText(product.ProductSmallDesc)
+            edtQty.setText(product.Qty)
+            spinnerUnit.setSelection(product.UnitId.toInt())
+            btnAdd.setText(R.string.label_edit_item_dialog_button)
+
+            product.ImageList.forEach {
+                if(it.ImageName.isNotEmpty()){
+                    val image = it.Path + "/" + it.ImageName
+                    imageList.add(image)
+                }
+            }
+        }
+
+        if(imageList.size >= 3){
+            rvImage!!.visibility = View.VISIBLE
+            rlImage!!.visibility = View.GONE
+            imvAddMore!!.visibility = View.GONE
+        }else if(imageList.size in 1..2){
+            rvImage!!.visibility = View.VISIBLE
+            rlImage!!.visibility = View.GONE
+            imvAddMore!!.visibility = View.VISIBLE
+        }else{
+            rvImage!!.visibility = View.GONE
+            rlImage!!.visibility = View.VISIBLE
+            imvAddMore!!.visibility = View.GONE
+        }
 
         val layoutManager1 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvImage!!.layoutManager = layoutManager1
         rvImage!!.setHasFixedSize(true)
+
         imageListRVAdapter = ImageListRVAdapter(mActivity, onClickListener, imageList)
         rvImage!!.adapter = imageListRVAdapter
-
 
         val adapter = ArrayAdapter(
             this,
@@ -296,18 +369,34 @@ class ItemListActivity : BaseBindingActivity() {
                     edtQty.text.toString()
                 )
             ) {
-                addItemThroughAPI(
-                    edtName.text.toString(),
-                    unitList.get(spinnerUnit.selectedItemPosition),
-                    edtQty.text.toString()
-                )
+
+                if(product == null){
+
+                    addOrEditItemThroughAPI(
+                        0,
+                        edtName.text.toString(),
+                        unitList.get(spinnerUnit.selectedItemPosition),
+                        edtQty.text.toString()
+                    )
+
+                }else{
+
+                    addOrEditItemThroughAPI(
+                        product.ProductId,
+                        edtName.text.toString(),
+                        unitList.get(spinnerUnit.selectedItemPosition),
+                        edtQty.text.toString()
+                    )
+                }
+
                 dialog.dismiss()
             }
         }
     }
 
 
-    private fun addItemThroughAPI(
+    private fun addOrEditItemThroughAPI(
+        productId : Int,
         name: String,
         unit: Unit,
         qty: String
@@ -320,7 +409,7 @@ class ItemListActivity : BaseBindingActivity() {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
-        rootObject.addProperty("ProductId", 0)
+        rootObject.addProperty("ProductId", productId)
         rootObject.addProperty("ProductName", name)
         rootObject.addProperty("CategoryId", parentCategory.PKID)
         rootObject.addProperty("Qty", qty)
@@ -425,6 +514,7 @@ class ItemListActivity : BaseBindingActivity() {
     }
 
     private fun showImageSelectionDialog() {
+
         val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
         val builder = AlertDialog.Builder(this@ItemListActivity)
         builder.setTitle("Add Photo!")

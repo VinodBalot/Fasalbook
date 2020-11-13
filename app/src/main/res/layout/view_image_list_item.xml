@@ -7,6 +7,7 @@
         android:orientation="vertical">
 
         <ImageView
+            android:layout_margin="@dimen/_10sdp"
             android:id="@+id/imvImage"
             android:layout_width="@dimen/_130sdp"
             android:layout_height="@dimen/_130sdp" />
