@@ -20,9 +20,15 @@ class ImageListRVAdapter(
 
     override fun putViewDataBinding(viewDataBinding: ViewDataBinding, position: Int) {
         try {
+
             Log.d("123", "data :" + imageList[position])
 
-            Glide.with(context!!).load(imageList[position]).into(viewDataBinding.root.imvImage)
+
+            Glide.with(context!!)
+                .load(imageList[position])
+                .placeholder(R.drawable.wheat)
+                .into(viewDataBinding.root.imvImage)
+
 
         } catch (e: Exception) {
 

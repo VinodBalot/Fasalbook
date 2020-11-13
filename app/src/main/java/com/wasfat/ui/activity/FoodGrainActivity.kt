@@ -104,7 +104,13 @@ class FoodGrainActivity : BaseBindingActivity() {
 
         Log.d("c", "categoryItemClicked: " + category.CategoryName + "  " + category.PKID)
 
-        ItemListActivity.startActivity(mActivity!!,category, type, false)
+        if(type == BuySellType.BUY){
+
+            BuySearchActivity.startActivity(mActivity!!,category,type,false)
+
+        }else{
+            ItemListActivity.startActivity(mActivity!!,category, type, false)
+        }
 
     }
 

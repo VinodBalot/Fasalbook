@@ -132,11 +132,9 @@ class ItemListActivity : BaseBindingActivity() {
         binding!!.rvProduct.layoutManager = layoutManager1
         binding!!.rvProduct.setHasFixedSize(true)
 
-
         fetchItemsFromAPI()
 
     }
-
 
     private fun fetchItemsFromAPI(){
 
@@ -174,6 +172,14 @@ class ItemListActivity : BaseBindingActivity() {
 
                         binding!!.rvProduct.adapter = itemRVAdapter
 
+                        if(productList.size == 0){
+                            binding!!.rvProduct.visibility = View.GONE
+                            binding!!.txtNoProductFound.visibility = View.VISIBLE
+                        }else{
+                            binding!!.rvProduct.visibility = View.VISIBLE
+                            binding!!.txtNoProductFound.visibility = View.GONE
+                        }
+
                     }
                 }
             }
@@ -198,7 +204,6 @@ class ItemListActivity : BaseBindingActivity() {
             }
         }
     }
-
 
     private fun categoryItemClicked(product: UserProduct) {
 
@@ -230,7 +235,6 @@ class ItemListActivity : BaseBindingActivity() {
         }
         builder.show()
     }
-
 
     private fun deleteSelectedItem(product: UserProduct){
 

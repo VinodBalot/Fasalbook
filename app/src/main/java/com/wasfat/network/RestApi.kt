@@ -82,6 +82,9 @@ interface RestApi {
     @POST("products/delete")
     fun deleteUserItem(@Body jsonData: JsonObject): Call<DeleteItemResponse>
 
+    @Headers("Content-Type: application/json")
+    @POST("products/search")
+    fun getProductsFromSearch(@Body jsonData: JsonObject): Call<UserProductsResponsePOJO>
     /*
   @Headers("Content-Type: application/json")
   @POST("signup")
