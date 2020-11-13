@@ -234,7 +234,47 @@ class ItemListActivity : BaseBindingActivity() {
 
     private fun deleteSelectedItem(product: UserProduct){
 
-        Toast.makeText(mActivity!!,"DELETE OPERATION HERE ",Toast.LENGTH_SHORT).show()
+       // Toast.makeText(mActivity!!,"DELETE OPERATION HERE ",Toast.LENGTH_SHORT).show()
+
+        ProgressDialog.showProgressDialog(mActivity!!)
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+        rootObject.addProperty("ProductId", product.ProductId)
+        rootObject.addProperty("UserId", sessionManager!!.userId)
+
+        var jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+
+        val call1: Call<DeleteItemResponse> = apiService1.deleteUserItem(gsonObject)
+        call1.enqueue(object : Callback<DeleteItemResponse?> {
+            override fun onResponse(
+                call: Call<DeleteItemResponse?>,
+                response: Response<DeleteItemResponse?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+                        if (response.body()!!.Response == "success") {
+                            UtilityMethod.showToastMessageSuccess(
+                                mActivity!!,
+                                getString(R.string.label_item_delete_successful)
+                            )
+                            finish()
+                        } else {
+                            UtilityMethod.showToastMessageError(
+                                mActivity!!,
+                                getString(R.string.label_item_delete_unsuccessful)
+                            )
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<DeleteItemResponse?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
 
     }
 
