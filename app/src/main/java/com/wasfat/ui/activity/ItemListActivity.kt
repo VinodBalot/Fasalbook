@@ -5,8 +5,10 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.text.Editable
 import android.text.TextUtils
+import android.transition.Transition
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -16,6 +18,8 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
@@ -57,6 +61,7 @@ class ItemListActivity : BaseBindingActivity() {
     var imageListRVAdapter: ImageListRVAdapter? = null
     var rlImage: RelativeLayout? = null
     var rvImage: RecyclerView? = null
+    var imvAddMoreLayout: LinearLayout? = null
     var imvAddMore: ImageView? = null
 
     lateinit var itemRVAdapter : ItemRVAdapter
@@ -202,7 +207,39 @@ class ItemListActivity : BaseBindingActivity() {
             R.id.imvBack -> {
                 finish()
             }
+            R.id.imvClose ->{
+
+                removeImageSelection(view.tag as Int)
+            }
         }
+    }
+
+    private fun removeImageSelection(position : Int){
+
+        imageList.removeAt(position)
+        imageListRVAdapter!!.notifyItemRemoved(position)
+        imageListRVAdapter!!.notifyItemRangeChanged(position, imageList.size)
+        imageListRVAdapter!!.notifyDataSetChanged()
+
+        setVisibiltyForImageSelection()
+
+    }
+
+    private fun setVisibiltyForImageSelection(){
+        if(imageList.size >= 3){
+            rvImage!!.visibility = View.VISIBLE
+            rlImage!!.visibility = View.GONE
+            imvAddMoreLayout!!.visibility = View.GONE
+        }else if(imageList.size in 1..2){
+            rvImage!!.visibility = View.VISIBLE
+            rlImage!!.visibility = View.GONE
+            imvAddMoreLayout!!.visibility = View.VISIBLE
+        }else{
+            rvImage!!.visibility = View.GONE
+            rlImage!!.visibility = View.VISIBLE
+            imvAddMoreLayout!!.visibility = View.GONE
+        }
+
     }
 
     private fun categoryItemClicked(product: UserProduct) {
@@ -234,50 +271,6 @@ class ItemListActivity : BaseBindingActivity() {
             }
         }
         builder.show()
-    }
-
-    private fun deleteSelectedItem(product: UserProduct){
-
-        ProgressDialog.showProgressDialog(mActivity!!)
-        var gsonObject = JsonObject()
-        val rootObject = JsonObject()
-        rootObject.addProperty("ProductId", product.ProductId)
-        rootObject.addProperty("UserId", sessionManager!!.userId)
-
-        var jsonParser = JsonParser()
-        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
-        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
-
-        val call1: Call<DeleteItemResponse> = apiService1.deleteUserItem(gsonObject)
-        call1.enqueue(object : Callback<DeleteItemResponse?> {
-            override fun onResponse(
-                call: Call<DeleteItemResponse?>,
-                response: Response<DeleteItemResponse?>
-            ) {
-                ProgressDialog.hideProgressDialog()
-                if (response.body() != null) {
-                    if (response.isSuccessful) {
-                        if (response.body()!!.Response == "success") {
-                            UtilityMethod.showToastMessageSuccess(
-                                mActivity!!,
-                                getString(R.string.label_item_delete_successful)
-                            )
-                            finish()
-                        } else {
-                            UtilityMethod.showToastMessageError(
-                                mActivity!!,
-                                getString(R.string.label_item_delete_unsuccessful)
-                            )
-                        }
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<DeleteItemResponse?>, t: Throwable) {
-                ProgressDialog.hideProgressDialog()
-            }
-        })
-
     }
 
     private fun getUnitListFromAPI(){
@@ -320,6 +313,7 @@ class ItemListActivity : BaseBindingActivity() {
         val txtDialogTitle = view.findViewById(R.id.txtDialogTitle) as TextView
         val imvClose = view.findViewById(R.id.imvClose) as ImageView
         imvAddMore = view.findViewById(R.id.imvAddMore) as ImageView
+        imvAddMoreLayout = view.findViewById(R.id.imvAddMoreLayout) as LinearLayout
         val edtName = view.findViewById(R.id.edtName) as EditText
         val spinnerUnit = view.findViewById(R.id.spinnerUnit) as Spinner
         val edtQty = view.findViewById(R.id.edtQty) as EditText
@@ -334,6 +328,13 @@ class ItemListActivity : BaseBindingActivity() {
 
         imageList.clear()
 
+        val adapter = ArrayAdapter(
+            this,
+            R.layout.support_simple_spinner_dropdown_item,
+            unitNameList
+        )
+        spinnerUnit.adapter = adapter
+        adapter.notifyDataSetChanged()
 
         if(product == null){
             //Add new Item
@@ -347,29 +348,23 @@ class ItemListActivity : BaseBindingActivity() {
             edtSpecification.setText(product.ProductSmallDesc)
             edtQty.setText(product.Qty)
             spinnerUnit.setSelection(product.UnitId.toInt())
+
+            Log.d("TAG", "addOrEditItemDialog: " + unitList.get(product.UnitId.toInt()))
+
             btnAdd.setText(R.string.label_edit_item_dialog_button)
 
             product.ImageList.forEach {
+
                 if(it.ImageName.isNotEmpty()){
+
                     val image = it.Path + "/" + it.ImageName
                     imageList.add(image)
                 }
             }
+            Log.d("TAGImageList", "addOrEditItemDialog: " + imageList)
         }
 
-        if(imageList.size >= 3){
-            rvImage!!.visibility = View.VISIBLE
-            rlImage!!.visibility = View.GONE
-            imvAddMore!!.visibility = View.GONE
-        }else if(imageList.size in 1..2){
-            rvImage!!.visibility = View.VISIBLE
-            rlImage!!.visibility = View.GONE
-            imvAddMore!!.visibility = View.VISIBLE
-        }else{
-            rvImage!!.visibility = View.GONE
-            rlImage!!.visibility = View.VISIBLE
-            imvAddMore!!.visibility = View.GONE
-        }
+        setVisibiltyForImageSelection()
 
         val layoutManager1 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvImage!!.layoutManager = layoutManager1
@@ -378,13 +373,7 @@ class ItemListActivity : BaseBindingActivity() {
         imageListRVAdapter = ImageListRVAdapter(mActivity, onClickListener, imageList)
         rvImage!!.adapter = imageListRVAdapter
 
-        val adapter = ArrayAdapter(
-            this,
-            R.layout.support_simple_spinner_dropdown_item,
-            unitNameList
-        )
-        spinnerUnit.adapter = adapter
-        adapter.notifyDataSetChanged()
+
 
         imvClose.setOnClickListener {
             dialog!!.dismiss()
@@ -444,13 +433,32 @@ class ItemListActivity : BaseBindingActivity() {
         qty: String
     ){
 
-        val image1 = UtilityMethod.imageEncoder(imageList[0])
-        val image2 = UtilityMethod.imageEncoder(imageList[1])
-        val image3 = UtilityMethod.imageEncoder(imageList[2])
-
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
+
+        var image1 =""
+        var image2 =""
+        var image3 =""
+
+        if(UtilityMethod.isLocalPath(imageList[0])){
+
+            image1 = UtilityMethod.imageEncoder(imageList[0])
+
+        }
+
+        if(UtilityMethod.isLocalPath(imageList[1])){
+
+            image2 = UtilityMethod.imageEncoder(imageList[1])
+
+        }
+
+        if(UtilityMethod.isLocalPath(imageList[2])){
+
+            image3 = UtilityMethod.imageEncoder(imageList[2])
+
+        }
+
         rootObject.addProperty("ProductId", productId)
         rootObject.addProperty("ProductName", name)
         rootObject.addProperty("CategoryId", parentCategory.PKID)
@@ -462,7 +470,7 @@ class ItemListActivity : BaseBindingActivity() {
         rootObject.addProperty("Image2", image2)
         rootObject.addProperty("Image3", image3)
 
-        var jsonParser = JsonParser()
+        val jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
         val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
 
@@ -498,6 +506,168 @@ class ItemListActivity : BaseBindingActivity() {
 
     }
 
+    private fun isValidFormData(
+        name: String,
+        unit: String,
+        qty: String
+    ): Boolean {
+
+        if (TextUtils.isEmpty(name)) {
+            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_full_name))
+            return false
+        }
+
+        if (TextUtils.isEmpty(unit)) {
+            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_unit_value))
+            return false
+        }
+
+        if (TextUtils.isEmpty(qty)) {
+            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_quantity))
+            return false
+        }
+
+        if(imageList.size != 3){
+
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.label_add_item_images_count_warning)
+            )
+
+            return false
+        }
+
+
+        /* if (!UtilityMethod.isValidEmail(email)) {
+             UtilityMethod.showToastMessageError(
+                 mActivity!!,
+                 getString(R.string.enter_valid_email_id)
+             )
+             return false
+         }*/
+
+        /*  val pattern: Pattern
+          val regex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$"
+          pattern = Pattern.compile(regex)
+  */
+        /*    if (!pattern.matcher(password).matches()) {
+                UtilityMethod.showToastMessageError(
+                    mActivity!!,
+                    getString(R.string.password_should_contain_char_digit_special)
+                )
+                return false
+            }*/
+
+        return true
+    }
+
+    private fun deleteSelectedItem(product: UserProduct){
+
+        ProgressDialog.showProgressDialog(mActivity!!)
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+        rootObject.addProperty("ProductId", product.ProductId)
+        rootObject.addProperty("UserId", sessionManager!!.userId)
+
+        var jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+
+        val call1: Call<DeleteItemResponse> = apiService1.deleteUserItem(gsonObject)
+        call1.enqueue(object : Callback<DeleteItemResponse?> {
+            override fun onResponse(
+                call: Call<DeleteItemResponse?>,
+                response: Response<DeleteItemResponse?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+                        if (response.body()!!.Response == "success") {
+                            UtilityMethod.showToastMessageSuccess(
+                                mActivity!!,
+                                getString(R.string.label_item_delete_successful)
+                            )
+                            finish()
+                        } else {
+                            UtilityMethod.showToastMessageError(
+                                mActivity!!,
+                                getString(R.string.label_item_delete_unsuccessful)
+                            )
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<DeleteItemResponse?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
+
+    }
+
+    private fun showImageSelectionDialog() {
+
+        val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
+        val builder = AlertDialog.Builder(this@ItemListActivity)
+        builder.setTitle("Add Photo!")
+        builder.setItems(options) { dialog, item ->
+            if (options[item] == "Take Photo") {
+                EasyImage.openCameraForImage(this@ItemListActivity, 100)
+            } else if (options[item] == "Choose from Gallery") {
+                EasyImage.openGallery(this@ItemListActivity, 200)
+            } else if (options[item] == "Cancel") {
+                dialog.dismiss()
+            }
+        }
+        builder.show()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        EasyImage.handleActivityResult(
+            requestCode,
+            resultCode,
+            data,
+            this@ItemListActivity,
+            object : DefaultCallback() {
+                override fun onImagesPicked(
+                    imageFiles: MutableList<File>,
+                    source: EasyImage.ImageSource?,
+                    type: Int
+                ) {
+                    if (type == 100) {
+
+                        imageList.add(imageFiles[0].absolutePath)
+                        imageListRVAdapter!!.notifyDataSetChanged()
+                        setVisibiltyForImageSelection()
+
+                    } else {
+
+                        imageList.add(imageFiles[0].absolutePath)
+                        imageListRVAdapter!!.notifyDataSetChanged()
+                        setVisibiltyForImageSelection()
+
+                    }
+                }
+
+                override fun onImagePickerError(
+                    e: java.lang.Exception,
+                    source: EasyImage.ImageSource,
+                    type: Int
+                ) {
+                    e.printStackTrace()
+                }
+
+                override fun onCanceled(source: EasyImage.ImageSource, type: Int) {
+                    if (source == ImageProvider.CAMERA) {
+                        val photoFile =
+                            EasyImage.lastlyTakenButCanceledPhoto(this@ItemListActivity)
+                        photoFile?.delete()
+                    }
+                }
+            })
+    }
 
     fun checkingPermissionIsEnabledOrNot(): Boolean {
         val FirstPermissionResult: Int =
@@ -555,128 +725,5 @@ class ItemListActivity : BaseBindingActivity() {
 
     }
 
-    private fun showImageSelectionDialog() {
-
-        val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
-        val builder = AlertDialog.Builder(this@ItemListActivity)
-        builder.setTitle("Add Photo!")
-        builder.setItems(options) { dialog, item ->
-            if (options[item] == "Take Photo") {
-                EasyImage.openCameraForImage(this@ItemListActivity, 100)
-            } else if (options[item] == "Choose from Gallery") {
-                EasyImage.openGallery(this@ItemListActivity, 200)
-            } else if (options[item] == "Cancel") {
-                dialog.dismiss()
-            }
-        }
-        builder.show()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        EasyImage.handleActivityResult(
-            requestCode,
-            resultCode,
-            data,
-            this@ItemListActivity,
-            object : DefaultCallback() {
-                override fun onImagesPicked(
-                    imageFiles: MutableList<File>,
-                    source: EasyImage.ImageSource?,
-                    type: Int
-                ) {
-                    if (type == 100) {
-                        val compressImage: String? =
-                            UtilityMethod.compressImage(mActivity!!, imageFiles[0].absolutePath)
-                        //   if (compressImage != null) fileLogo = File(compressImage)
-                        rlImage!!.visibility = View.GONE
-                        rvImage!!.visibility = View.VISIBLE
-                        imvAddMore!!.visibility = View.VISIBLE
-                        imageList.add(imageFiles[0].absolutePath)
-                        imageListRVAdapter!!.notifyDataSetChanged()
-                    } else {
-                        val compressImage: String? =
-                            UtilityMethod.compressImage(mActivity!!, imageFiles[0].absolutePath)
-                        //   if (compressImage != null) fileLogo = File(compressImage)
-                        rlImage!!.visibility = View.GONE
-                        rvImage!!.visibility = View.VISIBLE
-                        imvAddMore!!.visibility = View.VISIBLE
-                        imageList.add(imageFiles[0].absolutePath)
-                        imageListRVAdapter!!.notifyDataSetChanged()
-                    }
-                }
-
-                override fun onImagePickerError(
-                    e: java.lang.Exception,
-                    source: EasyImage.ImageSource,
-                    type: Int
-                ) {
-                    e.printStackTrace()
-                }
-
-                override fun onCanceled(source: EasyImage.ImageSource, type: Int) {
-                    if (source == ImageProvider.CAMERA) {
-                        val photoFile =
-                            EasyImage.lastlyTakenButCanceledPhoto(this@ItemListActivity)
-                        photoFile?.delete()
-                    }
-                }
-            })
-    }
-
-    private fun isValidFormData(
-        name: String,
-        unit: String,
-        qty: String
-    ): Boolean {
-
-        if (TextUtils.isEmpty(name)) {
-            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_full_name))
-            return false
-        }
-
-        if (TextUtils.isEmpty(unit)) {
-            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_unit_value))
-            return false
-        }
-
-        if (TextUtils.isEmpty(qty)) {
-            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_quantity))
-            return false
-        }
-
-        if(imageList.size != 3){
-
-            UtilityMethod.showToastMessageError(
-                mActivity!!,
-                getString(R.string.label_add_item_images_count_warning)
-            )
-
-            return false
-        }
-
-
-        /* if (!UtilityMethod.isValidEmail(email)) {
-             UtilityMethod.showToastMessageError(
-                 mActivity!!,
-                 getString(R.string.enter_valid_email_id)
-             )
-             return false
-         }*/
-
-        /*  val pattern: Pattern
-          val regex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$"
-          pattern = Pattern.compile(regex)
-  */
-        /*    if (!pattern.matcher(password).matches()) {
-                UtilityMethod.showToastMessageError(
-                    mActivity!!,
-                    getString(R.string.password_should_contain_char_digit_special)
-                )
-                return false
-            }*/
-
-        return true
-    }
 
 }

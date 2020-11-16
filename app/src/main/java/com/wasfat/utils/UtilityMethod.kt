@@ -26,14 +26,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.FutureTarget
 import com.wasfat.R
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import java.lang.Byte.decode
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.ExecutionException
 import java.util.regex.Pattern
 
 object UtilityMethod {
@@ -269,9 +267,22 @@ object UtilityMethod {
     }
 
     fun imageEncoder(filePath: String): String{
+
+        var base64 : String = ""
+
         val bytes = File(filePath).readBytes()
-        val base64 = android.util.Base64.encodeToString(bytes, 0)
+        base64 = android.util.Base64.encodeToString(bytes, 0)
+
+
         return base64
+    }
+
+
+     fun isLocalPath(p: String): Boolean {
+
+        return !(p.startsWith("http://")
+                || p.startsWith("https://"))
+
     }
 
 

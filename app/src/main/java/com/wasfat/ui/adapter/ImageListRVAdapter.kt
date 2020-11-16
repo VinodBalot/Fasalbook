@@ -14,6 +14,8 @@ class ImageListRVAdapter(
     private val onClickListener: View.OnClickListener?,
     private val imageList: ArrayList<String>
 ) : RecyclerBaseAdapter() {
+
+
     override fun getLayoutIdForPosition(position: Int): Int = R.layout.view_image_list_item
 
     override fun getViewModel(position: Int): Any? = imageList[position]
@@ -23,6 +25,10 @@ class ImageListRVAdapter(
 
             Log.d("123", "data :" + imageList[position])
 
+
+            viewDataBinding.root.imvClose.tag = position
+
+            viewDataBinding.root.imvClose.setOnClickListener(onClickListener)
 
             Glide.with(context!!)
                 .load(imageList[position])
