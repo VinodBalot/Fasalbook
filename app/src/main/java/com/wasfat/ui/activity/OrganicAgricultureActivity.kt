@@ -2,8 +2,6 @@ package com.wasfat.ui.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +11,6 @@ import com.wasfat.R
 import com.wasfat.databinding.ActivityOrganicAgricultureBinding
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory
-import com.wasfat.ui.adapter.AgricultureRVAdapter
 import com.wasfat.ui.adapter.OrganicRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
 import com.wasfat.ui.pojo.BuySellType
@@ -29,16 +26,21 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
     var binding: ActivityOrganicAgricultureBinding? = null
     var onClickListener: View.OnClickListener? = null
     var categoryList: ArrayList<Category> = ArrayList()
-    lateinit var  parentCategory : Category
+    lateinit var parentCategory: Category
     lateinit var type: BuySellType
     //  var viewModel: VendorViewModel? = null
 
     companion object {
 
-        fun startActivity(activity: Activity, category: Category, type : BuySellType, isClear: Boolean) {
+        fun startActivity(
+            activity: Activity,
+            category: Category,
+            type: BuySellType,
+            isClear: Boolean
+        ) {
             val intent = Intent(activity, OrganicAgricultureActivity::class.java)
             intent.putExtra("category", category)
-            intent.putExtra("type",type)
+            intent.putExtra("type", type)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -58,7 +60,6 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
 
         //Getting parent category from parent
         parentCategory = (intent.getSerializableExtra("category") as? Category)!!
-
         type = intent.getSerializableExtra("type") as BuySellType
 
     }
@@ -74,46 +75,35 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
     }
 
     private fun setAdapter() {
-
         val layoutManager1 = LinearLayoutManager(mActivity)
         binding!!.rvCategory.layoutManager = layoutManager1
         binding!!.rvCategory.setHasFixedSize(true)
-
         fetchCategoriesOfParentFromAPI()
-
     }
 
     override fun setListeners() {
-
         binding!!.imvBack.setOnClickListener(onClickListener)
-
     }
 
     override fun onClick(view: View?) {
-
         when (view!!.id) {
             R.id.imvBack -> {
                 finish()
             }
         }
-
     }
 
     private fun categoryItemClicked(category: Category) {
-
-        Log.d("c", "categoryItemClicked: " + category.CategoryName + "  " + category.PKID)
-
         FoodGrainActivity.startActivity(mActivity!!, category, type, false)
-
     }
 
-    private fun fetchCategoriesOfParentFromAPI(){
+    private fun fetchCategoriesOfParentFromAPI() {
 
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
 
-        rootObject.addProperty("CategoryId",parentCategory.PKID)
+        rootObject.addProperty("CategoryId", parentCategory.PKID)
         rootObject.addProperty("LanguageId", "1")
 
         var jsonParser = JsonParser()
@@ -131,9 +121,11 @@ class OrganicAgricultureActivity : BaseBindingActivity() {
 
                         categoryList = response.body()!!.categoryList
 
-                        val organicRVAdapter = OrganicRVAdapter(mActivity,
+                        val organicRVAdapter = OrganicRVAdapter(
+                            mActivity,
                             { category -> categoryItemClicked(category) },
-                            categoryList)
+                            categoryList
+                        )
                         binding!!.rvCategory.adapter = organicRVAdapter
 
                     }

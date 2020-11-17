@@ -65,7 +65,6 @@ class AgricultureActivity : BaseBindingActivity() {
 
     override fun initializeObject() {
         onClickListener = this
-
         binding!!.txtParentCategory.text = parentCategory.CategoryName
         binding!!.textTitle.text = parentCategory.CategoryName
 

@@ -4,11 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.text.Editable
 import android.text.TextUtils
-import android.transition.Transition
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -18,8 +14,6 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
@@ -29,24 +23,17 @@ import com.wasfat.databinding.ActivityFoodGainBinding
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory
 import com.wasfat.ui.adapter.ImageListRVAdapter
-import com.wasfat.ui.adapter.OrganicRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
 import com.wasfat.ui.home.adapter.ItemRVAdapter
 import com.wasfat.ui.pojo.*
 import com.wasfat.ui.pojo.Unit
 import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.UtilityMethod
-import okhttp3.MediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.asRequestBody
 import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
 import java.io.File
 
 class ItemListActivity : BaseBindingActivity() {
@@ -64,9 +51,9 @@ class ItemListActivity : BaseBindingActivity() {
     var imvAddMoreLayout: LinearLayout? = null
     var imvAddMore: ImageView? = null
 
-    lateinit var itemRVAdapter : ItemRVAdapter
+    lateinit var itemRVAdapter: ItemRVAdapter
 
-    lateinit var  parentCategory : Category
+    lateinit var parentCategory: Category
     lateinit var type: BuySellType
 
     //  var viewModel: VendorViewModel? = null
@@ -113,7 +100,7 @@ class ItemListActivity : BaseBindingActivity() {
 
         binding!!.textTitle.text = parentCategory.CategoryName
 
-        if(type == BuySellType.BUY)
+        if (type == BuySellType.BUY)
             binding!!.fabAdd.visibility = View.GONE
         else
             setupFabButton()
@@ -123,10 +110,9 @@ class ItemListActivity : BaseBindingActivity() {
 
     }
 
-    private fun setupFabButton(){
-
+    private fun setupFabButton() {
         binding!!.fabAdd.visibility = View.VISIBLE
-        binding!!.fabAdd.setOnClickListener{
+        binding!!.fabAdd.setOnClickListener {
             addOrEditItemDialog(null)
         }
     }
@@ -141,14 +127,14 @@ class ItemListActivity : BaseBindingActivity() {
 
     }
 
-    private fun fetchItemsFromAPI(){
+    private fun fetchItemsFromAPI() {
 
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
 
-        rootObject.addProperty("UserId",sessionManager!!.userId)
-       // rootObject.addProperty("LanguageId", "1")
+        rootObject.addProperty("UserId", sessionManager!!.userId)
+        // rootObject.addProperty("LanguageId", "1")
 
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
@@ -177,10 +163,10 @@ class ItemListActivity : BaseBindingActivity() {
 
                         binding!!.rvProduct.adapter = itemRVAdapter
 
-                        if(productList.size == 0){
+                        if (productList.size == 0) {
                             binding!!.rvProduct.visibility = View.GONE
                             binding!!.txtNoProductFound.visibility = View.VISIBLE
-                        }else{
+                        } else {
                             binding!!.rvProduct.visibility = View.VISIBLE
                             binding!!.txtNoProductFound.visibility = View.GONE
                         }
@@ -207,14 +193,13 @@ class ItemListActivity : BaseBindingActivity() {
             R.id.imvBack -> {
                 finish()
             }
-            R.id.imvClose ->{
-
+            R.id.imvClose -> {
                 removeImageSelection(view.tag as Int)
             }
         }
     }
 
-    private fun removeImageSelection(position : Int){
+    private fun removeImageSelection(position: Int) {
 
         imageList.removeAt(position)
         imageListRVAdapter!!.notifyItemRemoved(position)
@@ -225,16 +210,16 @@ class ItemListActivity : BaseBindingActivity() {
 
     }
 
-    private fun setVisibiltyForImageSelection(){
-        if(imageList.size >= 3){
+    private fun setVisibiltyForImageSelection() {
+        if (imageList.size >= 3) {
             rvImage!!.visibility = View.VISIBLE
             rlImage!!.visibility = View.GONE
             imvAddMoreLayout!!.visibility = View.GONE
-        }else if(imageList.size in 1..2){
+        } else if (imageList.size in 1..2) {
             rvImage!!.visibility = View.VISIBLE
             rlImage!!.visibility = View.GONE
             imvAddMoreLayout!!.visibility = View.VISIBLE
-        }else{
+        } else {
             rvImage!!.visibility = View.GONE
             rlImage!!.visibility = View.VISIBLE
             imvAddMoreLayout!!.visibility = View.GONE
@@ -243,28 +228,26 @@ class ItemListActivity : BaseBindingActivity() {
     }
 
     private fun categoryItemClicked(product: UserProduct) {
-
         showItemSelectionDialog(product)
 
     }
 
     private fun showItemSelectionDialog(product: UserProduct) {
-
         val options = arrayOf<CharSequence>("Edit Item", "Delete Item", "Details", "Cancel")
         val builder = AlertDialog.Builder(this@ItemListActivity)
         builder.setTitle("Item Menu")
         builder.setItems(options) { dialog, item ->
             if (options[item] == "Edit Item") {
-
                 addOrEditItemDialog(product)
-
-            } else if (options[item] == "Details") {
-
-                ItemDetailsActivity.startActivity(mActivity!!, product, unitNameList[product.UnitId.toInt()], false)
-
             } else if (options[item] == "Delete Item") {
-
                 deleteSelectedItem(product)
+            } else if (options[item] == "Details") {
+                ItemDetailsActivity.startActivity(
+                    mActivity!!,
+                    product,
+                    product.ProductName,
+                    false
+                )
 
             } else if (options[item] == "Cancel") {
                 dialog.dismiss()
@@ -273,7 +256,7 @@ class ItemListActivity : BaseBindingActivity() {
         builder.show()
     }
 
-    private fun getUnitListFromAPI(){
+    private fun getUnitListFromAPI() {
         val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
         val call1: Call<UnitListResponsePOJO> = apiService1.getProductUnitList()
 
@@ -285,16 +268,13 @@ class ItemListActivity : BaseBindingActivity() {
                 ProgressDialog.hideProgressDialog()
                 if (response.body() != null) {
                     if (response.isSuccessful) {
-
                         var list: ArrayList<Unit> = response.body()!!.unitList
-
                         list.forEach {
                             unitNameList.add(it.Name)
                             unitList.add(it)
                         }
 
                         Log.d("UNITS", "onResponse: " + unitList)
-
 
 
                     }
@@ -308,7 +288,6 @@ class ItemListActivity : BaseBindingActivity() {
     }
 
     private fun addOrEditItemDialog(product: UserProduct?) {
-
         val view = layoutInflater.inflate(R.layout.bottomsheet_dialog_add_food_gain, null)
         val txtDialogTitle = view.findViewById(R.id.txtDialogTitle) as TextView
         val imvClose = view.findViewById(R.id.imvClose) as ImageView
@@ -336,27 +315,21 @@ class ItemListActivity : BaseBindingActivity() {
         spinnerUnit.adapter = adapter
         adapter.notifyDataSetChanged()
 
-        if(product == null){
+        if (product == null) {
             //Add new Item
             txtDialogTitle.text = getString(R.string.label_add_item_dialog_title)
             btnAdd.setText(R.string.label_add_item_dialog_button)
 
-        }else{
+        } else {
             //Edit current Item
             txtDialogTitle.text = getString(R.string.label_edit_item_dialog_title)
             edtName.setText(product.ProductName)
             edtSpecification.setText(product.ProductSmallDesc)
             edtQty.setText(product.Qty)
             spinnerUnit.setSelection(product.UnitId.toInt())
-
-            Log.d("TAG", "addOrEditItemDialog: " + unitList.get(product.UnitId.toInt()))
-
             btnAdd.setText(R.string.label_edit_item_dialog_button)
-
             product.ImageList.forEach {
-
-                if(it.ImageName.isNotEmpty()){
-
+                if (it.ImageName.isNotEmpty()) {
                     val image = it.Path + "/" + it.ImageName
                     imageList.add(image)
                 }
@@ -372,9 +345,7 @@ class ItemListActivity : BaseBindingActivity() {
 
         imageListRVAdapter = ImageListRVAdapter(mActivity, onClickListener, imageList)
         rvImage!!.adapter = imageListRVAdapter
-
-
-
+        
         imvClose.setOnClickListener {
             dialog!!.dismiss()
         }
@@ -401,8 +372,7 @@ class ItemListActivity : BaseBindingActivity() {
                 )
             ) {
 
-                if(product == null){
-
+                if (product == null) {
                     addOrEditItemThroughAPI(
                         0,
                         edtName.text.toString(),
@@ -410,7 +380,7 @@ class ItemListActivity : BaseBindingActivity() {
                         edtQty.text.toString()
                     )
 
-                }else{
+                } else {
 
                     addOrEditItemThroughAPI(
                         product.ProductId,
@@ -427,33 +397,33 @@ class ItemListActivity : BaseBindingActivity() {
 
 
     private fun addOrEditItemThroughAPI(
-        productId : Int,
+        productId: Int,
         name: String,
         unit: Unit,
         qty: String
-    ){
+    ) {
 
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
 
-        var image1 =""
-        var image2 =""
-        var image3 =""
+        var image1 = ""
+        var image2 = ""
+        var image3 = ""
 
-        if(UtilityMethod.isLocalPath(imageList[0])){
+        if (UtilityMethod.isLocalPath(imageList[0])) {
 
             image1 = UtilityMethod.imageEncoder(imageList[0])
 
         }
 
-        if(UtilityMethod.isLocalPath(imageList[1])){
+        if (UtilityMethod.isLocalPath(imageList[1])) {
 
             image2 = UtilityMethod.imageEncoder(imageList[1])
 
         }
 
-        if(UtilityMethod.isLocalPath(imageList[2])){
+        if (UtilityMethod.isLocalPath(imageList[2])) {
 
             image3 = UtilityMethod.imageEncoder(imageList[2])
 
@@ -527,7 +497,7 @@ class ItemListActivity : BaseBindingActivity() {
             return false
         }
 
-        if(imageList.size != 3){
+        if (imageList.size != 3) {
 
             UtilityMethod.showToastMessageError(
                 mActivity!!,
@@ -561,8 +531,7 @@ class ItemListActivity : BaseBindingActivity() {
         return true
     }
 
-    private fun deleteSelectedItem(product: UserProduct){
-
+    private fun deleteSelectedItem(product: UserProduct) {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()

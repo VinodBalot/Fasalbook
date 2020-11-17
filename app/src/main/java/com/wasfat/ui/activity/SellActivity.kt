@@ -76,7 +76,6 @@ class SellActivity : BaseBindingActivity() {
 
 
     private fun categoryItemClicked(category: Category) {
-
         AgricultureActivity.startActivity(mActivity!!, category, BuySellType.SELL, false)
 
     }
@@ -115,8 +114,9 @@ class SellActivity : BaseBindingActivity() {
 
                         categoryList = response.body()!!.categoryList
 
-                        val categoryAdapter = CategoryAdapter(categoryList,
-                            { category -> categoryItemClicked(category) })
+                        val categoryAdapter = CategoryAdapter(categoryList) {
+                                category -> categoryItemClicked(category)
+                        }
 
                         binding!!.rvCategories.adapter = categoryAdapter
 

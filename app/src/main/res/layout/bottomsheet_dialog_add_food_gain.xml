@@ -1,41 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_margin="@dimen/_10sdp">
 
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <RelativeLayout
+            <com.wasfat.utils.CustomFontTextView
+                android:id="@+id/txtDialogTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/_40sdp"
-                android:layout_margin="@dimen/_10sdp">
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="Add Food Gain"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_16sdp"
+                app:CustomFontName="ProximaNovaBold" />
 
-                <com.wasfat.utils.CustomFontTextView
-                    android:id="@+id/txtDialogTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="Add Food Gain"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_16sdp"
-                    app:CustomFontName="ProximaNovaBold" />
+            <ImageView
+                android:id="@+id/imvClose"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_clear_black_24dp" />
 
-                <ImageView
-                    android:id="@+id/imvClose"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="@dimen/_30sdp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_clear_black_24dp" />
+        </RelativeLayout>
 
-            </RelativeLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -58,10 +57,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:spinnerMode="dropdown"
                     android:background="@drawable/bg_backgound_corner_grey"
                     android:hint="Unit"
-                    android:paddingLeft="@dimen/_10sdp" />
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:spinnerMode="dropdown" />
 
 
                 <com.wasfat.utils.CustomFontEditText
@@ -74,18 +73,21 @@
                     android:inputType="numberDecimal"
                     android:paddingLeft="@dimen/_10sdp" />
 
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <LinearLayout
-                        android:layout_marginTop="@dimen/_10sdp"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:orientation="horizontal">
 
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/rvImage"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:visibility="visible" />
+                            android:visibility="gone" />
 
                         <RelativeLayout
                             android:id="@+id/rlImage"
@@ -106,27 +108,27 @@
 
                         </RelativeLayout>
 
+                        <LinearLayout
+                            android:id="@+id/imvAddMoreLayout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_40sdp"
+                            android:layout_gravity="center"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:gravity="center"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/imvAddMore"
+                                android:layout_width="@dimen/_40sdp"
+                                android:layout_height="@dimen/_40sdp"
+                                android:layout_gravity="center"
+                                android:layout_margin="@dimen/_10sdp"
+                                android:background="@drawable/bg_ripple_mask"
+                                android:src="@drawable/ic_baseline_add_circle_24"
+                                android:visibility="visible" />
+                        </LinearLayout>
                     </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/imvAddMoreLayout"
-                    android:layout_margin="@dimen/_5sdp"
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/_40sdp">
-                    <ImageView
-                        android:background="@drawable/bg_ripple_mask"
-                        android:id="@+id/imvAddMore"
-                        android:layout_width="@dimen/_40sdp"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_gravity="center"
-                        android:layout_margin="@dimen/_10sdp"
-                        android:src="@drawable/ic_baseline_add_circle_24"
-                        android:visibility="visible" />
-
-                </LinearLayout>
-
+                </HorizontalScrollView>
 
 
                 <com.wasfat.utils.CustomFontEditText
@@ -153,8 +155,9 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-    </ScrollView>
+    </LinearLayout>
+
 
 </layout>
