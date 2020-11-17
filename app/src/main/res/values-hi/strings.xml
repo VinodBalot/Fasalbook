@@ -87,4 +87,22 @@
     <string name="label_user_login_failed">Login Failed</string>
 
     <string name="label_events_category">Events</string>
+
+
+    <string name="label_sell_item_add_successful">Item added Successfully</string>
+    <string name="label_sell_item_add_unsuccessful">Item is not added</string>
+
+    <string name="label_item_delete_successful">Item deleted Successfully</string>
+    <string name="label_item_delete_unsuccessful">Item is not deleted</string>
+
+    <string name="label_user_already_registerd">User Already Registered</string>
+
+    <string name="label_add_item_images_count_warning">Please add only 3 Images</string>
+
+    <string name="label_add_item_dialog_title">Add Item</string>
+    <string name="label_edit_item_dialog_title">Edit Item</string>
+
+    <string name="label_edit_item_dialog_button">Save</string>
+    <string name="label_add_item_dialog_button">Add</string>
+
 </resources>

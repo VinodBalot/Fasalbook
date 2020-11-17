@@ -145,6 +145,7 @@ class LoginActivity : BaseBindingActivity() {
                             val intent = Intent(mActivity!!, HomeActivity::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                             startActivity(intent)
+                            finish()
                         } else {
                             UtilityMethod.showToastMessageError(
                                 mActivity!!,

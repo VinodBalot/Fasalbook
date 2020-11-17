@@ -7,12 +7,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/bg_gradient">
 
-
         <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <RelativeLayout
                 android:id="@+id/appbar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_45sdp"
@@ -34,32 +29,68 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Organic"
+                    android:text="Sell"
+                    app:CustomFontName="ProximaNovaBold"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_14sdp"
-                    app:CustomFontName="ProximaNovaBold" />
+                    android:textSize="@dimen/_14sdp" />
 
 
             </RelativeLayout>
 
+        <LinearLayout
+            android:id="@+id/stateSelection"
+            android:layout_below="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_3sdp"
+            android:background="@color/white"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <EditText
+                android:id="@+id/edtState"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:clickable="true"
+                android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
+                android:drawableTint="@color/colorBlack"
+                android:editable="false"
+                android:focusable="false"
+                android:hint="@string/select_state"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:textColorHint="@color/colorBlack" />
+
+            <Spinner
+                android:id="@+id/spinnerState"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_40sdp"
+                android:hint="State"
+                android:paddingLeft="@dimen/_10sdp"
+                android:paddingRight="@dimen/_10sdp"
+                android:textColorHint="@color/colorBlack"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/btnSubmit"
-                android:layout_below="@+id/appbar"
+                android:layout_below="@+id/stateSelection"
+                android:layout_margin="@dimen/_5sdp"
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvCategory"
+                    android:id="@+id/rvSchemes"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
 
+                    />
 
             </LinearLayout>
 
-
-            <RelativeLayout
+        <RelativeLayout
                 android:id="@+id/btnSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_40sdp"
@@ -75,8 +106,6 @@
 
             </RelativeLayout>
 
-        </RelativeLayout>
-
-
     </RelativeLayout>
+
 </layout>

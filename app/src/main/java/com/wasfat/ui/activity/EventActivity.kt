@@ -95,7 +95,11 @@ class EventActivity : BaseBindingActivity() {
 
         Log.d("c", "eventItemClicked: " + event.EventName + "  " + event.PKID)
 
-        WebViewActivity.startActivity(mActivity!!,event,false)
+        val bundle = Bundle()
+        bundle.putString("url",event.EventURL)
+        bundle.putString("title",event.EventName)
+
+        WebViewActivity.startActivity(mActivity!!,bundle,false)
 
     }
 

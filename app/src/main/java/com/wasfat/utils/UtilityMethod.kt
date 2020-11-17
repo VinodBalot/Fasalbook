@@ -26,13 +26,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.FutureTarget
 import com.wasfat.R
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.ExecutionException
 import java.util.regex.Pattern
 
 object UtilityMethod {
@@ -267,6 +266,25 @@ object UtilityMethod {
         return filename
     }
 
+    fun imageEncoder(filePath: String): String{
+
+        var base64 : String = ""
+
+        val bytes = File(filePath).readBytes()
+        base64 = android.util.Base64.encodeToString(bytes, 0)
+
+
+        return base64
+    }
+
+
+     fun isLocalPath(p: String): Boolean {
+
+        return !(p.startsWith("http://")
+                || p.startsWith("https://"))
+
+    }
+
 
     fun calculateInSampleSize(
         options: BitmapFactory.Options,
@@ -318,7 +336,7 @@ object UtilityMethod {
 
     fun showToastMessageError(activity: Activity, message: String) {
 
-        Toast.makeText(activity,message,Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
 
 //        val toast = Toast(activity)
 //        toast.duration = Toast.LENGTH_LONG;

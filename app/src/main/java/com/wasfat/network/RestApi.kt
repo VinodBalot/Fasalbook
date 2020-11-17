@@ -62,7 +62,29 @@ interface RestApi {
     @POST("events/list")
     fun getEventsById(@Body jsonData: JsonObject): Call<EventResponsePOJO>
 
+    @Headers("Content-Type: application/json")
+    @POST("govtschemes/list")
+    fun getGovtSchemesByStateId(@Body jsonData: JsonObject): Call<GovtSchemesResponsePOJO>
 
+    @Headers("Content-Type: application/json")
+    @POST("products/addedit")
+    fun addSellItem(@Body jsonData: JsonObject): Call<AddSellItemResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("products/unitlist")
+    fun getProductUnitList(): Call<UnitListResponsePOJO>
+
+    @Headers("Content-Type: application/json")
+    @POST("products/useragriproducts")
+    fun getUserProducts(@Body jsonData: JsonObject): Call<UserProductsResponsePOJO>
+
+    @Headers("Content-Type: application/json")
+    @POST("products/delete")
+    fun deleteUserItem(@Body jsonData: JsonObject): Call<DeleteItemResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("products/search")
+    fun getProductsFromSearch(@Body jsonData: JsonObject): Call<UserProductsResponsePOJO>
     /*
   @Headers("Content-Type: application/json")
   @POST("signup")

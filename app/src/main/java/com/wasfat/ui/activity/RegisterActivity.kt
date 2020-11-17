@@ -371,7 +371,7 @@ class RegisterActivity : BaseBindingActivity() {
                             Log.d("RegisterActivity", "onResponse: " + response.body())
                             UtilityMethod.showToastMessageError(
                                 mActivity!!,
-                                getString(R.string.label_user_no_registerd)
+                                getString(R.string.label_user_already_registerd)
                             )
                         }
                     }
@@ -400,13 +400,14 @@ class RegisterActivity : BaseBindingActivity() {
 //            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_sex))
 //            return false
 //        }
+        
 //        if (TextUtils.isEmpty(dob)) {
 //            UtilityMethod.showToastMessageError(
 //                mActivity!!,
 //                getString(R.string.enter_date_of_birth)
 //            )
 //            return false
-//        }
+//        }.
 
         if (TextUtils.isEmpty(mobile)) {
             UtilityMethod.showToastMessageError(

@@ -15,6 +15,7 @@ import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory.getClient
 import com.wasfat.ui.activity.BuyActivity
 import com.wasfat.ui.activity.EventCategoryActivity
+import com.wasfat.ui.activity.GovtSchemesActivity
 import com.wasfat.ui.activity.SellActivity
 import com.wasfat.ui.adapter.BannerAdapter
 import com.wasfat.ui.pojo.BannerResponse
@@ -43,6 +44,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     var llSell: LinearLayout? = null
     var llBuy: LinearLayout? = null
     var llEvent: LinearLayout? = null
+    var llGovtScheme : LinearLayout? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -98,6 +100,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
         llEvent!!.setOnClickListener{
             EventCategoryActivity.startActivity(requireActivity(),null,false)
         }
+        llGovtScheme!!.setOnClickListener{
+            GovtSchemesActivity.startActivity(requireActivity(),null,false)
+        }
 
         indicator!!.setViewPager(viewpager)
         viewpager!!.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
@@ -143,6 +148,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         llSell = view.findViewById(R.id.llSell) as LinearLayout
         llBuy = view.findViewById(R.id.llBuy) as LinearLayout
         llEvent = view.findViewById(R.id.llEvent) as LinearLayout
+        llGovtScheme = view.findViewById(R.id.llGovtScheme) as LinearLayout
         indicator = view.findViewById(R.id.indicator) as CircleIndicator
     }
 

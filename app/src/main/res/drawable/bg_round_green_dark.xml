@@ -1,8 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-    <gradient
-        android:endColor="@color/colorDarkGradient"
-        android:startColor="@color/colorDarkGradient" />
-    <size android:height="@dimen/_60sdp" android:width="@dimen/_50sdp"/>
-</shape>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="#74ffffff">
+    <item android:id="@android:id/mask">
+        <shape android:shape="oval">
+            <solid android:color="#549E57" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+    <item>
+        <shape
+            android:shape="oval">
+            <gradient
+                android:endColor="@color/colorDarkGradient"
+                android:startColor="@color/colorDarkGradient" />
+            <size android:height="@dimen/_60sdp" android:width="@dimen/_50sdp"/>
+        </shape>
+    </item>
+</ripple>

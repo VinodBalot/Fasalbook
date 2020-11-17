@@ -3,6 +3,7 @@ package com.wasfat.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +17,7 @@ import com.wasfat.ui.adapter.AgricultureRVAdapter
 import com.wasfat.ui.adapter.CategoryAdapter
 import com.wasfat.ui.adapter.OrganicRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
+import com.wasfat.ui.pojo.BuySellType
 import com.wasfat.ui.pojo.Category
 import com.wasfat.ui.pojo.CategoryResponsePOJO
 import com.wasfat.utils.ProgressDialog
@@ -29,13 +31,15 @@ class AgricultureActivity : BaseBindingActivity() {
     var onClickListener: View.OnClickListener? = null
     var categoryList: ArrayList<Category> = ArrayList()
     lateinit var  parentCategory : Category
+    lateinit var type: BuySellType
     //  var viewModel: VendorViewModel? = null
 
     companion object {
 
-        fun startActivity(activity: Activity, category: Category?, isClear: Boolean) {
+        fun startActivity(activity: Activity, category: Category?, type : BuySellType, isClear: Boolean) {
             val intent = Intent(activity, AgricultureActivity::class.java)
             intent.putExtra("category", category)
+            intent.putExtra("type",type)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -55,6 +59,7 @@ class AgricultureActivity : BaseBindingActivity() {
 
         //Getting parent category from parent
         parentCategory = (intent.getSerializableExtra("category") as? Category)!!
+        type = intent.getSerializableExtra("type") as BuySellType
 
     }
 
@@ -88,7 +93,9 @@ class AgricultureActivity : BaseBindingActivity() {
 
     private fun categoryItemClicked(category: Category) {
 
-        OrganicAgricultureActivity.startActivity(mActivity!!, category,false)
+        Log.d("ENUM-TYPE", "categoryItemClicked: " + type)
+
+        OrganicAgricultureActivity.startActivity(mActivity!!, category, type, false)
     }
 
     private fun fetchCategoriesOfParentFromAPI(){
