@@ -26,9 +26,9 @@ class ImageListRVAdapter(
             Log.d("123", "data :" + imageList[position])
 
 
-            viewDataBinding.root.imvClose.tag = position
+            viewDataBinding.root.imvRemoveImage.tag = position
 
-            viewDataBinding.root.imvClose.setOnClickListener(onClickListener)
+            viewDataBinding.root.imvRemoveImage.setOnClickListener(onClickListener)
 
             Glide.with(context!!)
                 .load(imageList[position])
