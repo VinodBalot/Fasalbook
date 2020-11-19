@@ -4,6 +4,7 @@ package com.wasfat.utils
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.*
 import android.media.ExifInterface
 import android.net.ConnectivityManager
@@ -113,6 +114,23 @@ object UtilityMethod {
         return Pattern.compile(
             "^((?=.*\\\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%]).{5,20})"
         ).matcher(target).matches();
+    }
+
+
+    fun setLocate(Lang: String, context: Context) {
+
+        val locale = Locale(Lang)
+
+        Locale.setDefault(locale)
+
+        val config = Configuration()
+
+        config.locale = locale
+        context.resources.updateConfiguration(config, context.resources.displayMetrics)
+
+        val sessionManager = SessionManager()
+        sessionManager.language = Lang
+
     }
 
     fun setZeroBeforeNine(digit: Int): String {

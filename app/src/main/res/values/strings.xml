@@ -102,4 +102,6 @@
     <string name="label_edit_item_dialog_button">Save</string>
     <string name="label_add_item_dialog_button">Add</string>
 
+    <string name="label_changelanguage">Change Language</string>
+
 </resources>
