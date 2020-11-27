@@ -85,6 +85,16 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @POST("products/search")
     fun getProductsFromSearch(@Body jsonData: JsonObject): Call<UserProductsResponsePOJO>
+
+    @Headers("Content-Type: application/json")
+    @POST("farmtourism/add")
+    fun addFarmTourismItem(@Body jsonData: JsonObject): Call<AddFarmItemResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("cms/about")
+    fun getAboutApp(@Body jsonData: JsonObject): Call<AboutAppResponse>
+
+
     /*
   @Headers("Content-Type: application/json")
   @POST("signup")

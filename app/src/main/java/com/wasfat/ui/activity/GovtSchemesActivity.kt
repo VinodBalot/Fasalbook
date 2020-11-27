@@ -83,6 +83,7 @@ class GovtSchemesActivity : BaseBindingActivity() {
     override fun setListeners() {
 
         binding!!.imvBack.setOnClickListener(onClickListener)
+        binding!!.btnSubmit.setOnClickListener(onClickListener)
         binding!!.edtState.setOnClickListener(onClickListener)
 
     }
@@ -91,6 +92,10 @@ class GovtSchemesActivity : BaseBindingActivity() {
         when (view!!.id) {
             R.id.imvBack -> {
                 finish()
+            }
+            R.id.btnSubmit ->{
+                var intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
             }
             R.id.edtState -> {
                 selectDialog(

@@ -30,8 +30,8 @@ class SessionManager : BaseObservable() {
     private val NAME = "name"
     private val LANGUAGE = "language"
 
-    var language: String?
-        get() = shared!!.getString(LANGUAGE, "en")
+    var language: String
+        get() = shared!!.getString(LANGUAGE, "en").toString()
         set(language) {
             editor!!.putString(LANGUAGE, language)
             editor!!.commit()

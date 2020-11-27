@@ -19,5 +19,11 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:visibility="gone"
-        android:fitsSystemWindows="true"/>
+        android:fitsSystemWindows="true">
+
+
+
+    </com.google.android.material.navigation.NavigationView>
+
+
 </androidx.drawerlayout.widget.DrawerLayout>

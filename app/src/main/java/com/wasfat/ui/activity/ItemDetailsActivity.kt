@@ -94,6 +94,7 @@ class ItemDetailsActivity : BaseBindingActivity() {
 
     override fun setListeners() {
         binding!!.imvBack.setOnClickListener(onClickListener)
+        binding!!.btnSubmit.setOnClickListener(onClickListener)
     }
 
 
@@ -101,6 +102,10 @@ class ItemDetailsActivity : BaseBindingActivity() {
         when (view!!.id) {
             R.id.imvBack -> {
                 finish()
+            }
+            R.id.btnSubmit ->{
+                var intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
             }
         }
     }

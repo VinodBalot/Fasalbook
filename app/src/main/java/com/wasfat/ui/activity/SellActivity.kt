@@ -61,6 +61,7 @@ class SellActivity : BaseBindingActivity() {
     override fun setListeners() {
 
         binding!!.imvBack.setOnClickListener(onClickListener)
+        binding!!.btnSubmit.setOnClickListener(onClickListener)
 
     }
 
@@ -70,13 +71,22 @@ class SellActivity : BaseBindingActivity() {
             R.id.imvBack -> {
                 finish()
             }
+            R.id.btnSubmit ->{
+                var intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+            }
         }
 
     }
 
 
     private fun categoryItemClicked(category: Category) {
-        AgricultureActivity.startActivity(mActivity!!, category, BuySellType.SELL, false)
+
+        if(category.CategoryName == "Farm Tourism"){
+            FarmTourismActivity.startActivity(mActivity!!,BuySellType.SELL, false)
+        }else{
+            AgricultureActivity.startActivity(mActivity!!, category, BuySellType.SELL, false)
+        }
 
     }
 
