@@ -103,5 +103,12 @@
     <string name="label_add_item_dialog_button">Add</string>
 
     <string name="label_changelanguage">Change Language</string>
+    <string name="farm_tourism_publish_message">Are you sure to publish this ?</string>
+    <string name="enter_farm_name">Enter Farm Name</string>
+    <string name="enter_farm_address">Enter Address</string>
+    <string name="enter_farm_contact_number">Enter Contact Number</string>
+    <string name="enter_farm_facitilites">Enter Facilities</string>
+    <string name="enter_farm_attraction">Enter Attraction</string>
+    <string name="select_farm_image">Please selected Image</string>
 
 </resources>

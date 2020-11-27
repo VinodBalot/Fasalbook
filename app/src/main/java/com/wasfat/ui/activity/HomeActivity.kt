@@ -1,5 +1,6 @@
 package com.wasfat.ui.activity
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
@@ -17,10 +18,20 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.wasfat.R
+import com.wasfat.network.RestApi
+import com.wasfat.network.RestApiFactory
+import com.wasfat.ui.pojo.AboutAppResponse
+import com.wasfat.ui.pojo.ChangePasswordResponse
 import com.wasfat.utils.Constants
+import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.SessionManager
 import com.wasfat.utils.UtilityMethod
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 import kotlin.system.exitProcess
 
@@ -95,13 +106,9 @@ class HomeActivity : AppCompatActivity() {
         }
         rlAboutApp.setOnClickListener {
             drawerLayout!!.closeDrawer(Gravity.LEFT)
-            val intent1 = Intent(
-                this,
-                StaticPageActivity::class.java
-            )
-            intent1.putExtra("pageURL", Constants.PrivacyPolicy)
-            intent1.putExtra("title", "About App")
-            startActivity(intent1)
+
+            StaticPageActivity.startActivity(this,"about",false)
+
         }
         rlShareApp.setOnClickListener {
             drawerLayout!!.closeDrawer(Gravity.LEFT)
@@ -117,6 +124,7 @@ class HomeActivity : AppCompatActivity() {
         }
 
     }
+
 
     private fun showChangeLang() {
 
