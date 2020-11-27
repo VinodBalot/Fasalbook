@@ -111,16 +111,28 @@ class BuySearchActivity : BaseBindingActivity() {
 
     override fun setListeners() {
 
+        binding!!.imvBack.setOnClickListener(this)
+        binding!!.btnSubmit.setOnClickListener(this)
         binding!!.fabSearch.setOnClickListener {
 
             openSearchItemDialog()
 
         }
 
+
     }
 
-    override fun onClick(p0: View?) {
+    override fun onClick(view: View?) {
 
+        when (view!!.id) {
+            R.id.imvBack -> {
+                finish()
+            }
+            R.id.btnSubmit ->{
+                var intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+            }
+        }
     }
 
     private fun setAdapter() {

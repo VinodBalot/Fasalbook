@@ -185,6 +185,7 @@ class ItemListActivity : BaseBindingActivity() {
 
     override fun setListeners() {
         binding!!.imvBack.setOnClickListener(onClickListener)
+        binding!!.btnSubmit.setOnClickListener(onClickListener)
 
     }
 
@@ -195,6 +196,10 @@ class ItemListActivity : BaseBindingActivity() {
             }
             R.id.imvRemoveImage -> {
                 removeImageSelection(view.tag as Int)
+            }
+            R.id.btnSubmit ->{
+                var intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
             }
         }
     }
