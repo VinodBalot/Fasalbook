@@ -64,6 +64,97 @@
                     android:paddingLeft="@dimen/_10sdp"
                     android:spinnerMode="dropdown" />
 
+                <com.wasfat.utils.CustomFontButton
+                    android:id="@+id/btnAddressMap"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:text="@string/label_select_address_from_map"
+                    android:background="@drawable/bg_round_green"
+                    android:paddingLeft="@dimen/_10sdp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_backgound_corner_grey"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/edtState"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
+                        android:drawableTint="@color/colorBlack"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:hint="@string/select_state"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                    <Spinner
+                        android:id="@+id/spinnerState"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:hint="State"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_backgound_corner_grey">
+
+                    <EditText
+                        android:id="@+id/edtCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
+                        android:drawableTint="@color/colorBlack"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:hint="@string/select_City"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_backgound_corner_grey">
+
+                    <EditText
+                        android:id="@+id/edtBlock"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
+                        android:drawableTint="@color/colorBlack"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:hint="@string/select_block"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                </LinearLayout>
+
 
                 <com.wasfat.utils.CustomFontEditText
                     android:id="@+id/edtContactNumber"
@@ -74,6 +165,37 @@
                     android:hint="Contact Number"
                     android:inputType="numberDecimal"
                     android:paddingLeft="@dimen/_10sdp" />
+
+
+                <com.wasfat.utils.CustomFontEditText
+                    android:id="@+id/edtEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_backgound_corner_grey"
+                    android:hint="Contact Email"
+                    android:inputType="textCapWords"
+                    android:padding="@dimen/_10sdp" />
+
+                <com.wasfat.utils.CustomFontEditText
+                    android:id="@+id/edtWebsite"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_backgound_corner_grey"
+                    android:hint="Website"
+                    android:inputType="textCapWords"
+                    android:padding="@dimen/_10sdp" />
+
+                <com.wasfat.utils.CustomFontEditText
+                    android:id="@+id/edtPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_backgound_corner_grey"
+                    android:hint="Price"
+                    android:inputType="textCapWords"
+                    android:padding="@dimen/_10sdp" />
 
                 <HorizontalScrollView
                     android:layout_width="match_parent"
@@ -159,6 +281,7 @@
                     android:hint="Attraction"
                     android:inputType="textCapWords"
                     android:padding="@dimen/_10sdp" />
+
 
                 <LinearLayout
                     android:layout_margin="@dimen/_10sdp"

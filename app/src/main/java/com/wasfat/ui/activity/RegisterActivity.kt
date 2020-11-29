@@ -182,7 +182,6 @@ class RegisterActivity : BaseBindingActivity() {
 
     }
 
-
     private fun callGetCityListByStateAPI() {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
