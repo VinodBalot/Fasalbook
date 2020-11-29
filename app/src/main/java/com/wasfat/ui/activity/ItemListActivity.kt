@@ -341,7 +341,7 @@ class ItemListActivity : BaseBindingActivity() {
 
         imageListRVAdapter = ImageListRVAdapter(mActivity, onClickListener, imageList)
         rvImage!!.adapter = imageListRVAdapter
-        
+
         imvClose.setOnClickListener {
             dialog!!.dismiss()
         }
@@ -367,12 +367,12 @@ class ItemListActivity : BaseBindingActivity() {
                     edtQty.text.toString()
                 )
             ) {
-                    addOrEditItemThroughAPI(
-                        0,
-                        edtName.text.toString(),
-                        unitList.get(spinnerUnit.selectedItemPosition),
-                        edtQty.text.toString()
-                    )
+                addOrEditItemThroughAPI(
+                    0,
+                    edtName.text.toString(),
+                    unitList.get(spinnerUnit.selectedItemPosition),
+                    edtQty.text.toString()
+                )
 
                 dialog.dismiss()
             }
