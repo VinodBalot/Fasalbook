@@ -113,7 +113,7 @@ class ItemListActivity : BaseBindingActivity() {
     private fun setupFabButton() {
         binding!!.fabAdd.visibility = View.VISIBLE
         binding!!.fabAdd.setOnClickListener {
-            addOrEditItemDialog(null)
+            addOrEditItemDialog()
         }
     }
 
@@ -185,6 +185,7 @@ class ItemListActivity : BaseBindingActivity() {
 
     override fun setListeners() {
         binding!!.imvBack.setOnClickListener(onClickListener)
+        binding!!.btnSubmit.setOnClickListener(onClickListener)
 
     }
 
@@ -193,8 +194,12 @@ class ItemListActivity : BaseBindingActivity() {
             R.id.imvBack -> {
                 finish()
             }
-            R.id.imvClose -> {
+            R.id.imvRemoveImage -> {
                 removeImageSelection(view.tag as Int)
+            }
+            R.id.btnSubmit ->{
+                var intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
             }
         }
     }
@@ -238,9 +243,18 @@ class ItemListActivity : BaseBindingActivity() {
         builder.setTitle("Item Menu")
         builder.setItems(options) { dialog, item ->
             if (options[item] == "Edit Item") {
-                addOrEditItemDialog(product)
+
+                EditItemActivity.startActivity(
+                    mActivity!!,
+                    product,
+                    parentCategory.PKID.toString(),
+                    false
+                )
+
             } else if (options[item] == "Delete Item") {
+
                 deleteSelectedItem(product)
+
             } else if (options[item] == "Details") {
                 ItemDetailsActivity.startActivity(
                     mActivity!!,
@@ -275,8 +289,6 @@ class ItemListActivity : BaseBindingActivity() {
                         }
 
                         Log.d("UNITS", "onResponse: " + unitList)
-
-
                     }
                 }
             }
@@ -287,7 +299,7 @@ class ItemListActivity : BaseBindingActivity() {
         })
     }
 
-    private fun addOrEditItemDialog(product: UserProduct?) {
+    private fun addOrEditItemDialog() {
         val view = layoutInflater.inflate(R.layout.bottomsheet_dialog_add_food_gain, null)
         val txtDialogTitle = view.findViewById(R.id.txtDialogTitle) as TextView
         val imvClose = view.findViewById(R.id.imvClose) as ImageView
@@ -315,26 +327,11 @@ class ItemListActivity : BaseBindingActivity() {
         spinnerUnit.adapter = adapter
         adapter.notifyDataSetChanged()
 
-        if (product == null) {
-            //Add new Item
-            txtDialogTitle.text = getString(R.string.label_add_item_dialog_title)
-            btnAdd.setText(R.string.label_add_item_dialog_button)
 
-        } else {
-            //Edit current Item
-            txtDialogTitle.text = getString(R.string.label_edit_item_dialog_title)
-            edtName.setText(product.ProductName)
-            edtSpecification.setText(product.ProductSmallDesc)
-            edtQty.setText(product.Qty)
-            spinnerUnit.setSelection(product.UnitId.toInt())
-            btnAdd.setText(R.string.label_edit_item_dialog_button)
-            product.ImageList.forEach {
-                if (it.ImageName.isNotEmpty()) {
-                    val image = it.Path + "/" + it.ImageName
-                    imageList.add(image)
-                }
-            }
-        }
+        //Add new Item
+        txtDialogTitle.text = getString(R.string.label_add_item_dialog_title)
+        btnAdd.setText(R.string.label_add_item_dialog_button)
+
 
         setVisibiltyForImageSelection()
 
@@ -370,24 +367,12 @@ class ItemListActivity : BaseBindingActivity() {
                     edtQty.text.toString()
                 )
             ) {
-
-                if (product == null) {
-                    addOrEditItemThroughAPI(
-                        0,
-                        edtName.text.toString(),
-                        unitList.get(spinnerUnit.selectedItemPosition),
-                        edtQty.text.toString()
-                    )
-
-                } else {
-
-                    addOrEditItemThroughAPI(
-                        product.ProductId,
-                        edtName.text.toString(),
-                        unitList.get(spinnerUnit.selectedItemPosition),
-                        edtQty.text.toString()
-                    )
-                }
+                addOrEditItemThroughAPI(
+                    0,
+                    edtName.text.toString(),
+                    unitList.get(spinnerUnit.selectedItemPosition),
+                    edtQty.text.toString()
+                )
 
                 dialog.dismiss()
             }
@@ -505,27 +490,6 @@ class ItemListActivity : BaseBindingActivity() {
 
             return false
         }
-
-
-        /* if (!UtilityMethod.isValidEmail(email)) {
-             UtilityMethod.showToastMessageError(
-                 mActivity!!,
-                 getString(R.string.enter_valid_email_id)
-             )
-             return false
-         }*/
-
-        /*  val pattern: Pattern
-          val regex = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$"
-          pattern = Pattern.compile(regex)
-  */
-        /*    if (!pattern.matcher(password).matches()) {
-                UtilityMethod.showToastMessageError(
-                    mActivity!!,
-                    getString(R.string.password_should_contain_char_digit_special)
-                )
-                return false
-            }*/
 
         return true
     }

@@ -333,22 +333,6 @@
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/btnSubmit"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorDarkGradient">
-
-            <ImageView
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30ssp"
-                android:layout_centerInParent="true"
-                android:padding="@dimen/_5sdp"
-                android:src="@drawable/homeicon" />
-
-        </RelativeLayout>
-
     </RelativeLayout>
 
 

@@ -33,19 +33,20 @@
     <string name="menu_slideshow">Slideshow</string>
 
 
-    <string name="label_govt_schemes">Govt. Schemes</string>
-    <string name="label_knowledge_center">Knowladge Center</string>
-    <string name="label_share_ideas">Share Ideas</string>
-    <string name="label_events">Events</string>
-    <string name="label_sell">Sell</string>
-    <string name="label_buy">Buy</string>
+    <string name="label_govt_schemes">सरकारी योजनाएं</string>
+    <string name="label_knowledge_center">ज्ञान केंद्र</string>
+    <string name="label_share_ideas">विचार साझा करें</string>
+    <string name="label_events">कार्यक्रम</string>
+    <string name="label_sell">बेचे</string>
+    <string name="label_buy">खरीदें</string>
 
-    <string name="label_profile">Profile</string>
-    <string name="label_changepassword">Change Password</string>
-    <string name="label_aboutapp">About App</string>
-    <string name="label_shareapp">Share App</string>
-    <string name="label_logout">Logout</string>
-    <string name="label_suggestion">Suggestions</string>
+    <string name="label_profile">प्रोफ़ाइल</string>
+    <string name="label_changepassword">पासवर्ड बदलें</string>
+    <string name="label_changelanguage">भाषा बदलें</string>
+    <string name="label_aboutapp">ऐप के बारे में</string>
+    <string name="label_shareapp">ऐप शेयर करें</string>
+    <string name="label_logout">लॉग आउट</string>
+    <string name="label_suggestion">सुझाव</string>
 
 
     <string name="label_agriculture">Agriculture</string>
@@ -104,5 +105,17 @@
 
     <string name="label_edit_item_dialog_button">Save</string>
     <string name="label_add_item_dialog_button">Add</string>
+    <string name="farm_tourism_publish_message">Are you sure to publish this ?</string>
+    <string name="enter_farm_name">Enter Farm Name</string>
+    <string name="enter_farm_address">Enter Address</string>
+    <string name="enter_farm_contact_number">Enter Contact Number</string>
+    <string name="enter_farm_facitilites">Enter Facilities</string>
+    <string name="enter_farm_attraction">Enter Attraction</string>
+    <string name="select_farm_image">Please selected Image</string>
+    <string name="label_select_address_from_map">Select Address From Map</string>
+    <string name="enter_farm_contact_email">Enter Contact Email</string>
+    <string name="enter_farm_website">Enter Website</string>
+    <string name="enter_farm_price">Enter Price</string>
+
 
 </resources>
