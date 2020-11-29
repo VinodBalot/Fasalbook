@@ -334,7 +334,6 @@ class ItemListActivity : BaseBindingActivity() {
                     imageList.add(image)
                 }
             }
-            Log.d("TAGImageList", "addOrEditItemDialog: " + imageList)
         }
 
         setVisibiltyForImageSelection()
@@ -345,7 +344,7 @@ class ItemListActivity : BaseBindingActivity() {
 
         imageListRVAdapter = ImageListRVAdapter(mActivity, onClickListener, imageList)
         rvImage!!.adapter = imageListRVAdapter
-        
+
         imvClose.setOnClickListener {
             dialog!!.dismiss()
         }

@@ -54,56 +54,45 @@ class SellActivity : BaseBindingActivity() {
     override fun initializeObject() {
         onClickListener = this
         setAdapter()
-
     }
 
-
     override fun setListeners() {
-
         binding!!.imvBack.setOnClickListener(onClickListener)
-
     }
 
     override fun onClick(view: View?) {
-
         when (view!!.id) {
             R.id.imvBack -> {
                 finish()
             }
         }
-
     }
 
 
     private fun categoryItemClicked(category: Category) {
         AgricultureActivity.startActivity(mActivity!!, category, BuySellType.SELL, false)
-
     }
 
     private fun setAdapter() {
-
         val manager = GridLayoutManager(mActivity, 2)
         binding!!.rvCategories.layoutManager = manager
         binding!!.rvCategories.setHasFixedSize(true)
-
         fetchAllCategoriesFromAPI()
-
     }
 
-    private fun fetchAllCategoriesFromAPI(){
-
+    private fun fetchAllCategoriesFromAPI() {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
 
-        rootObject.addProperty("CategoryId","0")
+        rootObject.addProperty("CategoryId", "0")
         rootObject.addProperty("LanguageId", "1")
 
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
         val apiService1 = getAddressClient()!!.create(RestApi::class.java)
         val call1: Call<CategoryResponsePOJO> = apiService1.getHomeCategories(gsonObject)
-        call1.enqueue(object : Callback<CategoryResponsePOJO?>{
+        call1.enqueue(object : Callback<CategoryResponsePOJO?> {
             override fun onResponse(
                 call: Call<CategoryResponsePOJO?>,
                 response: Response<CategoryResponsePOJO?>
@@ -111,15 +100,11 @@ class SellActivity : BaseBindingActivity() {
                 ProgressDialog.hideProgressDialog()
                 if (response.body() != null) {
                     if (response.isSuccessful) {
-
                         categoryList = response.body()!!.categoryList
-
-                        val categoryAdapter = CategoryAdapter(categoryList) {
-                                category -> categoryItemClicked(category)
+                        val categoryAdapter = CategoryAdapter(categoryList) { category ->
+                            categoryItemClicked(category)
                         }
-
                         binding!!.rvCategories.adapter = categoryAdapter
-
                     }
                 }
             }
