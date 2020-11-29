@@ -117,6 +117,7 @@
     <string name="enter_farm_website">Enter Website</string>
     <string name="enter_farm_price">Enter Price</string>
     <string name="label_add_farm_attractions">Add Farm Attractions</string>
+    <string name="label_no_record_found">No Record Found</string>
 
 
 </resources>
