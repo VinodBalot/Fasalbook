@@ -249,6 +249,14 @@ class GovtSchemesActivity : BaseBindingActivity() {
 
                         binding!!.rvSchemes.adapter = govtSchemesRVAdapter
 
+                        if(govtSchemesList.isEmpty()){
+                            binding!!.textNoRecordFound.visibility = View.VISIBLE
+                            binding!!.rvSchemes.visibility = View.GONE
+                        }else{
+                            binding!!.textNoRecordFound.visibility = View.GONE
+                            binding!!.rvSchemes.visibility = View.VISIBLE
+                        }
+
                     }
                 }
             }
