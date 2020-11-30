@@ -272,11 +272,12 @@
                     android:inputType="textCapWords"
                     android:padding="@dimen/_10sdp" />
 
-                <com.wasfat.utils.CustomFontEditText
+                <com.wasfat.utils.CustomFontTextView
                     android:id="@+id/edtAtraction"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_10sdp"
+                    android:textSize="@dimen/_14sdp"
                     android:background="@drawable/bg_backgound_corner_grey"
                     android:hint="Attraction"
                     android:inputType="textCapWords"

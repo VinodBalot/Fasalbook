@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.wasfat.R
@@ -27,6 +28,8 @@ import com.wasfat.databinding.ActivityAgricultureBinding
 import com.wasfat.databinding.ActivityFarmTourismBinding
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory
+import com.wasfat.ui.adapter.AgricultureRVAdapter
+import com.wasfat.ui.adapter.FarmAttractionsAdapter
 import com.wasfat.ui.base.BaseBindingActivity
 import com.wasfat.ui.pojo.*
 import com.wasfat.ui.pojo.Unit
@@ -55,17 +58,24 @@ class FarmTourismActivity : BaseBindingActivity() {
     var cityNameList: ArrayList<String> = ArrayList()
     var blockList: ArrayList<Blocklist> = ArrayList()
     var blockNameList: ArrayList<String> = ArrayList()
+    var categoryList: ArrayList<Category> = ArrayList()
+    var selectedAttractionsList: ArrayList<String> = ArrayList()
 
     val reqDataState: HashMap<String, Int> = HashMap()
     val reqDataCity: HashMap<String, Int> = HashMap()
     val reqDataBlock: HashMap<String, Int> = HashMap()
 
     var selectedImageFilePath : String? = null
+    var selectedAttractionString : String = ""
+
+    lateinit var  parentCategory : Category
+
 
     companion object {
-        fun startActivity(activity: Activity, type : BuySellType, isClear: Boolean) {
+        fun startActivity(activity: Activity, category : Category, type : BuySellType, isClear: Boolean) {
             val intent = Intent(activity, FarmTourismActivity::class.java)
             intent.putExtra("type",type)
+            intent.putExtra("category",category)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -79,12 +89,15 @@ class FarmTourismActivity : BaseBindingActivity() {
 
     override fun createActivityObject() {
         mActivity = this
+        //Getting parent category from parent
+        parentCategory = (intent.getSerializableExtra("category") as? Category)!!
     }
 
     override fun initializeObject() {
         onClickListener = this
 
         callGetStateListByCountryAPI()
+        fetchCategoriesOfParentFromAPI()
 
     }
 
@@ -99,10 +112,16 @@ class FarmTourismActivity : BaseBindingActivity() {
         binding!!.edtCity.setOnClickListener(onClickListener)
         binding!!.edtBlock.setOnClickListener(onClickListener)
 
+        binding!!.edtAtraction.setOnClickListener(onClickListener)
+
     }
 
     override fun onClick(view: View?) {
         when (view!!.id) {
+            R.id.edtAtraction ->{
+                ProgressDialog.showProgressDialog(mActivity!!)
+                openAttractionDialog()
+            }
             R.id.imvClose -> {
                 finish()
             }
@@ -179,6 +198,98 @@ class FarmTourismActivity : BaseBindingActivity() {
                 }
             }
         }
+    }
+
+
+
+
+    private fun fetchCategoriesOfParentFromAPI(){
+
+        ProgressDialog.showProgressDialog(mActivity!!)
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+
+        rootObject.addProperty("CategoryId",parentCategory.PKID)
+        rootObject.addProperty("LanguageId", "1")
+
+        var jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+        val call1: Call<CategoryResponsePOJO> = apiService1.getCategoriesByParentId(gsonObject)
+        call1.enqueue(object : Callback<CategoryResponsePOJO?> {
+            override fun onResponse(
+                call: Call<CategoryResponsePOJO?>,
+                response: Response<CategoryResponsePOJO?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+
+                        categoryList = response.body()!!.categoryList
+
+
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<CategoryResponsePOJO?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
+
+
+    }
+
+
+    private fun openAttractionDialog(){
+        val view1: View =
+            (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(
+                R.layout.list_farm_attraction_item,
+                null,
+                false
+            )
+
+        val dialog = BottomSheetDialog(mActivity!!)
+        dialog.setContentView(view1)
+        val lv = view1.findViewById<View>(R.id.listView) as ListView
+        val submitButton = view1.findViewById<View>(R.id.btnSubmitAttraction) as Button
+        val arrayAdapter = FarmAttractionsAdapter(
+            this@FarmTourismActivity,
+            { checked: Boolean, category: Category -> onAttractionCheckBoxClicked(checked,category) },
+            categoryList,
+            selectedAttractionString
+        )
+        lv.adapter = arrayAdapter
+        dialog.show()
+        ProgressDialog.hideProgressDialog()
+
+        submitButton.setOnClickListener{
+            selectedAttractionString = ""
+
+            selectedAttractionsList.forEach {
+                selectedAttractionString +=
+                    if(selectedAttractionString == ""){
+                    it
+                }else{
+                        ", $it"
+                }
+
+            }
+
+            binding!!.edtAtraction.text = selectedAttractionString
+
+            dialog.dismiss()
+        }
+    }
+
+    private fun onAttractionCheckBoxClicked(isChecked: Boolean,category: Category){
+
+        if (isChecked){
+            selectedAttractionsList.add(category.CategoryName)
+        }else{
+            selectedAttractionsList.remove(category.CategoryName)
+        }
+
     }
 
     private fun selectDialog(

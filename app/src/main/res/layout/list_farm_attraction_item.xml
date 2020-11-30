@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_margin="@dimen/_10sdp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.wasfat.utils.CustomFontTextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold"
+            android:layout_height="@dimen/_30sdp"
+            android:text="@string/label_add_farm_attractions"
+            />
+
+        <ListView
+            android:layout_below="@+id/title"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_15sdp"
+            android:layout_marginRight="@dimen/_15sdp"
+            android:layout_marginBottom="@dimen/_30sdp"
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+
+        <Button
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/white"
+            android:layout_margin="@dimen/_10sdp"
+            android:background="@drawable/bg_round_green"
+            android:id="@+id/btnSubmitAttraction"
+            android:text="@string/submit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"/>
+
+    </RelativeLayout>
+
+</layout>
+
