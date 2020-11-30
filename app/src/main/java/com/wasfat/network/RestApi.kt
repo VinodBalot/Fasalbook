@@ -55,6 +55,11 @@ interface RestApi {
     fun getCategoriesByParentId(@Body jsonData: JsonObject): Call<CategoryResponsePOJO>
 
     @Headers("Content-Type: application/json")
+    @POST("category/shareurideascategory")
+    fun shareIdeaCategory(@Body jsonData: JsonObject): Call<CategoryResponsePOJO>
+
+
+    @Headers("Content-Type: application/json")
     @POST("events/categorylist")
     fun getEventCategories(@Body jsonData: JsonObject): Call<EventCategoryResponsePOJO>
 
