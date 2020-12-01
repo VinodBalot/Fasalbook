@@ -96,6 +96,26 @@ interface RestApi {
     fun addFarmTourismItem(@Body jsonData: JsonObject): Call<AddFarmItemResponse>
 
     @Headers("Content-Type: application/json")
+    @POST("farmtourism/userfarms")
+    fun getUserFarms(@Body jsonData: JsonObject): Call<UserFarmsResponsePOJO>
+
+    @Headers("Content-Type: application/json")
+    @POST("farmtourism/edit")
+    fun editUserFarms(@Body jsonData: JsonObject): Call<AddFarmItemResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("farmtourism/addimages")
+    fun addUserFarmImage(@Body jsonData: JsonObject): Call<AddFarmItemResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("farmtourism/deletefarmimage")
+    fun deleteUserFarmImage(@Body jsonData: JsonObject): Call<AddFarmItemResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("farmtourism/deletefarm")
+    fun deleteUserFarm(@Body jsonData: JsonObject): Call<DeleteFarmResponse>
+
+    @Headers("Content-Type: application/json")
     @POST("cms/about")
     fun getAboutApp(@Body jsonData: JsonObject): Call<AboutAppResponse>
 

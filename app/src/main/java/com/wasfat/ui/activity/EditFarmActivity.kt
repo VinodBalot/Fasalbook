@@ -19,20 +19,20 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.wasfat.R
-import com.wasfat.databinding.ActivityAgricultureBinding
-import com.wasfat.databinding.ActivityFarmTourismBinding
+import com.wasfat.databinding.ActivityEditFarmBinding
+import com.wasfat.databinding.ActivityEditItemBinding
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory
-import com.wasfat.ui.adapter.AgricultureRVAdapter
 import com.wasfat.ui.adapter.FarmAttractionsAdapter
+import com.wasfat.ui.adapter.ImageListRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
 import com.wasfat.ui.pojo.*
-import com.wasfat.ui.pojo.Unit
 import com.wasfat.utils.Constants
 import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.UtilityMethod
@@ -44,68 +44,84 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 
-class FarmTourismActivity : BaseBindingActivity() {
+class EditFarmActivity : BaseBindingActivity() {
 
     private var cityId: Int = -1
     private var stateId: Int = -1
     private var blockId: Int = -1
 
-    var binding: ActivityFarmTourismBinding? = null
-    var onClickListener: View.OnClickListener? = null
     var stateList: ArrayList<Statelist> = ArrayList()
     var stateNameList: ArrayList<String> = ArrayList()
     var cityList: ArrayList<Citylist> = ArrayList()
     var cityNameList: ArrayList<String> = ArrayList()
     var blockList: ArrayList<Blocklist> = ArrayList()
     var blockNameList: ArrayList<String> = ArrayList()
-    var categoryList: ArrayList<Category> = ArrayList()
-    var selectedAttractionsList: ArrayList<String> = ArrayList()
 
     val reqDataState: HashMap<String, Int> = HashMap()
     val reqDataCity: HashMap<String, Int> = HashMap()
     val reqDataBlock: HashMap<String, Int> = HashMap()
 
-    var selectedImageFilePath : String? = null
+    var categoryList: ArrayList<Category> = ArrayList()
+    var selectedAttractionsList: ArrayList<String> = ArrayList()
+
+    var imageList: ArrayList<String> = ArrayList()
+    var imageListRVAdapter: ImageListRVAdapter? = null
+
+    var userFarmImageList : ArrayList<String> = ArrayList()
+
+    var binding: ActivityEditFarmBinding? = null
+    var onClickListener: View.OnClickListener? = null
+
     var selectedAttractionString : String = ""
 
-    lateinit var  parentCategory : Category
-
+    lateinit var farm: UserFarms
+    lateinit var parentCategoryId: String
 
     companion object {
-        fun startActivity(activity: Activity, category : Category, type : BuySellType, isClear: Boolean) {
-            val intent = Intent(activity, FarmTourismActivity::class.java)
-            intent.putExtra("type",type)
-            intent.putExtra("category",category)
+
+        fun startActivity(
+            activity: Activity,
+            farm: UserFarms,
+            categoryId: String,
+            isClear: Boolean
+        ) {
+            val intent = Intent(activity, EditFarmActivity::class.java)
+            intent.putExtra("farm", farm)
+            intent.putExtra("categoryId", categoryId)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
         }
+
     }
 
     override fun setBinding() {
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_farm_tourism)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_edit_farm)
         binding!!.lifecycleOwner = this
     }
 
     override fun createActivityObject() {
         mActivity = this
+
+        parentCategoryId = intent.getStringExtra("categoryId").toString()
+
         //Getting parent category from parent
-        parentCategory = (intent.getSerializableExtra("category") as? Category)!!
+        farm = (intent.getSerializableExtra("farm") as? UserFarms)!!
     }
 
     override fun initializeObject() {
         onClickListener = this
 
-        callGetStateListByCountryAPI()
-        fetchCategoriesOfParentFromAPI()
-
+        setActivityForEdit()
     }
 
     override fun setListeners() {
 
         binding!!.imvClose.setOnClickListener(onClickListener)
         binding!!.rlImage.setOnClickListener (onClickListener)
-        binding!!.imvRemoveImage.setOnClickListener(onClickListener)
+        //binding!!.imvRemoveImage.setOnClickListener(onClickListener)
+        binding!!.rlImage.setOnClickListener (onClickListener)
+        binding!!.imvAddMore.setOnClickListener(onClickListener)
         binding!!.btnAddFarmTourism.setOnClickListener(onClickListener)
         binding!!.btnAddressMap.setOnClickListener(onClickListener)
         binding!!.edtState.setOnClickListener(onClickListener)
@@ -116,10 +132,50 @@ class FarmTourismActivity : BaseBindingActivity() {
 
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        finish()
+    private fun setActivityForEdit() {
+
+        stateId = farm.StateId
+        cityId = farm.CityId
+        blockId = farm.BlockId
+
+        callGetStateListByCountryAPI()
+        callGetCityListByStateAPI()
+        callGetBlockListByStateAPI()
+        fetchCategoriesOfParentFromAPI()
+
+        binding!!.edtFarmName.setText( farm.FarmName )
+        binding!!.edtAddress.setText(farm.Address )
+        binding!!.edtContactNumber.setText(farm.ContactNo)
+        binding!!.edtEmail.setText(farm.EmailId)
+        binding!!.edtFacilities.setText(farm.Facilities)
+        binding!!.edtWebsite.setText(farm.Website )
+        binding!!.edtPrice.setText(farm.Price.toString())
+        binding!!.edtAtraction.text = farm.Attraction
+
+        selectedAttractionString = farm.Attraction
+
+        binding!!.cbPublished.isChecked = farm.Published
+
+        farm.ImageList.forEach {
+
+            if (it.ImageName.isNotEmpty()) {
+                val image = it.Path + "/" + it.ImageName
+                imageList.add(image)
+                userFarmImageList.add(image)
+            }
+        }
+
+        setVisibiltyForImageSelection()
+
+        val layoutManager1 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding!!.rvImage.layoutManager = layoutManager1
+        binding!!.rvImage.setHasFixedSize(true)
+
+        imageListRVAdapter = ImageListRVAdapter(mActivity, onClickListener, imageList)
+        binding!!.rvImage.adapter = imageListRVAdapter
+
     }
+
 
     override fun onClick(view: View?) {
         when (view!!.id) {
@@ -158,17 +214,22 @@ class FarmTourismActivity : BaseBindingActivity() {
                 //TODO: Open MAP for address
                 Toast.makeText(mActivity!!,"Map Will Open Here",Toast.LENGTH_SHORT).show()
             }
-            R.id.imvRemoveImage -> {
-                selectedImageFilePath = null
-                binding!!.rvImage.visibility = View.GONE
-                binding!!.rlImage.visibility = View.VISIBLE
-            }
             R.id.rlImage -> {
                 if (checkingPermissionIsEnabledOrNot()) {
                     showImageSelectionDialog()
                 } else {
                     requestMultiplePermission()
                 }
+            }
+            R.id.imvAddMore -> {
+                if (checkingPermissionIsEnabledOrNot()) {
+                    showImageSelectionDialog()
+                } else {
+                    requestMultiplePermission()
+                }
+            }
+            R.id.imvRemoveImage -> {
+                removeImageSelection(view.tag as Int)
             }
             R.id.btnAddFarmTourism -> {
 
@@ -186,23 +247,242 @@ class FarmTourismActivity : BaseBindingActivity() {
                     )
                 ) {
 
-                    selectedImageFilePath?.let { UtilityMethod.imageEncoder(it) }?.let {
-                        addFarmTourismItem(
-                            binding!!.edtFarmName.text.toString(),
-                            binding!!.edtAddress.text.toString(),
-                            binding!!.edtContactNumber.text.toString(),
-                            binding!!.edtFacilities.text.toString(),
-                            binding!!.edtAtraction.text.toString(),
-                            binding!!.cbPublished.isChecked,
-                            it,
-                            binding!!.edtEmail.text.toString(),
-                            binding!!.edtWebsite.text.toString(),
-                            binding!!.edtPrice.text.toString()
-                        )
-                    }
+                    editFarmTourismItem(
+                        binding!!.edtFarmName.text.toString(),
+                        binding!!.edtAddress.text.toString(),
+                        binding!!.edtContactNumber.text.toString(),
+                        binding!!.edtFacilities.text.toString(),
+                        binding!!.edtAtraction.text.toString(),
+                        binding!!.cbPublished.isChecked,
+                        binding!!.edtEmail.text.toString(),
+                        binding!!.edtWebsite.text.toString(),
+                        binding!!.edtPrice.text.toString()
+                    )
+
                 }
             }
         }
+    }
+
+    private fun removeImageSelection(position: Int) {
+
+        val imageUrl : String = imageList[position]
+
+        if(userFarmImageList.contains(imageUrl)){
+
+            ProgressDialog.showProgressDialog(mActivity!!)
+
+            farm.ImageList.forEach {
+                if (it.ImageName.isNotEmpty()) {
+                    val image = it.Path + "/" + it.ImageName
+                    if(image == imageUrl){
+                        deleteImage(it.PKID,position)
+                    }
+                }
+            }
+        }else{
+
+            imageList.removeAt(position)
+            imageListRVAdapter!!.notifyItemRemoved(position)
+            imageListRVAdapter!!.notifyItemRangeChanged(position, imageList.size)
+            imageListRVAdapter!!.notifyDataSetChanged()
+
+            setVisibiltyForImageSelection()
+
+        }
+
+
+
+    }
+
+    private fun setVisibiltyForImageSelection() {
+
+        if (imageList.size > 0) {
+            binding!!.rvImage.visibility = View.VISIBLE
+            binding!!.rlImage.visibility = View.GONE
+            binding!!.imvAddMoreLayout.visibility = View.VISIBLE
+        } else {
+            binding!!.rvImage.visibility = View.GONE
+            binding!!.rlImage.visibility = View.VISIBLE
+            binding!!.imvAddMoreLayout.visibility = View.GONE
+        }
+
+    }
+
+    private fun deleteImage(imageId :  String, position: Int){
+
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+
+        rootObject.addProperty("FarmId", farm.PKID)
+        rootObject.addProperty("ImageId", imageId)
+
+        val jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+
+        val call1: Call<AddFarmItemResponse> = apiService1.deleteUserFarmImage(gsonObject)
+        call1.enqueue(object : Callback<AddFarmItemResponse?> {
+            override fun onResponse(
+                call: Call<AddFarmItemResponse?>,
+                response: Response<AddFarmItemResponse?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+                        if (response.body()!!.Response == "success") {
+                            Log.d("TAG", "onResponse: Image delete Successful")
+                            imageList.removeAt(position)
+                            imageListRVAdapter!!.notifyItemRemoved(position)
+                            imageListRVAdapter!!.notifyItemRangeChanged(position, imageList.size)
+                            imageListRVAdapter!!.notifyDataSetChanged()
+
+                            setVisibiltyForImageSelection()
+
+                            UtilityMethod.showToastMessageError(mActivity!!,"Image Deleted")
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<AddFarmItemResponse?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
+
+    }
+
+    private fun uploadImage(imageBase64 :  String){
+
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+
+        rootObject.addProperty("FarmId", farm.PKID)
+        rootObject.addProperty("UserId", sessionManager!!.userId)
+        rootObject.addProperty("Image", imageBase64)
+
+        val jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+
+        val call1: Call<AddFarmItemResponse> = apiService1.addUserFarmImage(gsonObject)
+        call1.enqueue(object : Callback<AddFarmItemResponse?> {
+            override fun onResponse(
+                call: Call<AddFarmItemResponse?>,
+                response: Response<AddFarmItemResponse?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+                        if (response.body()!!.Response == "success") {
+                            Log.d("TAG", "onResponse: Image upload Successful")
+                            UtilityMethod.showToastMessageError(mActivity!!,"New Image Uploaded")
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<AddFarmItemResponse?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
+
+    }
+
+    private fun editFarmTourismItem(
+        farmName: String,
+        address: String,
+        contactNumber: String,
+        facilities: String,
+        attractions: String,
+        published : Boolean,
+        email : String,
+        website : String,
+        price : String
+    ) {
+
+        ProgressDialog.showProgressDialog(mActivity!!)
+
+        imageList.forEach {
+
+            if(!userFarmImageList.contains(it)){
+                val imageBase64 = UtilityMethod.imageEncoder(it)
+                uploadImage(imageBase64)
+            }
+
+        }
+
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+
+        rootObject.addProperty("PKID", farm.PKID)
+        if(farmName != farm.FarmName){
+            rootObject.addProperty("FarmName", farmName)
+        }
+        if(address != farm.Address){
+            rootObject.addProperty("Address", address)
+        }
+        if(contactNumber != farm.ContactNo){
+            rootObject.addProperty("ContactNo", contactNumber)
+        }
+        if(facilities != farm.Facilities){
+            rootObject.addProperty("Facilities", facilities)
+        }
+        if(attractions != farm.Attraction){
+            rootObject.addProperty("Attraction",attractions)
+        }
+        if(email != farm.EmailId){
+            rootObject.addProperty("EmailId", email)
+        }
+        if(website != farm.Website){
+            rootObject.addProperty("Website", website)
+        }
+        if(price != farm.Price.toString()){
+            rootObject.addProperty("Price", price)
+        }
+        if(published != farm.Published){
+            rootObject.addProperty("Published", published)
+        }
+
+        rootObject.addProperty("lat", 0)
+        rootObject.addProperty("lmg", 0)
+        rootObject.addProperty("UserId", sessionManager!!.userId)
+        rootObject.addProperty("BlockID", blockId)
+
+
+        val jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+
+        val call1: Call<AddFarmItemResponse> = apiService1.editUserFarms(gsonObject)
+        call1.enqueue(object : Callback<AddFarmItemResponse?> {
+            override fun onResponse(
+                call: Call<AddFarmItemResponse?>,
+                response: Response<AddFarmItemResponse?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+                        if (response.body()!!.Response == "success") {
+                            UtilityMethod.showToastMessageSuccess(
+                                mActivity!!,
+                                getString(R.string.label_sell_item_add_successful)
+                            )
+                            finish()
+                        } else {
+                            UtilityMethod.showToastMessageError(
+                                mActivity!!,
+                                getString(R.string.label_sell_item_add_unsuccessful)
+                            )
+                        }
+                    }
+                }
+            }
+            override fun onFailure(call: Call<AddFarmItemResponse?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
+
     }
 
 
@@ -212,7 +492,7 @@ class FarmTourismActivity : BaseBindingActivity() {
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
 
-        rootObject.addProperty("CategoryId",parentCategory.PKID)
+        rootObject.addProperty("CategoryId",parentCategoryId)
         rootObject.addProperty("LanguageId", "1")
 
         var jsonParser = JsonParser()
@@ -229,7 +509,6 @@ class FarmTourismActivity : BaseBindingActivity() {
                     if (response.isSuccessful) {
 
                         categoryList = response.body()!!.categoryList
-
 
                     }
                 }
@@ -257,7 +536,7 @@ class FarmTourismActivity : BaseBindingActivity() {
         val lv = view1.findViewById<View>(R.id.listView) as ListView
         val submitButton = view1.findViewById<View>(R.id.btnSubmitAttraction) as Button
         val arrayAdapter = FarmAttractionsAdapter(
-            this@FarmTourismActivity,
+            mActivity!!,
             { checked: Boolean, category: Category -> onAttractionCheckBoxClicked(checked,category) },
             categoryList,
             selectedAttractionString
@@ -272,10 +551,10 @@ class FarmTourismActivity : BaseBindingActivity() {
             selectedAttractionsList.forEach {
                 selectedAttractionString +=
                     if(selectedAttractionString == ""){
-                    it
-                }else{
+                        it
+                    }else{
                         ", $it"
-                }
+                    }
 
             }
 
@@ -295,6 +574,7 @@ class FarmTourismActivity : BaseBindingActivity() {
 
     }
 
+
     private fun selectDialog(
         title: String,
         stateList: List<String>,
@@ -307,13 +587,13 @@ class FarmTourismActivity : BaseBindingActivity() {
                 null,
                 false
             )
-        val dialog = android.app.AlertDialog.Builder(this@FarmTourismActivity)
+        val dialog = android.app.AlertDialog.Builder(this@EditFarmActivity)
             .setTitle(title)
             .setView(view1).create()
         val lv = view1.findViewById<View>(R.id.listView) as ListView
         val edtSearch = view1.findViewById<View>(R.id.edtSearch) as EditText
         val arrayAdapter = ArrayAdapter(
-            this@FarmTourismActivity,
+            this@EditFarmActivity,
             android.R.layout.simple_list_item_1,
             stateList
         )
@@ -372,9 +652,14 @@ class FarmTourismActivity : BaseBindingActivity() {
                 if (response.body() != null) {
                     if (response.isSuccessful) {
                         stateList = response.body()!!.statelist
+                        stateNameList.clear()
+                        reqDataState.clear()
                         for (state in stateList) {
                             stateNameList.add(state.Name)
                             reqDataState[state.Name] = state.Id
+                            if(state.Id == stateId){
+                                binding!!.edtState.setText(state.Name)
+                            }
                         }
                     }
                 }
@@ -407,9 +692,15 @@ class FarmTourismActivity : BaseBindingActivity() {
                 if (response.body() != null) {
                     if (response.isSuccessful) {
                         cityList = response.body()!!.citylist
+                        cityNameList.clear()
+                        reqDataCity.clear()
                         for (city in cityList) {
                             cityNameList.add(city.Name)
                             reqDataCity[city.Name] = city.Id
+
+                            if(city.Id == cityId){
+                                binding!!.edtCity.setText(city.Name)
+                            }
                         }
                     }
                 }
@@ -442,9 +733,14 @@ class FarmTourismActivity : BaseBindingActivity() {
                 if (response.body() != null) {
                     if (response.isSuccessful) {
                         blockList = response.body()!!.blocklist
+                        blockNameList.clear()
+                        reqDataBlock.clear()
                         for (block in blockList) {
                             blockNameList.add(block.Name)
                             reqDataBlock[block.Name] = block.Id
+                            if(block.Id == blockId){
+                                binding!!.edtBlock.setText(block.Name)
+                            }
                         }
                     }
                 }
@@ -456,75 +752,6 @@ class FarmTourismActivity : BaseBindingActivity() {
                 ProgressDialog.hideProgressDialog()
             }
         })
-    }
-
-    private fun addFarmTourismItem(
-        farmName: String,
-        address: String,
-        contactNumber: String,
-        facilities: String,
-        attractions: String,
-        published : Boolean,
-        imageBase64 : String,
-        email : String,
-        website : String,
-        price : String
-    ) {
-
-
-        ProgressDialog.showProgressDialog(mActivity!!)
-        var gsonObject = JsonObject()
-        val rootObject = JsonObject()
-
-        rootObject.addProperty("FarmName", farmName)
-        rootObject.addProperty("Address", address)
-        rootObject.addProperty("ContactNo", contactNumber)
-        rootObject.addProperty("Facilities", facilities)
-        rootObject.addProperty("Attraction",attractions)
-        rootObject.addProperty("lat", 0)
-        rootObject.addProperty("lmg", 0)
-        rootObject.addProperty("UserId", sessionManager!!.userId)
-        rootObject.addProperty("Published", published)
-        rootObject.addProperty("BlockID", blockId)
-        rootObject.addProperty("EmailId", email)
-        rootObject.addProperty("Website", website)
-        rootObject.addProperty("Price", price)
-        rootObject.addProperty("Image", imageBase64)
-
-
-        val jsonParser = JsonParser()
-        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
-        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
-
-        val call1: Call<AddFarmItemResponse> = apiService1.addFarmTourismItem(gsonObject)
-        call1.enqueue(object : Callback<AddFarmItemResponse?> {
-            override fun onResponse(
-                call: Call<AddFarmItemResponse?>,
-                response: Response<AddFarmItemResponse?>
-            ) {
-                ProgressDialog.hideProgressDialog()
-                if (response.body() != null) {
-                    if (response.isSuccessful) {
-                        if (response.body()!!.Response == "success") {
-                            UtilityMethod.showToastMessageSuccess(
-                                mActivity!!,
-                                getString(R.string.label_sell_item_add_successful)
-                            )
-                            finish()
-                        } else {
-                            UtilityMethod.showToastMessageError(
-                                mActivity!!,
-                                getString(R.string.label_sell_item_add_unsuccessful)
-                            )
-                        }
-                    }
-                }
-            }
-            override fun onFailure(call: Call<AddFarmItemResponse?>, t: Throwable) {
-                ProgressDialog.hideProgressDialog()
-            }
-        })
-
     }
 
     private fun isValidFormData(
@@ -580,8 +807,8 @@ class FarmTourismActivity : BaseBindingActivity() {
             return false
         }
 
-        if(selectedImageFilePath == null){
-            UtilityMethod.showToastMessageError(mActivity!!,getString(R.string.select_farm_image))
+        if(imageList.size == 0){
+            UtilityMethod.showToastMessageError(mActivity!!,"Please add at least one Image")
             return false
         }
 
@@ -592,13 +819,13 @@ class FarmTourismActivity : BaseBindingActivity() {
     private fun showImageSelectionDialog() {
 
         val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
-        val builder = AlertDialog.Builder(this@FarmTourismActivity)
+        val builder = AlertDialog.Builder(mActivity!!)
         builder.setTitle("Add Photo!")
         builder.setItems(options) { dialog, item ->
             if (options[item] == "Take Photo") {
-                EasyImage.openCameraForImage(this@FarmTourismActivity, 100)
+                EasyImage.openCameraForImage(mActivity!!, 100)
             } else if (options[item] == "Choose from Gallery") {
-                EasyImage.openGallery(this@FarmTourismActivity, 200)
+                EasyImage.openGallery(mActivity!!, 200)
             } else if (options[item] == "Cancel") {
                 dialog.dismiss()
             }
@@ -626,7 +853,7 @@ class FarmTourismActivity : BaseBindingActivity() {
     //Permission function starts from here
     private fun requestMultiplePermission() {
         ActivityCompat.requestPermissions(
-            this@FarmTourismActivity, arrayOf(
+           mActivity!!, arrayOf(
                 Manifest.permission.CAMERA,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -653,7 +880,7 @@ class FarmTourismActivity : BaseBindingActivity() {
                     showImageSelectionDialog()
                 } else {
                     Toast.makeText(
-                        this@FarmTourismActivity,
+                        mActivity,
                         "Permission Denied",
                         Toast.LENGTH_LONG
                     ).show()
@@ -670,7 +897,7 @@ class FarmTourismActivity : BaseBindingActivity() {
             requestCode,
             resultCode,
             data,
-            this@FarmTourismActivity,
+            mActivity,
             object : DefaultCallback() {
                 override fun onImagesPicked(
                     imageFiles: MutableList<File>,
@@ -678,21 +905,16 @@ class FarmTourismActivity : BaseBindingActivity() {
                     type: Int
                 ) {
 
-                    Log.d("TAG", "onImagesPicked: " + selectedImageFilePath + type)
                     if (type == 100) {
 
-                        selectedImageFilePath = imageFiles[0].absolutePath
-                        Log.d("TAG", "onImagesPicked: " + selectedImageFilePath)
-                        binding!!.imvImage.setImageURI(imageFiles[0].absolutePath.toUri())
-                        binding!!.rvImage.visibility = View.VISIBLE
-                        binding!!.rlImage.visibility = View.GONE
+                        imageList.add(imageFiles[0].absolutePath)
+                        imageListRVAdapter!!.notifyDataSetChanged()
+                        setVisibiltyForImageSelection()
 
                     } else {
-                        selectedImageFilePath = imageFiles[0].absolutePath
-                        Log.d("TAG", "onImagesPicked: " + selectedImageFilePath)
-                        binding!!.imvImage.setImageURI(imageFiles[0].absolutePath.toUri())
-                        binding!!.rvImage.visibility = View.VISIBLE
-                        binding!!.rlImage.visibility = View.GONE
+                        imageList.add(imageFiles[0].absolutePath)
+                        imageListRVAdapter!!.notifyDataSetChanged()
+                        setVisibiltyForImageSelection()
                     }
                 }
 
@@ -707,7 +929,7 @@ class FarmTourismActivity : BaseBindingActivity() {
                 override fun onCanceled(source: EasyImage.ImageSource, type: Int) {
                     if (source == ImageProvider.CAMERA) {
                         val photoFile =
-                            EasyImage.lastlyTakenButCanceledPhoto(this@FarmTourismActivity)
+                            EasyImage.lastlyTakenButCanceledPhoto(mActivity!!)
                         photoFile?.delete()
                     }
                 }
