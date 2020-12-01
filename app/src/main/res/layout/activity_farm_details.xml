@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg_gradient">
@@ -43,6 +45,7 @@
             android:layout_below="@id/appbar">
 
             <LinearLayout
+                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_20sdp"
@@ -53,57 +56,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_10sdp"
-                    android:background="@color/white"
                     android:orientation="vertical">
 
-
-                    <LinearLayout
-                        android:id="@+id/llTitle"
+                    <com.wasfat.utils.CustomFontTextView
+                        android:layout_margin="@dimen/_5sdp"
+                        android:id="@+id/txtFarmName"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:background="@color/white"
-                        android:weightSum="10">
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Wheat"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_18sdp"
+                        app:CustomFontName="ProximaNovaReg" />
 
-                        <com.wasfat.utils.CustomFontTextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="5"
-                            android:gravity="center"
-                            android:text="Name of Item"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp"
-                            app:CustomFontName="ProximaNovaBold" />
-
-                        <com.wasfat.utils.CustomFontTextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2.5"
-                            android:gravity="center"
-                            android:text="Unit"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp"
-                            app:CustomFontName="ProximaNovaBold" />
-
-
-                        <com.wasfat.utils.CustomFontTextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2.5"
-                            android:gravity="center"
-                            android:text="Qty"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp"
-                            app:CustomFontName="ProximaNovaBold" />
-
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_1sdp"
-                        android:background="@color/grey_400" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -113,35 +78,52 @@
                         android:weightSum="10">
 
                         <com.wasfat.utils.CustomFontTextView
-                            android:id="@+id/txtProductName"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="5"
+                            android:layout_weight="3"
                             android:gravity="center"
-                            android:text="Wheat"
+                            android:text="Address : "
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp"
+                            android:textSize="@dimen/_12sdp"
                             app:CustomFontName="ProximaNovaReg" />
 
                         <com.wasfat.utils.CustomFontTextView
-                            android:id="@+id/txtItemUnit"
+                            android:id="@+id/txtFarmAddress"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="2.5"
+                            android:layout_weight="7"
                             android:gravity="center"
                             android:text="Qtl"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sdp"
                             app:CustomFontName="ProximaNovaReg" />
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:background="@color/white"
+                        android:weightSum="10">
 
                         <com.wasfat.utils.CustomFontTextView
-                            android:id="@+id/txtQty"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="2.5"
+                            android:layout_weight="3"
                             android:gravity="center"
-                            android:text="20"
+                            android:text="Email : "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp"
+                            app:CustomFontName="ProximaNovaReg" />
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:id="@+id/txtFarmEmail"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="7"
+                            android:gravity="center"
+                            android:text="Qtl"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sdp"
                             app:CustomFontName="ProximaNovaReg" />
@@ -153,45 +135,92 @@
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:background="@color/white"
-                        android:gravity="right"
-                        android:layout_gravity="right"
-                        android:weightSum="3">
-
+                        android:weightSum="10">
 
                         <com.wasfat.utils.CustomFontTextView
-                            android:id="@+id/txtProductPrice"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.6"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:text="Phone : "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp"
+                            app:CustomFontName="ProximaNovaReg" />
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:id="@+id/txtFarmContactNo"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="7"
                             android:gravity="center"
                             android:text="Qtl"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sdp"
                             app:CustomFontName="ProximaNovaReg" />
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@color/white"
+                        android:weightSum="10">
+
                         <com.wasfat.utils.CustomFontTextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.3"
+                            android:layout_weight="3"
                             android:gravity="center"
-                            android:text="Per"
+                            android:text="Website : "
                             android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp"
+                            android:textSize="@dimen/_12sdp"
                             app:CustomFontName="ProximaNovaReg" />
 
-
                         <com.wasfat.utils.CustomFontTextView
-                            android:id="@+id/txtPriceUnit"
+                            android:id="@+id/txtFarmWebsite"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:layout_weight="0.6"
+                            android:layout_weight="7"
                             android:gravity="center"
-                            android:text="20"
+                            android:text="Qtl"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sdp"
                             app:CustomFontName="ProximaNovaReg" />
 
                     </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@color/white"
+                        android:weightSum="10">
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:text="Price : "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp"
+                            app:CustomFontName="ProximaNovaReg" />
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:id="@+id/txtFarmPrice"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="7"
+                            android:gravity="center"
+                            android:text="Qtl"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14sdp"
+                            app:CustomFontName="ProximaNovaReg" />
+
+                    </LinearLayout>
+
 
                     <View
                         android:layout_width="match_parent"
@@ -213,65 +242,69 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"/>
 
+                    </LinearLayout>
 
-<!--                        <ImageView-->
-<!--                            android:id="@+id/ivImg1"-->
-<!--                            android:layout_width="@dimen/_60sdp"-->
-<!--                            android:layout_height="@dimen/_60sdp"-->
-<!--                            android:src="@drawable/wheat" />-->
 
-<!--                        <ImageView-->
-<!--                            android:id="@+id/ivImg2"-->
-<!--                            android:layout_width="@dimen/_60sdp"-->
-<!--                            android:layout_height="@dimen/_60sdp"-->
-<!--                            android:layout_marginLeft="@dimen/_10sdp"-->
-<!--                            android:src="@drawable/wheat" />-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@color/white"
+                        android:weightSum="10">
 
-<!--                        <ImageView-->
-<!--                            android:id="@+id/ivImg3"-->
-<!--                            android:layout_width="@dimen/_60sdp"-->
-<!--                            android:layout_height="@dimen/_60sdp"-->
-<!--                            android:layout_marginLeft="@dimen/_10sdp"-->
-<!--                            android:src="@drawable/wheat" />-->
+                        <com.wasfat.utils.CustomFontTextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:text="Facilities : "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp"
+                            app:CustomFontName="ProximaNovaReg" />
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:id="@+id/txtFarmFacilities"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="7"
+                            android:gravity="center"
+                            android:text="Qtl"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14sdp"
+                            app:CustomFontName="ProximaNovaReg" />
 
                     </LinearLayout>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/llmain"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:orientation="vertical">
-
-                    <com.wasfat.utils.CustomFontTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:gravity="center"
-                        android:text="Specification"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_16sdp"
-                        app:CustomFontName="ProximaNovaBold" />
-
-                    <View
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_1sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:background="@color/white" />
-
-                    <com.wasfat.utils.CustomFontTextView
-                        android:id="@+id/txtSpecifications"
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
-                        android:gravity="center"
-                        android:text="1. 20 Qtl RJ-148 Wheat available"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_14sdp"
-                        app:CustomFontName="ProximaNovaReg" />
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:background="@color/white"
+                        android:weightSum="10">
 
+                        <com.wasfat.utils.CustomFontTextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="3"
+                            android:gravity="center"
+                            android:text="Attractions : "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12sdp"
+                            app:CustomFontName="ProximaNovaReg" />
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:id="@+id/txtFarmAttraction"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="7"
+                            android:gravity="center"
+                            android:text="Qtl"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14sdp"
+                            app:CustomFontName="ProximaNovaReg" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -298,4 +331,6 @@
 
     </RelativeLayout>
 
+
 </layout>
+

@@ -76,6 +76,44 @@
                     android:inputType="numberDecimal"
                     android:paddingLeft="@dimen/_10sdp" />
 
+                <LinearLayout
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:weightSum="3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:orientation="horizontal">
+
+                    <com.wasfat.utils.CustomFontEditText
+                        android:id="@+id/edtPrice"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bg_backgound_corner_grey"
+                        android:hint="Price"
+                        android:inputType="numberDecimal"
+                        android:paddingLeft="@dimen/_10sdp" />
+
+                    <com.wasfat.utils.CustomFontTextView
+                        android:layout_width="0dp"
+                        android:gravity="center"
+                        android:layout_weight="0.8"
+                        android:layout_height="match_parent"
+                        android:text="Per Unit"
+                        android:inputType="numberDecimal"
+                        android:paddingLeft="@dimen/_10sdp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerPriceUnit"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.2"
+                        android:layout_height="@dimen/_40sdp"
+                        android:background="@drawable/bg_backgound_corner_grey"
+                        android:hint="Unit"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:spinnerMode="dropdown" />
+
+                </LinearLayout>
+
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">

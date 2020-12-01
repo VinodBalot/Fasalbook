@@ -17,6 +17,7 @@ import com.wasfat.ui.pojo.BuySellType
 import com.wasfat.ui.pojo.Category
 import com.wasfat.ui.pojo.CategoryResponsePOJO
 import com.wasfat.utils.ProgressDialog
+import com.wasfat.utils.UtilityMethod
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -78,7 +79,8 @@ class ShareIdeaActivity : BaseBindingActivity() {
     }
 
     private fun categoryItemClicked(category: Category) {
-        OrganicAgricultureActivity.startActivity(mActivity!!, category, type, false)
+        //UtilityMethod.showToastMessageError(mActivity!!,category.toString())
+        UploadIdeasActivity.startActivity(mActivity!!, category,false)
     }
 
     private fun fetchCategoriesOfParentFromAPI() {

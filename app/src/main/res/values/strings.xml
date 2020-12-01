@@ -117,5 +117,15 @@
     <string name="submit">Submit</string>
     <string name="label_add_farm_attractions">Add Farm Attractions</string>
     <string name="label_no_record_found">No Record Found</string>
+    <string name="label_share_idea_upload_image_msg">You can upload any image, news cuttings etc.</string>
+    <string name="label_upload_image">Upload Image</string>
+    <string name="label_share_video">Share Video</string>
+    <string name="label_upload_video">Upload Video</string>
+    <string name="label_share_idea_upload_video_msg">You can upload video to share your idea</string>
+    <string name="label_select_image">Select Image</string>
+    <string name="label_share_images">Share Images</string>
+    <string name="label_share_idea">Share Idea</string>
+    <string name="label_share_idea_upload_text_msg">You can share your ideas in writings if you wish</string>
+    <string name="label_ideas_in_text">Ideas in Text</string>
 
 </resources>

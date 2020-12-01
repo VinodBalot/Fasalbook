@@ -25,7 +25,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeOld">
-        <activity android:name=".ui.activity.FarmTourismActivity"></activity>
+        <activity android:name=".ui.activity.UploadIdeasActivity"></activity>
+        <activity android:name=".ui.activity.FarmDetailsActivity" />
+        <activity android:name=".ui.activity.EditFarmActivity" />
+        <activity android:name=".ui.activity.UserFarmTourismActivity" />
+        <activity android:name=".ui.activity.FarmTourismActivity" />
         <activity android:name=".ui.activity.EditItemActivity" />
         <activity android:name=".ui.activity.BuySearchActivity" />
         <activity android:name=".ui.activity.GovtSchemesActivity" />
