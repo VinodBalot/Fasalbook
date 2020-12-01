@@ -15,6 +15,8 @@ data class UserProduct(
     val Category: String,
     val UserId: String,
     val Published: String,
+    val Rate : String,
+    val RateUnitId : String,
     val ImageList: ArrayList<ProductImage>
 ) : Serializable
 

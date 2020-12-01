@@ -416,34 +416,15 @@ class EditFarmActivity : BaseBindingActivity() {
         val rootObject = JsonObject()
 
         rootObject.addProperty("PKID", farm.PKID)
-        if(farmName != farm.FarmName){
-            rootObject.addProperty("FarmName", farmName)
-        }
-        if(address != farm.Address){
-            rootObject.addProperty("Address", address)
-        }
-        if(contactNumber != farm.ContactNo){
-            rootObject.addProperty("ContactNo", contactNumber)
-        }
-        if(facilities != farm.Facilities){
-            rootObject.addProperty("Facilities", facilities)
-        }
-        if(attractions != farm.Attraction){
-            rootObject.addProperty("Attraction",attractions)
-        }
-        if(email != farm.EmailId){
-            rootObject.addProperty("EmailId", email)
-        }
-        if(website != farm.Website){
-            rootObject.addProperty("Website", website)
-        }
-        if(price != farm.Price.toString()){
-            rootObject.addProperty("Price", price)
-        }
-        if(published != farm.Published){
-            rootObject.addProperty("Published", published)
-        }
-
+        rootObject.addProperty("FarmName", farmName)
+        rootObject.addProperty("Address", address)
+        rootObject.addProperty("ContactNo", contactNumber)
+        rootObject.addProperty("Facilities", facilities)
+        rootObject.addProperty("Attraction",attractions)
+        rootObject.addProperty("EmailId", email)
+        rootObject.addProperty("Website", website)
+        rootObject.addProperty("Price", price)
+        rootObject.addProperty("Published", published)
         rootObject.addProperty("lat", 0)
         rootObject.addProperty("lmg", 0)
         rootObject.addProperty("UserId", sessionManager!!.userId)

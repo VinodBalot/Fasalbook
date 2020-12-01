@@ -148,6 +148,51 @@
 
                     </LinearLayout>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:background="@color/white"
+                        android:gravity="right"
+                        android:layout_gravity="right"
+                        android:weightSum="3">
+
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:id="@+id/txtProductPrice"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.6"
+                            android:gravity="center"
+                            android:text="Qtl"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14sdp"
+                            app:CustomFontName="ProximaNovaReg" />
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.3"
+                            android:gravity="center"
+                            android:text="Per"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14sdp"
+                            app:CustomFontName="ProximaNovaReg" />
+
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:id="@+id/txtPriceUnit"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="0.6"
+                            android:gravity="center"
+                            android:text="20"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14sdp"
+                            app:CustomFontName="ProximaNovaReg" />
+
+                    </LinearLayout>
+
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_1sdp"

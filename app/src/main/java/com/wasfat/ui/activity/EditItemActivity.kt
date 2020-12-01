@@ -126,14 +126,18 @@ class EditItemActivity : BaseBindingActivity() {
                 if (isValidFormData(
                         binding!!.edtName.text.toString(),
                         binding!!.spinnerUnit.selectedItem.toString(),
-                        binding!!.edtQty.text.toString()
+                        binding!!.edtQty.text.toString(),
+                        binding!!.spinnerPriceUnit.selectedItem.toString(),
+                        binding!!.edtPrice.text.toString()
                     )
                 ) {
                     editItemThroughAPI(
                         product.ProductId,
                         binding!!.edtName.text.toString(),
                         unitList.get(binding!!.spinnerUnit.selectedItemPosition),
-                        binding!!.edtQty.text.toString()
+                        binding!!.edtQty.text.toString(),
+                        unitList.get(binding!!.spinnerPriceUnit.selectedItemPosition),
+                        binding!!.edtPrice.text.toString()
                     )
 
                 }
@@ -171,7 +175,9 @@ class EditItemActivity : BaseBindingActivity() {
         binding!!.edtName.setText(product.ProductName)
         binding!!.edtSpecification.setText(product.ProductSmallDesc)
         binding!!.edtQty.setText(product.Qty)
+        binding!!.edtPrice.setText(product.Rate)
         binding!!.spinnerUnit.setSelection(product.UnitId.toInt())
+        binding!!.spinnerPriceUnit.setSelection(product.RateUnitId.toInt())
         binding!!.btnAdd.setText(R.string.label_edit_item_dialog_button)
         product.ImageList.forEach {
             if (it.ImageName.isNotEmpty()) {
@@ -215,7 +221,9 @@ class EditItemActivity : BaseBindingActivity() {
         productId: Int,
         name: String,
         unit: Unit,
-        qty: String
+        qty: String,
+        priceUnit : Unit,
+        price : String
     ) {
 
         ProgressDialog.showProgressDialog(mActivity!!)
@@ -249,6 +257,8 @@ class EditItemActivity : BaseBindingActivity() {
         rootObject.addProperty("CategoryId", parentCategoryId )
         rootObject.addProperty("Qty", qty)
         rootObject.addProperty("UnitId", unit.Id)
+        rootObject.addProperty("Rate", price)
+        rootObject.addProperty("RateUnitId", priceUnit.Id)
         rootObject.addProperty("UserId", sessionManager!!.userId)
         rootObject.addProperty("Published", "true")
         rootObject.addProperty("Image1", image1)
@@ -293,7 +303,9 @@ class EditItemActivity : BaseBindingActivity() {
     private fun isValidFormData(
         name: String,
         unit: String,
-        qty: String
+        qty: String,
+        priceUnit: String,
+        price : String
     ): Boolean {
 
         if (TextUtils.isEmpty(name)) {
@@ -308,6 +320,16 @@ class EditItemActivity : BaseBindingActivity() {
 
         if (TextUtils.isEmpty(qty)) {
             UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_quantity))
+            return false
+        }
+
+        if (TextUtils.isEmpty(priceUnit)) {
+            UtilityMethod.showToastMessageError(mActivity!!, "Please Enter Price unit of Product")
+            return false
+        }
+
+        if (TextUtils.isEmpty(price)) {
+            UtilityMethod.showToastMessageError(mActivity!!, "Please Enter Price of Product")
             return false
         }
 

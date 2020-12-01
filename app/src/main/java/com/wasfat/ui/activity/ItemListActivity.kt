@@ -259,7 +259,8 @@ class ItemListActivity : BaseBindingActivity() {
                 ItemDetailsActivity.startActivity(
                     mActivity!!,
                     product,
-                    product.ProductName,
+                    unitNameList.get(product.UnitId.toInt()),
+                    unitNameList.get(product.RateUnitId.toInt()),
                     false
                 )
 
@@ -306,7 +307,9 @@ class ItemListActivity : BaseBindingActivity() {
         imvAddMore = view.findViewById(R.id.imvAddMore) as ImageView
         imvAddMoreLayout = view.findViewById(R.id.imvAddMoreLayout) as LinearLayout
         val edtName = view.findViewById(R.id.edtName) as EditText
+        val edtPrice = view.findViewById(R.id.edtPrice) as EditText
         val spinnerUnit = view.findViewById(R.id.spinnerUnit) as Spinner
+        val spinnerPriceUnit = view.findViewById(R.id.spinnerPriceUnit) as Spinner
         val edtQty = view.findViewById(R.id.edtQty) as EditText
         rlImage = view.findViewById(R.id.rlImage) as RelativeLayout
         rvImage = view.findViewById(R.id.rvImage) as RecyclerView
@@ -325,6 +328,7 @@ class ItemListActivity : BaseBindingActivity() {
             unitNameList
         )
         spinnerUnit.adapter = adapter
+        spinnerPriceUnit.adapter = adapter
         adapter.notifyDataSetChanged()
 
 
@@ -364,14 +368,18 @@ class ItemListActivity : BaseBindingActivity() {
             if (isValidFormData(
                     edtName.text.toString(),
                     spinnerUnit.selectedItem.toString(),
-                    edtQty.text.toString()
+                    edtQty.text.toString(),
+                    spinnerPriceUnit.selectedItem.toString(),
+                    edtPrice.text.toString()
                 )
             ) {
                 addOrEditItemThroughAPI(
                     0,
                     edtName.text.toString(),
                     unitList.get(spinnerUnit.selectedItemPosition),
-                    edtQty.text.toString()
+                    edtQty.text.toString(),
+                    unitList.get(spinnerPriceUnit.selectedItemPosition),
+                    edtPrice.text.toString()
                 )
 
                 dialog.dismiss()
@@ -384,7 +392,9 @@ class ItemListActivity : BaseBindingActivity() {
         productId: Int,
         name: String,
         unit: Unit,
-        qty: String
+        qty: String,
+        priceUnit: Unit,
+        price : String
     ) {
 
         ProgressDialog.showProgressDialog(mActivity!!)
@@ -418,6 +428,8 @@ class ItemListActivity : BaseBindingActivity() {
         rootObject.addProperty("CategoryId", parentCategory.PKID)
         rootObject.addProperty("Qty", qty)
         rootObject.addProperty("UnitId", unit.Id)
+        rootObject.addProperty("Rate", price)
+        rootObject.addProperty("RateUnitId", priceUnit.Id)
         rootObject.addProperty("UserId", sessionManager!!.userId)
         rootObject.addProperty("Published", "true")
         rootObject.addProperty("Image1", image1)
@@ -463,7 +475,9 @@ class ItemListActivity : BaseBindingActivity() {
     private fun isValidFormData(
         name: String,
         unit: String,
-        qty: String
+        qty: String,
+        priceUnit: String,
+        price : String
     ): Boolean {
 
         if (TextUtils.isEmpty(name)) {
@@ -478,6 +492,16 @@ class ItemListActivity : BaseBindingActivity() {
 
         if (TextUtils.isEmpty(qty)) {
             UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_quantity))
+            return false
+        }
+
+        if (TextUtils.isEmpty(priceUnit)) {
+            UtilityMethod.showToastMessageError(mActivity!!, "Please Enter Price unit of Product")
+            return false
+        }
+
+        if (TextUtils.isEmpty(price)) {
+            UtilityMethod.showToastMessageError(mActivity!!, "Please Enter Price of Product")
             return false
         }
 

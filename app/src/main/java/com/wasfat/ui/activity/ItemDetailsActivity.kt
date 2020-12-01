@@ -34,10 +34,11 @@ class ItemDetailsActivity : BaseBindingActivity() {
 
     companion object {
 
-        fun startActivity(activity: Activity, product: UserProduct, unitName : String, isClear: Boolean) {
+        fun startActivity(activity: Activity, product: UserProduct, unitName : String, priceUnitName : String, isClear: Boolean) {
             val intent = Intent(activity, ItemDetailsActivity::class.java)
             intent.putExtra("product", product)
             intent.putExtra("unitName", unitName)
+            intent.putExtra("priceUnitName", priceUnitName)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -66,6 +67,8 @@ class ItemDetailsActivity : BaseBindingActivity() {
         binding!!.txtProductName.text = product.ProductName
         binding!!.txtItemUnit.text = intent.getStringExtra("unitName")
         binding!!.txtQty.text = product.Qty
+        binding!!.txtProductPrice.text = product.Rate
+        binding!!.txtPriceUnit.text = intent.getStringExtra("priceUnitName")
 
         binding!!.txtSpecifications.text = product.ProductSmallDesc
 
