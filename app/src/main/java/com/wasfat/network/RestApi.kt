@@ -60,6 +60,10 @@ interface RestApi {
 
 
     @Headers("Content-Type: application/json")
+    @POST("ideas/add")
+    fun ideasAdd(@Body jsonData: JsonObject): Call<AddWriteUpIdeaResponse>
+
+    @Headers("Content-Type: application/json")
     @POST("events/categorylist")
     fun getEventCategories(@Body jsonData: JsonObject): Call<EventCategoryResponsePOJO>
 

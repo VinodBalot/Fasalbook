@@ -125,8 +125,12 @@
     <string name="label_share_idea_upload_video_msg">You can upload video to share your idea</string>
     <string name="label_select_image">Select Image</string>
     <string name="label_share_images">Share Images</string>
-    <string name="label_share_idea_upload_text_msg">You can share your ideas in writings if you wish</string>
-    <string name="label_ideas_in_text">Ideas in Text</string>
+    <string name="label_share_idea_upload_text_msg">You can share your ideas in write-up</string>
+    <string name="label_ideas_in_text">Write-up</string>
+    <string name="label_title">Title</string>
+    <string name="label_short_description">Short Description</string>
+    <string name="label_enter_title">Please enter title</string>
+    <string name="label_enter_short_description">Please enter short description</string>
 
 
 </resources>

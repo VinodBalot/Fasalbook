@@ -4,8 +4,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
@@ -15,16 +13,23 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.wasfat.R
-import com.wasfat.databinding.ActivityShareIdeaBinding
 import com.wasfat.databinding.ActivityUploadIdeasBinding
+import com.wasfat.network.RestApi
+import com.wasfat.network.RestApiFactory
 import com.wasfat.ui.adapter.ImageListRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
+import com.wasfat.ui.pojo.AddWriteUpIdeaResponse
 import com.wasfat.ui.pojo.Category
 import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.UtilityMethod
 import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.File
 
 class UploadIdeasActivity : BaseBindingActivity() {
@@ -45,7 +50,7 @@ class UploadIdeasActivity : BaseBindingActivity() {
             isClear: Boolean
         ) {
             val intent = Intent(activity, UploadIdeasActivity::class.java)
-            intent.putExtra("category",category)
+            intent.putExtra("category", category)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -79,7 +84,7 @@ class UploadIdeasActivity : BaseBindingActivity() {
         binding!!.btShareVideo.setOnClickListener(onClickListener)
         binding!!.btUploadImages.setOnClickListener(onClickListener)
         binding!!.btShareText.setOnClickListener(onClickListener)
-        binding!!.rlImage.setOnClickListener (onClickListener)
+        binding!!.rlImage.setOnClickListener(onClickListener)
         binding!!.imvAddMore.setOnClickListener(onClickListener)
     }
 
@@ -108,25 +113,36 @@ class UploadIdeasActivity : BaseBindingActivity() {
             }
             R.id.btShareText -> {
 
-                if(!TextUtils.isEmpty(binding!!.edtShareIdeaText.text.toString())){
-
-                    shareIdeaInText(binding!!.edtShareIdeaText.text.toString())
-
-                }else{
-                    UtilityMethod.showErrorToastMessage(mActivity!!,getString(R.string.label_select_image))
+                if (TextUtils.isEmpty(binding!!.edtTitle.text.toString())) {
+                    UtilityMethod.showErrorToastMessage(
+                        mActivity!!,
+                        getString(R.string.label_enter_title)
+                    )
+                } else if (TextUtils.isEmpty(binding!!.edtShareIdeaText.text.toString())) {
+                    UtilityMethod.showErrorToastMessage(
+                        mActivity!!,
+                        getString(R.string.label_enter_short_description)
+                    )
+                } else {
+                    shareIdeaInText(
+                        binding!!.edtTitle.text.toString(),
+                        binding!!.edtShareIdeaText.text.toString()
+                    )
                 }
-
             }
             R.id.btShareVideo -> {
                 shareIdeaVideo()
             }
             R.id.btUploadImages -> {
-                if(imageList.size != 0){
+                if (imageList.size != 0) {
 
                     shareIdeaImages()
 
-                }else{
-                    UtilityMethod.showErrorToastMessage(mActivity!!,getString(R.string.label_select_image))
+                } else {
+                    UtilityMethod.showErrorToastMessage(
+                        mActivity!!,
+                        getString(R.string.label_select_image)
+                    )
                 }
             }
         }
@@ -146,26 +162,56 @@ class UploadIdeasActivity : BaseBindingActivity() {
 
     }
 
-    private fun shareIdeaInText(textIdea: String) {
-        //TODO : Handle Share Text Idea
+    private fun shareIdeaInText(title: String, shortDescription: String) {
+        ProgressDialog.showProgressDialog(mActivity!!)
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+        rootObject.addProperty("PKID", "0")
+        rootObject.addProperty("CategoryId", parentCategory.PKID)
+        rootObject.addProperty("UserId", sessionManager!!.userId)
+        rootObject.addProperty("Title", title)
+        rootObject.addProperty("Details", shortDescription)
+        rootObject.addProperty("Published", "1")
+        rootObject.addProperty("Image", "1")
+        rootObject.addProperty("News", "1")
+        var jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+        val call1: Call<AddWriteUpIdeaResponse> = apiService1.ideasAdd(gsonObject)
+        call1.enqueue(object : Callback<AddWriteUpIdeaResponse?> {
+            override fun onResponse(
+                call: Call<AddWriteUpIdeaResponse?>,
+                response: Response<AddWriteUpIdeaResponse?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(mActivity!!, "Successful done.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<AddWriteUpIdeaResponse?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
     }
 
 
     private fun uploadImage(imageBase64: String) {
-            //TODO : Handle Share Images here
+
 
     }
 
 
-
     private fun removeImageSelection(position: Int) {
 
-            imageList.removeAt(position)
-            imageListRVAdapter!!.notifyItemRemoved(position)
-            imageListRVAdapter!!.notifyItemRangeChanged(position, imageList.size)
-            imageListRVAdapter!!.notifyDataSetChanged()
+        imageList.removeAt(position)
+        imageListRVAdapter!!.notifyItemRemoved(position)
+        imageListRVAdapter!!.notifyItemRangeChanged(position, imageList.size)
+        imageListRVAdapter!!.notifyDataSetChanged()
 
-            setVisibiltyForImageSelection()
+        setVisibiltyForImageSelection()
     }
 
     private fun setVisibiltyForImageSelection() {
