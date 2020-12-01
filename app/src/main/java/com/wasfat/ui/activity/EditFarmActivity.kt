@@ -119,7 +119,6 @@ class EditFarmActivity : BaseBindingActivity() {
 
         binding!!.imvClose.setOnClickListener(onClickListener)
         binding!!.rlImage.setOnClickListener (onClickListener)
-        //binding!!.imvRemoveImage.setOnClickListener(onClickListener)
         binding!!.rlImage.setOnClickListener (onClickListener)
         binding!!.imvAddMore.setOnClickListener(onClickListener)
         binding!!.btnAddFarmTourism.setOnClickListener(onClickListener)
