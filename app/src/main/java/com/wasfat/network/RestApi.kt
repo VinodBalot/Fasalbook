@@ -58,6 +58,11 @@ interface RestApi {
     @POST("category/shareurideascategory")
     fun shareIdeaCategory(@Body jsonData: JsonObject): Call<CategoryResponsePOJO>
 
+    @Headers("Content-Type: application/json")
+    @POST("ideas/listbyuserid")
+    fun knowledgeCenter(@Body jsonData: JsonObject): Call<CategoryResponsePOJO>
+
+
 
     @Headers("Content-Type: application/json")
     @POST("ideas/add")

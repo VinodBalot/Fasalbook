@@ -42,6 +42,7 @@
             android:layout_height="match_parent">
 
             <LinearLayout
+                android:layout_margin="@dimen/_10sdp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -50,7 +51,6 @@
                     android:id="@+id/edtTitle"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
-                    android:layout_margin="@dimen/_10sdp"
                     android:background="@drawable/bg_backgound_corner_grey"
                     android:hint="@string/label_title"
                     android:inputType="textCapWords"
@@ -60,22 +60,21 @@
                     android:textSize="@dimen/_14sdp" />
 
                 <com.wasfat.utils.CustomFontEditText
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:id="@+id/edtShareIdeaText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:layout_marginRight="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_5sdp"
                     android:background="@drawable/bg_backgound_corner_grey"
                     android:hint="@string/label_short_description"
                     android:inputType="textCapWords"
+                    android:paddingLeft="@dimen/_10sdp"
                     android:minHeight="@dimen/_100sdp"
                     android:textColorHint="@color/black"
                     android:textSize="@dimen/_14sdp" />
 
 
                 <LinearLayout
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -83,10 +82,6 @@
                     <com.wasfat.utils.CustomFontTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
                         android:text="@string/label_upload_video"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14sdp" />
@@ -129,10 +124,6 @@
                     <com.wasfat.utils.CustomFontTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
                         android:text="@string/label_upload_image"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_14sdp" />
@@ -217,9 +208,9 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_30sdp"
-                        android:layout_margin="@dimen/_10sdp"
                         android:orientation="horizontal">
 
                         <CheckBox
@@ -243,10 +234,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginLeft="@dimen/_20sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
                         android:layout_marginRight="@dimen/_20sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
                         android:background="@drawable/bg_round_green"
                         android:text="@string/label_share_idea"
                         android:textColor="@color/white" />

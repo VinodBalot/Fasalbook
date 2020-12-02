@@ -162,8 +162,8 @@ class UploadIdeasActivity : BaseBindingActivity() {
         rootObject.addProperty("Details", shortDescription)
         rootObject.addProperty("Published", isPublished)
         if (imageBase64.isNotEmpty())
-            rootObject.addProperty("Image", "1")
-        rootObject.addProperty("News", "1")
+            rootObject.addProperty("Image", imageBase64)
+        rootObject.addProperty("News", "")
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
         val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
@@ -177,6 +177,7 @@ class UploadIdeasActivity : BaseBindingActivity() {
                 if (response.body() != null) {
                     if (response.isSuccessful) {
                         Toast.makeText(mActivity!!, "Successful done.", Toast.LENGTH_SHORT).show()
+                        finish()
                     }
                 }
             }
@@ -186,7 +187,6 @@ class UploadIdeasActivity : BaseBindingActivity() {
             }
         })
     }
-
 
     private fun uploadImage(imageBase64: String) {
 

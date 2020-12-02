@@ -165,34 +165,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/rlLogout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginTop="@dimen/_5sdp"
-            android:background="@drawable/bg_gradient">
-
-            <com.wasfat.utils.CustomFontTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_10sdp"
-                android:text="@string/label_logout"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_14sdp"
-                app:CustomFontName="ProximaNovaBold" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_gravity="center"
-                android:layout_marginRight="@dimen/_10sdp"
-                android:src="@drawable/ic_outline_power_settings_new_24" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
             android:id="@+id/rlSuggestions"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_40sdp"
@@ -217,6 +189,34 @@
                 android:layout_gravity="center"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:src="@drawable/ic_outline_perm_identity_24" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlLogout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:background="@drawable/bg_gradient">
+
+            <com.wasfat.utils.CustomFontTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:text="@string/label_logout"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/_14sdp"
+                app:CustomFontName="ProximaNovaBold" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:src="@drawable/ic_outline_power_settings_new_24" />
 
         </RelativeLayout>
 

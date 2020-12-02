@@ -1,11 +1,9 @@
 package com.wasfat.ui.activity
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Gravity
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
@@ -15,25 +13,10 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import com.wasfat.R
-import com.wasfat.network.RestApi
-import com.wasfat.network.RestApiFactory
-import com.wasfat.ui.pojo.AboutAppResponse
-import com.wasfat.ui.pojo.ChangePasswordResponse
-import com.wasfat.utils.Constants
-import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.SessionManager
 import com.wasfat.utils.UtilityMethod
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.util.*
-import kotlin.system.exitProcess
 
 
 class HomeActivity : AppCompatActivity() {
@@ -41,46 +24,36 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     var drawerLayout: DrawerLayout? = null
     var sessionManager: SessionManager? = null
+    var toolbar: Toolbar? = null
+    var imgMenu: ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
         sessionManager = SessionManager()
-        UtilityMethod.setLocate(sessionManager!!.language,baseContext)
+        UtilityMethod.setLocate(sessionManager!!.language, baseContext)
 
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-
-        supportActionBar?.setHomeButtonEnabled(true)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true);
 
         drawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
+        imgMenu = findViewById(R.id.imgMenu)
+        val toggle =
+            ActionBarDrawerToggle(
+                this,
+                drawerLayout,
+                toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+            )
+        drawerLayout!!.setDrawerListener(toggle)
+        toggle.syncState()
 
+        val navView: NavigationView = findViewById(R.id.nav_view)
         initializeView(navView)
 
-        val navController = findNavController(R.id.nav_host_fragment)
-
-        val toggle = ActionBarDrawerToggle(
-               this, drawerLayout, toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-           )
-
-           drawerLayout!!.addDrawerListener(toggle)
-           toggle.isDrawerIndicatorEnabled = true;
-           toggle.syncState()
-
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
-            ), drawerLayout
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
-
-
+        imgMenu!!.setOnClickListener {
+            drawerLayout!!.openDrawer(Gravity.LEFT)
+        }
     }
 
     private fun initializeView(navView: NavigationView) {
@@ -105,8 +78,7 @@ class HomeActivity : AppCompatActivity() {
         }
         rlAboutApp.setOnClickListener {
             drawerLayout!!.closeDrawer(Gravity.LEFT)
-
-            StaticPageActivity.startActivity(this,"about",false)
+            StaticPageActivity.startActivity(this, "about", false)
 
         }
         rlShareApp.setOnClickListener {
@@ -126,17 +98,15 @@ class HomeActivity : AppCompatActivity() {
 
 
     private fun showChangeLang() {
-
-        val listItmes = arrayOf( "हिंदी", "English")
-
+        val listItmes = arrayOf("हिंदी", "English")
         val mBuilder = AlertDialog.Builder(this@HomeActivity)
         mBuilder.setTitle("Choose Language")
         mBuilder.setSingleChoiceItems(listItmes, -1) { dialog, which ->
-           if (which == 0) {
-                UtilityMethod.setLocate("hi",baseContext)
+            if (which == 0) {
+                UtilityMethod.setLocate("hi", baseContext)
                 recreate()
-            }else if (which == 1) {
-               UtilityMethod.setLocate("en",baseContext)
+            } else if (which == 1) {
+                UtilityMethod.setLocate("en", baseContext)
                 recreate()
             }
 
