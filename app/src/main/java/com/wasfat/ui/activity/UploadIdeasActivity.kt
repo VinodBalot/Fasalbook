@@ -34,11 +34,13 @@ import java.io.File
 
 class UploadIdeasActivity : BaseBindingActivity() {
 
+    private var isPublished: Int = 0
     var binding: ActivityUploadIdeasBinding? = null
     var onClickListener: View.OnClickListener? = null
 
     var imageList: ArrayList<String> = ArrayList()
     var imageListRVAdapter: ImageListRVAdapter? = null
+    var imageBase64 = ""
 
     lateinit var parentCategory: Category
 
@@ -69,11 +71,9 @@ class UploadIdeasActivity : BaseBindingActivity() {
 
     override fun initializeObject() {
         onClickListener = this
-
         val layoutManager1 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding!!.rvImage.layoutManager = layoutManager1
         binding!!.rvImage.setHasFixedSize(true)
-
         imageListRVAdapter = ImageListRVAdapter(mActivity, onClickListener, imageList)
         binding!!.rvImage.adapter = imageListRVAdapter
 
@@ -82,10 +82,15 @@ class UploadIdeasActivity : BaseBindingActivity() {
     override fun setListeners() {
         binding!!.imvBack.setOnClickListener(onClickListener)
         binding!!.btShareVideo.setOnClickListener(onClickListener)
-        binding!!.btUploadImages.setOnClickListener(onClickListener)
         binding!!.btShareText.setOnClickListener(onClickListener)
         binding!!.rlImage.setOnClickListener(onClickListener)
         binding!!.imvAddMore.setOnClickListener(onClickListener)
+        binding!!.cbPublished.setOnCheckedChangeListener { compoundButton, b ->
+            if (b) {
+                isPublished = 1
+            } else
+                isPublished = 0
+        }
     }
 
     override fun onClick(view: View?) {
@@ -133,18 +138,6 @@ class UploadIdeasActivity : BaseBindingActivity() {
             R.id.btShareVideo -> {
                 shareIdeaVideo()
             }
-            R.id.btUploadImages -> {
-                if (imageList.size != 0) {
-
-                    shareIdeaImages()
-
-                } else {
-                    UtilityMethod.showErrorToastMessage(
-                        mActivity!!,
-                        getString(R.string.label_select_image)
-                    )
-                }
-            }
         }
 
     }
@@ -153,16 +146,12 @@ class UploadIdeasActivity : BaseBindingActivity() {
         //TODO : Handle Share Videos here
     }
 
-    private fun shareIdeaImages() {
-
-        imageList.forEach {
-            val imageBase64 = UtilityMethod.imageEncoder(it)
-            uploadImage(imageBase64)
-        }
-
-    }
-
     private fun shareIdeaInText(title: String, shortDescription: String) {
+        if (imageList.size != 0) {
+            imageList.forEach {
+                imageBase64 = UtilityMethod.imageEncoder(it)
+            }
+        }
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
@@ -171,8 +160,9 @@ class UploadIdeasActivity : BaseBindingActivity() {
         rootObject.addProperty("UserId", sessionManager!!.userId)
         rootObject.addProperty("Title", title)
         rootObject.addProperty("Details", shortDescription)
-        rootObject.addProperty("Published", "1")
-        rootObject.addProperty("Image", "1")
+        rootObject.addProperty("Published", isPublished)
+        if (imageBase64.isNotEmpty())
+            rootObject.addProperty("Image", "1")
         rootObject.addProperty("News", "1")
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
