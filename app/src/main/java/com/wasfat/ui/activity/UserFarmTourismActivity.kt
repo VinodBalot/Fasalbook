@@ -104,8 +104,14 @@ class UserFarmTourismActivity : BaseBindingActivity() {
 
         Log.d("TAG", "farmItemClicked: " + userFarm)
 
-        showItemSelectionDialog(userFarm)
-
+        if (type == BuySellType.SELL)
+            showItemSelectionDialog(userFarm)
+        else
+            FarmDetailsActivity.startActivity(
+                mActivity!!,
+                userFarm,
+                false
+            )
     }
 
     private fun showItemSelectionDialog(userFarm: UserFarms) {
