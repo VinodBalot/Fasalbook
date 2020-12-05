@@ -11,6 +11,7 @@ import com.os.urservice.ui.components.adapters.RecyclerBaseAdapter
 import com.wasfat.R
 import com.wasfat.ui.pojo.Category
 import com.wasfat.ui.pojo.UserFarms
+import com.wasfat.ui.pojo.UserIdea
 import com.wasfat.ui.pojo.UserProduct
 import com.wasfat.utils.UtilityMethod
 import kotlinx.android.synthetic.main.view_farm_item_list.view.*
@@ -21,27 +22,19 @@ import kotlinx.android.synthetic.main.view_item_list.view.txtItemName
 import kotlinx.android.synthetic.main.view_knowledge_center_item_list.view.*
 import kotlin.system.exitProcess
 
-class FarmRVAdapter(
+class KnowledgeCenterRVAdapter(
     private val context: Activity,
-    private val onClickListener:(UserFarms) -> Unit,
-    private val items: ArrayList<UserFarms>
+    private val onClickListener:(UserIdea) -> Unit,
+    private val items: ArrayList<UserIdea>
 ) : RecyclerBaseAdapter() {
 
-    override fun getLayoutIdForPosition(position: Int): Int = R.layout.view_farm_item_list
+    override fun getLayoutIdForPosition(position: Int): Int = R.layout.view_knowledge_center_item_list
 
     override fun getViewModel(position: Int): Any? = 0//items[position]
 
     override fun putViewDataBinding(viewDataBinding: ViewDataBinding, position: Int) = try {
 
-        viewDataBinding.root.txtItemName.text = items[position].FarmName
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            viewDataBinding.root.txtItemName.text =
-                Html.fromHtml(items[position].FarmName, Html.FROM_HTML_MODE_COMPACT);
-        } else {
-            viewDataBinding.root.txtItemName.text= Html.fromHtml(items[position].FarmName);
-        }
-
+        viewDataBinding.root.txtIdeaTitle.text = items[position].Title
         viewDataBinding.root.llMain.tag = position
         viewDataBinding.root.llMain.setOnClickListener{ onClickListener(items[position]) }
 
@@ -63,10 +56,14 @@ class FarmRVAdapter(
         Log.d("TAG", "putViewDataBinding: " + image)
 
         Glide.with(context).load(image).into(viewDataBinding.root.ivItemIcon)
-        viewDataBinding.root.txtFarmAddress.text = items[position].Address
 
-       viewDataBinding.root.txtFarmEmail.text = items[position].EmailId
-        viewDataBinding.root.txtFarmWebsite.text = items[position].Website
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            viewDataBinding.root.txtIdeaDetails.text =
+                Html.fromHtml(items[position].Details, Html.FROM_HTML_MODE_COMPACT);
+        } else {
+            viewDataBinding.root.txtIdeaDetails.text= Html.fromHtml(items[position].Details);
+        }
+
 
     } catch (e: Exception) {
 

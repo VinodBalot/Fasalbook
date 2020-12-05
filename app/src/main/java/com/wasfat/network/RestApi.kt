@@ -60,8 +60,7 @@ interface RestApi {
 
     @Headers("Content-Type: application/json")
     @POST("ideas/listbyuserid")
-    fun knowledgeCenter(@Body jsonData: JsonObject): Call<CategoryResponsePOJO>
-
+    fun knowledgeCenter(@Body jsonData: JsonObject): Call<UserIdeasResponsePOJO>
 
 
     @Headers("Content-Type: application/json")

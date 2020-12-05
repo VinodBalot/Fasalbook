@@ -13,10 +13,10 @@ import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory
 import com.wasfat.ui.adapter.OrganicRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
-import com.wasfat.ui.pojo.BuySellType
-import com.wasfat.ui.pojo.Category
-import com.wasfat.ui.pojo.CategoryResponsePOJO
+import com.wasfat.ui.home.adapter.KnowledgeCenterRVAdapter
+import com.wasfat.ui.pojo.*
 import com.wasfat.utils.ProgressDialog
+import com.wasfat.utils.UtilityMethod
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,10 +25,8 @@ class KnowledgeCenterActivity : BaseBindingActivity() {
 
     var binding: ActivityKnowledgeCenterBinding? = null
     var onClickListener: View.OnClickListener? = null
-    var categoryList: ArrayList<Category> = ArrayList()
-    lateinit var parentCategory: Category
-    lateinit var type: BuySellType
-    //  var viewModel: VendorViewModel? = null
+    var ideaList: ArrayList<UserIdea> = ArrayList()
+
 
     companion object {
 
@@ -59,7 +57,7 @@ class KnowledgeCenterActivity : BaseBindingActivity() {
         val layoutManager1 = LinearLayoutManager(mActivity)
         binding!!.rvCategory.layoutManager = layoutManager1
         binding!!.rvCategory.setHasFixedSize(true)
-       // fetchCategoriesOfParentFromAPI()
+        fetchCategoriesOfParentFromAPI()
 
     }
 
@@ -77,38 +75,54 @@ class KnowledgeCenterActivity : BaseBindingActivity() {
 
     }
 
-    private fun categoryItemClicked(category: Category) {
-        //UtilityMethod.showToastMessageError(mActivity!!,category.toString())
-        UploadIdeasActivity.startActivity(mActivity!!, category, false)
+    private fun ideaItemClicked(idea: UserIdea) {
+
+        //UtilityMethod.showToastMessageError(mActivity!!,idea.toString())
+
+        KnowledgeCenterDetailsActivity.startActivity(mActivity!!,idea,false)
+
     }
 
     private fun fetchCategoriesOfParentFromAPI() {
+
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
         rootObject.addProperty("UserId", sessionManager!!.userId)
         val jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+
         val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
-        val call1: Call<CategoryResponsePOJO> = apiService1.knowledgeCenter(gsonObject)
-        call1.enqueue(object : Callback<CategoryResponsePOJO?> {
+        val call1: Call<UserIdeasResponsePOJO> = apiService1.knowledgeCenter(gsonObject)
+        call1.enqueue(object : Callback<UserIdeasResponsePOJO?> {
             override fun onResponse(
-                call: Call<CategoryResponsePOJO?>,
-                response: Response<CategoryResponsePOJO?>
+                call: Call<UserIdeasResponsePOJO?>,
+                response: Response<UserIdeasResponsePOJO?>
             ) {
                 ProgressDialog.hideProgressDialog()
                 if (response.body() != null) {
                     if (response.isSuccessful) {
-                        categoryList = response.body()!!.categoryList
-                        val shareIdRVAdapter = OrganicRVAdapter(mActivity,
-                            { category -> categoryItemClicked(category) }
-                            , categoryList)
+                        ideaList = response.body()!!.IdeaList
+
+                        val shareIdRVAdapter = KnowledgeCenterRVAdapter(mActivity!!,
+                            { idea -> ideaItemClicked(idea) }
+                            , ideaList)
+
                         binding!!.rvCategory.adapter = shareIdRVAdapter
+
+                        if(ideaList.isEmpty()){
+                            binding!!.textNoRecordFound.visibility = View.VISIBLE
+                            binding!!.rvCategory.visibility = View.GONE
+                        }else{
+                            binding!!.textNoRecordFound.visibility = View.GONE
+                            binding!!.rvCategory.visibility = View.VISIBLE
+                        }
+
                     }
                 }
             }
 
-            override fun onFailure(call: Call<CategoryResponsePOJO?>, t: Throwable) {
+            override fun onFailure(call: Call<UserIdeasResponsePOJO?>, t: Throwable) {
                 ProgressDialog.hideProgressDialog()
             }
         })

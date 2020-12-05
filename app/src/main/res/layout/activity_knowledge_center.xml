@@ -42,6 +42,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <com.wasfat.utils.CustomFontTextView
+            android:id="@+id/textNoRecordFound"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:text="@string/label_no_record_found"
+            app:CustomFontName="ProximaNovaBold"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14sdp" />
+
 
     </LinearLayout>
 </layout>

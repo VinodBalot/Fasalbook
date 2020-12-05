@@ -76,7 +76,7 @@ class SellActivity : BaseBindingActivity() {
 
     private fun categoryItemClicked(category: Category) {
 
-        if(category.CategoryName == "Farm Tourism"){
+        if(category.CategoryName == "Farm Tourism & Hospitality"){
             UserFarmTourismActivity.startActivity(mActivity!!,category, BuySellType.SELL, false)
         }else{
             AgricultureActivity.startActivity(mActivity!!, category, BuySellType.SELL, false)

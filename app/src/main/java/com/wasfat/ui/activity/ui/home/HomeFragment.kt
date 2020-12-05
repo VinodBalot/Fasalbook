@@ -41,6 +41,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     var llBuy: LinearLayout? = null
     var llEvent: LinearLayout? = null
     var llGovtScheme: LinearLayout? = null
+    var llKnowledeCenter: LinearLayout? = null
     var llShareIdea: LinearLayout? = null
 
     override fun onCreateView(
@@ -100,6 +101,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
         llGovtScheme!!.setOnClickListener {
             GovtSchemesActivity.startActivity(requireActivity(), null, false)
         }
+        llKnowledeCenter!!.setOnClickListener {
+            KnowledgeCenterActivity.startActivity(requireActivity(),  false)
+        }
         llShareIdea!!.setOnClickListener {
             ShareIdeaActivity.startActivity(requireActivity(), false)
         }
@@ -149,6 +153,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         llBuy = view.findViewById(R.id.llBuy) as LinearLayout
         llShareIdea = view.findViewById(R.id.llShareIdea) as LinearLayout
         llEvent = view.findViewById(R.id.llEvent) as LinearLayout
+        llKnowledeCenter = view.findViewById(R.id.llKnowledgeCenter) as LinearLayout
         llGovtScheme = view.findViewById(R.id.llGovtScheme) as LinearLayout
         indicator = view.findViewById(R.id.indicator) as CircleIndicator
     }

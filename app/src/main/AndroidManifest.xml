@@ -25,6 +25,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeOld">
+        <activity android:name=".ui.activity.KnowledgeCenterDetailsActivity"></activity>
         <activity android:name=".ui.activity.UploadIdeasActivity" />
         <activity android:name=".ui.activity.FarmDetailsActivity" />
         <activity android:name=".ui.activity.EditFarmActivity" />

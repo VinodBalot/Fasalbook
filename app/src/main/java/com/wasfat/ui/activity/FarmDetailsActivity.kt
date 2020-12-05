@@ -2,8 +2,10 @@ package com.wasfat.ui.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +16,7 @@ import com.wasfat.ui.adapter.ImageListRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
 import com.wasfat.ui.pojo.UserFarms
 import com.wasfat.ui.pojo.UserProduct
+import kotlinx.android.synthetic.main.view_item_list.view.*
 
 class FarmDetailsActivity : BaseBindingActivity() {
 
@@ -51,8 +54,20 @@ class FarmDetailsActivity : BaseBindingActivity() {
     override fun initializeObject() {
         onClickListener = this
 
-        binding!!.textTitle.text = userFarm.FarmName
-        binding!!.txtFarmName.text = userFarm.FarmName
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            binding!!.textTitle.text =
+                Html.fromHtml(userFarm.FarmName, Html.FROM_HTML_MODE_COMPACT);
+        } else {
+            binding!!.textTitle.text= Html.fromHtml(userFarm.FarmName);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            binding!!.txtFarmName.text =
+                Html.fromHtml(userFarm.FarmName, Html.FROM_HTML_MODE_COMPACT);
+        } else {
+            binding!!.txtFarmName.text= Html.fromHtml(userFarm.FarmName);
+        }
+
         binding!!.txtFarmAddress.text = userFarm.Address
         binding!!.txtFarmEmail.text = userFarm.EmailId
         binding!!.txtFarmContactNo.text = userFarm.ContactNo

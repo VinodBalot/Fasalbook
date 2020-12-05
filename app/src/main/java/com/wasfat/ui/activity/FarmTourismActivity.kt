@@ -89,6 +89,7 @@ class FarmTourismActivity : BaseBindingActivity() {
 
     override fun createActivityObject() {
         mActivity = this
+
         //Getting parent category from parent
         parentCategory = (intent.getSerializableExtra("category") as? Category)!!
     }
