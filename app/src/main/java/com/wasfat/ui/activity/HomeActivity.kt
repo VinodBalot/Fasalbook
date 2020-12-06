@@ -26,6 +26,7 @@ class HomeActivity : AppCompatActivity() {
     var sessionManager: SessionManager? = null
     var toolbar: Toolbar? = null
     var imgMenu: ImageView? = null
+    var imgSearch: ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,7 @@ class HomeActivity : AppCompatActivity() {
 
         drawerLayout = findViewById(R.id.drawer_layout)
         imgMenu = findViewById(R.id.imgMenu)
+        imgSearch = findViewById(R.id.imgSearch)
         val toggle =
             ActionBarDrawerToggle(
                 this,
@@ -53,6 +55,10 @@ class HomeActivity : AppCompatActivity() {
 
         imgMenu!!.setOnClickListener {
             drawerLayout!!.openDrawer(Gravity.LEFT)
+        }
+
+        imgSearch!!.setOnClickListener {
+            SearchActivity.startActivity(this, null, false)
         }
     }
 

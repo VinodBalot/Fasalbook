@@ -5,8 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -24,15 +22,12 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.wasfat.R
-import com.wasfat.databinding.ActivityAgricultureBinding
 import com.wasfat.databinding.ActivityFarmTourismBinding
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory
-import com.wasfat.ui.adapter.AgricultureRVAdapter
 import com.wasfat.ui.adapter.FarmAttractionsAdapter
 import com.wasfat.ui.base.BaseBindingActivity
 import com.wasfat.ui.pojo.*
-import com.wasfat.ui.pojo.Unit
 import com.wasfat.utils.Constants
 import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.UtilityMethod
@@ -60,22 +55,29 @@ class FarmTourismActivity : BaseBindingActivity() {
     var blockNameList: ArrayList<String> = ArrayList()
     var categoryList: ArrayList<Category> = ArrayList()
     var selectedAttractionsList: ArrayList<String> = ArrayList()
+    private var latitude = ""
+    private var longitude = ""
 
     val reqDataState: HashMap<String, Int> = HashMap()
     val reqDataCity: HashMap<String, Int> = HashMap()
     val reqDataBlock: HashMap<String, Int> = HashMap()
 
-    var selectedImageFilePath : String? = null
-    var selectedAttractionString : String = ""
+    var selectedImageFilePath: String? = null
+    var selectedAttractionString: String = ""
 
-    lateinit var  parentCategory : Category
+    lateinit var parentCategory: Category
 
 
     companion object {
-        fun startActivity(activity: Activity, category : Category, type : BuySellType, isClear: Boolean) {
+        fun startActivity(
+            activity: Activity,
+            category: Category,
+            type: BuySellType,
+            isClear: Boolean
+        ) {
             val intent = Intent(activity, FarmTourismActivity::class.java)
-            intent.putExtra("type",type)
-            intent.putExtra("category",category)
+            intent.putExtra("type", type)
+            intent.putExtra("category", category)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -105,14 +107,14 @@ class FarmTourismActivity : BaseBindingActivity() {
     override fun setListeners() {
 
         binding!!.imvClose.setOnClickListener(onClickListener)
-        binding!!.rlImage.setOnClickListener (onClickListener)
+        binding!!.rlImage.setOnClickListener(onClickListener)
         binding!!.imvRemoveImage.setOnClickListener(onClickListener)
         binding!!.btnAddFarmTourism.setOnClickListener(onClickListener)
         binding!!.btnAddressMap.setOnClickListener(onClickListener)
         binding!!.edtState.setOnClickListener(onClickListener)
         binding!!.edtCity.setOnClickListener(onClickListener)
         binding!!.edtBlock.setOnClickListener(onClickListener)
-
+        binding!!.btnAddressMap.setOnClickListener(onClickListener)
         binding!!.edtAtraction.setOnClickListener(onClickListener)
 
     }
@@ -124,13 +126,21 @@ class FarmTourismActivity : BaseBindingActivity() {
 
     override fun onClick(view: View?) {
         when (view!!.id) {
-            R.id.edtAtraction ->{
+            R.id.edtAtraction -> {
                 ProgressDialog.showProgressDialog(mActivity!!)
                 openAttractionDialog()
             }
             R.id.imvClose -> {
                 finish()
             }
+            R.id.btnAddressMap -> {
+                val intent = Intent(
+                    mActivity!!,
+                    LocationMapsActivity::class.java
+                )
+                startActivityForResult(intent, 101)
+            }
+
             R.id.edtState -> {
                 selectDialog(
                     getString(R.string.select_state),
@@ -155,9 +165,9 @@ class FarmTourismActivity : BaseBindingActivity() {
                     reqDataBlock
                 )
             }
-            R.id.btnAddressMap ->{
+            R.id.btnAddressMap -> {
                 //TODO: Open MAP for address
-                Toast.makeText(mActivity!!,"Map Will Open Here",Toast.LENGTH_SHORT).show()
+                Toast.makeText(mActivity!!, "Map Will Open Here", Toast.LENGTH_SHORT).show()
             }
             R.id.imvRemoveImage -> {
                 selectedImageFilePath = null
@@ -207,13 +217,13 @@ class FarmTourismActivity : BaseBindingActivity() {
     }
 
 
-    private fun fetchCategoriesOfParentFromAPI(){
+    private fun fetchCategoriesOfParentFromAPI() {
 
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
 
-        rootObject.addProperty("CategoryId",parentCategory.PKID)
+        rootObject.addProperty("CategoryId", parentCategory.PKID)
         rootObject.addProperty("LanguageId", "1")
 
         var jsonParser = JsonParser()
@@ -245,7 +255,7 @@ class FarmTourismActivity : BaseBindingActivity() {
     }
 
 
-    private fun openAttractionDialog(){
+    private fun openAttractionDialog() {
         val view1: View =
             (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(
                 R.layout.list_farm_attraction_item,
@@ -259,7 +269,12 @@ class FarmTourismActivity : BaseBindingActivity() {
         val submitButton = view1.findViewById<View>(R.id.btnSubmitAttraction) as Button
         val arrayAdapter = FarmAttractionsAdapter(
             this@FarmTourismActivity,
-            { checked: Boolean, category: Category -> onAttractionCheckBoxClicked(checked,category) },
+            { checked: Boolean, category: Category ->
+                onAttractionCheckBoxClicked(
+                    checked,
+                    category
+                )
+            },
             categoryList,
             selectedAttractionString
         )
@@ -267,16 +282,16 @@ class FarmTourismActivity : BaseBindingActivity() {
         dialog.show()
         ProgressDialog.hideProgressDialog()
 
-        submitButton.setOnClickListener{
+        submitButton.setOnClickListener {
             selectedAttractionString = ""
 
             selectedAttractionsList.forEach {
                 selectedAttractionString +=
-                    if(selectedAttractionString == ""){
-                    it
-                }else{
+                    if (selectedAttractionString == "") {
+                        it
+                    } else {
                         ", $it"
-                }
+                    }
 
             }
 
@@ -286,11 +301,11 @@ class FarmTourismActivity : BaseBindingActivity() {
         }
     }
 
-    private fun onAttractionCheckBoxClicked(isChecked: Boolean,category: Category){
+    private fun onAttractionCheckBoxClicked(isChecked: Boolean, category: Category) {
 
-        if (isChecked){
+        if (isChecked) {
             selectedAttractionsList.add(category.CategoryName)
-        }else{
+        } else {
             selectedAttractionsList.remove(category.CategoryName)
         }
 
@@ -450,6 +465,7 @@ class FarmTourismActivity : BaseBindingActivity() {
                     }
                 }
             }
+
             override fun onFailure(call: Call<BlockResponsePOJO?>, t: Throwable) {
 
                 Log.d("RegisterActivity", "onFailure: " + t.localizedMessage)
@@ -465,11 +481,11 @@ class FarmTourismActivity : BaseBindingActivity() {
         contactNumber: String,
         facilities: String,
         attractions: String,
-        published : Boolean,
-        imageBase64 : String,
-        email : String,
-        website : String,
-        price : String
+        published: Boolean,
+        imageBase64: String,
+        email: String,
+        website: String,
+        price: String
     ) {
 
 
@@ -481,7 +497,7 @@ class FarmTourismActivity : BaseBindingActivity() {
         rootObject.addProperty("Address", address)
         rootObject.addProperty("ContactNo", contactNumber)
         rootObject.addProperty("Facilities", facilities)
-        rootObject.addProperty("Attraction",attractions)
+        rootObject.addProperty("Attraction", attractions)
         rootObject.addProperty("lat", 0)
         rootObject.addProperty("lmg", 0)
         rootObject.addProperty("UserId", sessionManager!!.userId)
@@ -521,6 +537,7 @@ class FarmTourismActivity : BaseBindingActivity() {
                     }
                 }
             }
+
             override fun onFailure(call: Call<AddFarmItemResponse?>, t: Throwable) {
                 ProgressDialog.hideProgressDialog()
             }
@@ -534,55 +551,67 @@ class FarmTourismActivity : BaseBindingActivity() {
         contactNumber: String,
         facilities: String,
         attractions: String,
-        email : String,
-        website : String,
-        price : String
+        email: String,
+        website: String,
+        price: String
     ): Boolean {
 
-        Log.d("TAG", "isValidFormData: Validation is working" )
+        Log.d("TAG", "isValidFormData: Validation is working")
 
         if (TextUtils.isEmpty(farmName)) {
-            UtilityMethod.showToastMessageError(mActivity!!,getString(R.string.enter_farm_name))
+            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_farm_name))
             return false
         }
 
         if (TextUtils.isEmpty(address)) {
-            UtilityMethod.showToastMessageError(mActivity!!,getString(R.string.enter_farm_address))
+            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_farm_address))
             return false
         }
 
         if (TextUtils.isEmpty(contactNumber)) {
-            UtilityMethod.showToastMessageError(mActivity!!,getString(R.string.enter_farm_contact_number))
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.enter_farm_contact_number)
+            )
             return false
         }
 
         if (TextUtils.isEmpty(facilities)) {
-            UtilityMethod.showToastMessageError(mActivity!!,getString(R.string.enter_farm_facitilites))
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.enter_farm_facitilites)
+            )
             return false
         }
 
         if (TextUtils.isEmpty(attractions)) {
-            UtilityMethod.showToastMessageError(mActivity!!,getString(R.string.enter_farm_attraction))
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.enter_farm_attraction)
+            )
             return false
         }
 
         if (TextUtils.isEmpty(email)) {
-            UtilityMethod.showToastMessageError(mActivity!!,getString(R.string.enter_farm_contact_email))
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.enter_farm_contact_email)
+            )
             return false
         }
 
         if (TextUtils.isEmpty(website)) {
-            UtilityMethod.showToastMessageError(mActivity!!,getString(R.string.enter_farm_website))
+            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_farm_website))
             return false
         }
 
         if (TextUtils.isEmpty(price)) {
-            UtilityMethod.showToastMessageError(mActivity!!,getString(R.string.enter_farm_price))
+            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_farm_price))
             return false
         }
 
-        if(selectedImageFilePath == null){
-            UtilityMethod.showToastMessageError(mActivity!!,getString(R.string.select_farm_image))
+        if (selectedImageFilePath == null) {
+            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.select_farm_image))
             return false
         }
 
@@ -667,6 +696,24 @@ class FarmTourismActivity : BaseBindingActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        if (requestCode == 101) {
+            if (data!!.getStringExtra("mLatitude")!!.isNotEmpty()) {
+                latitude = data!!.getStringExtra("mLatitude")!!
+            }
+            if (data!!.getStringExtra("mLongtitude")!!.isNotEmpty()) {
+                longitude = data!!.getStringExtra("mLongtitude")!!
+            }
+       /*     if (data!!.getStringExtra("addresses")!!.isNotEmpty()) {
+                binding!!.edtAddress.setText(data!!.getStringExtra("addresses"))
+            }
+            if (!data!!.getStringExtra("locality")!!.isEmpty()) {
+                binding!!.edtCity.setText(data!!.getStringExtra("locality"))
+            }
+            if (!data!!.getStringExtra("locality")!!.isEmpty()) {
+                binding!!.edtState.setText(data!!.getStringExtra("adminArea"))
+            }*/
+        }
+
         EasyImage.handleActivityResult(
             requestCode,
             resultCode,
@@ -678,10 +725,7 @@ class FarmTourismActivity : BaseBindingActivity() {
                     source: EasyImage.ImageSource?,
                     type: Int
                 ) {
-
-                    Log.d("TAG", "onImagesPicked: " + selectedImageFilePath + type)
                     if (type == 100) {
-
                         selectedImageFilePath = imageFiles[0].absolutePath
                         Log.d("TAG", "onImagesPicked: " + selectedImageFilePath)
                         binding!!.imvImage.setImageURI(imageFiles[0].absolutePath.toUri())
