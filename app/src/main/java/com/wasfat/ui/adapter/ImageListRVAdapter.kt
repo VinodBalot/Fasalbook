@@ -7,7 +7,6 @@ import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
 import com.os.urservice.ui.components.adapters.RecyclerBaseAdapter
 import com.wasfat.R
-import com.wasfat.ui.activity.FarmDetailsActivity
 import kotlinx.android.synthetic.main.view_image_list_item.view.*
 
 class ImageListRVAdapter(

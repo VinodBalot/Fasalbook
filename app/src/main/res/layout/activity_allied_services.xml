@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_gradient"
-        tools:context=".ui.activity.event.EventCategoryActivity">
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -34,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Organic"
+                    android:text="Food Gains"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sdp"
                     app:CustomFontName="ProximaNovaBold" />
@@ -51,13 +49,34 @@
                 android:orientation="vertical">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvEventCategories"
+                    android:id="@+id/rvUserFarms"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:visibility="visible" />
+
+                <com.wasfat.utils.CustomFontTextView
+                    android:id="@+id/txtNoProductFound"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/label_product_not_found"
+                    android:textColor="@color/grey_900"
+                    android:textSize="@dimen/_18sdp"
+                    android:visibility="gone"
+                    app:CustomFontName="ProximaNovaBold" />
 
 
             </LinearLayout>
 
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fabAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/btnSubmit"
+                android:layout_alignParentRight="true"
+                android:layout_margin="@dimen/_10sdp"
+                android:src="@android:drawable/ic_input_add" />
 
             <RelativeLayout
                 android:id="@+id/btnSubmit"
@@ -78,6 +97,5 @@
         </RelativeLayout>
 
     </RelativeLayout>
-
 
 </layout>
