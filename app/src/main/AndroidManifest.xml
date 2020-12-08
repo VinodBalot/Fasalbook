@@ -25,30 +25,40 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeOld">
-        <activity android:name=".ui.activity.KnowledgeCenterDetailsActivity"/>
-        <activity android:name=".ui.activity.SearchActivity"/>
-        <activity android:name=".ui.activity.UploadIdeasActivity" />
-        <activity android:name=".ui.activity.FarmDetailsActivity" />
-        <activity android:name=".ui.activity.EditFarmActivity" />
-        <activity android:name=".ui.activity.UserFarmTourismActivity" />
-        <activity android:name=".ui.activity.FarmTourismActivity" />
-        <activity android:name=".ui.activity.EditItemActivity" />
-        <activity android:name=".ui.activity.KnowledgeCenterActivity" />
-        <activity android:name=".ui.activity.BuySearchActivity" />
-        <activity android:name=".ui.activity.GovtSchemesActivity" />
+        <activity android:name=".ui.activity.buyAndSell.landscapeAndGardening.DetailsLandscapeActivity"></activity>
+        <activity android:name=".ui.activity.buyAndSell.landscapeAndGardening.EditLandscapeActivity" />
+        <activity android:name=".ui.activity.buyAndSell.landscapeAndGardening.AddLandscapeActivity" />
+        <activity android:name=".ui.activity.buyAndSell.landscapeAndGardening.LandscapeActivity" />
+        <activity android:name=".ui.activity.buyAndSell.landscapeAndGardening.LandscapeCategory2Activity" />
+        <activity android:name=".ui.activity.buyAndSell.landscapeAndGardening.LandscapeCategory1Activity" />
+        <activity android:name=".ui.activity.buyAndSell.agricultureAndAlliedServices.DetailsAlliedServicesActivity" />
+        <activity android:name=".ui.activity.buyAndSell.agricultureAndAlliedServices.EditAlliedServicesActivity" />
+        <activity android:name=".ui.activity.buyAndSell.agricultureAndAlliedServices.AddAlliedServicesActivity" />
+        <activity android:name=".ui.activity.buyAndSell.agricultureAndAlliedServices.AlliedServicesActivity" />
+        <activity android:name=".ui.activity.buyAndSell.agricultureAndAlliedServices.AlliedServicesCategory2Activity" />
+        <activity android:name=".ui.activity.buyAndSell.agricultureAndAlliedServices.AlliedServicesCategory1Activity" />
+        <activity android:name=".ui.activity.knowledgecenter.KnowledgeCenterDetailsActivity" />
+        <activity android:name=".ui.activity.SearchActivity" />
+        <activity android:name=".ui.activity.shareideas.UploadIdeasActivity" />
+        <activity android:name=".ui.activity.buyAndSell.farmtourism.DetailsFarmTourismActivity" />
+        <activity android:name=".ui.activity.buyAndSell.farmtourism.EditFarmActivity" />
+        <activity android:name=".ui.activity.buyAndSell.farmtourism.FarmTourismActivity" />
+        <activity android:name=".ui.activity.buyAndSell.farmtourism.AddFarmTourismActivity" />
+        <activity android:name=".ui.activity.buyAndSell.agricultureAndFarming.EditAgricultureActivity" />
+        <activity android:name=".ui.activity.knowledgecenter.KnowledgeCenterActivity" />
+        <activity android:name=".ui.activity.buyAndSell.BuySearchActivity" />
+        <activity android:name=".ui.activity.govtschemes.GovtSchemesActivity" />
         <activity android:name=".ui.activity.WebViewActivity" />
-        <activity android:name=".ui.activity.EventActivity" />
-        <activity android:name=".ui.activity.EventCategoryActivity" />
+        <activity android:name=".ui.activity.event.EventActivity" />
+        <activity android:name=".ui.activity.event.EventCategoryActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".ui.activity.LocationMapsActivity"
+            android:name=".ui.activity.buyAndSell.farmtourism.LocationMapsActivity"
             android:label="@string/label_map" />
-
-
         <activity
             android:name=".ui.activity.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -60,42 +70,42 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activity.LoginActivity"
+            android:name=".ui.activity.authentication.LoginActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".ui.activity.RegisterActivity"
+            android:name=".ui.activity.authentication.RegisterActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".ui.activity.ShareIdeaActivity"
+            android:name=".ui.activity.shareideas.ShareIdeaActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".ui.activity.OrganicAgricultureActivity"
+            android:name=".ui.activity.buyAndSell.agricultureAndFarming.AgricultureCategory2Activity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".ui.activity.FoodGrainActivity"
+            android:name=".ui.activity.buyAndSell.agricultureAndFarming.AgricultureCategory3Activity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".ui.activity.SellActivity"
+            android:name=".ui.activity.buyAndSell.SellActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".ui.activity.AgricultureActivity"
+            android:name=".ui.activity.buyAndSell.agricultureAndFarming.AgricultureCategory1Activity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".ui.activity.ChangePasswordActivity"
+            android:name=".ui.activity.authentication.ChangePasswordActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
@@ -105,22 +115,22 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".ui.activity.ForgotPasswordActivity"
+            android:name=".ui.activity.authentication.ForgotPasswordActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".ui.activity.ItemListActivity"
+            android:name=".ui.activity.buyAndSell.agricultureAndFarming.AgricultureActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".ui.activity.ItemDetailsActivity"
+            android:name=".ui.activity.buyAndSell.agricultureAndFarming.DetailsAgricultureActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <activity
-            android:name=".ui.activity.BuyActivity"
+            android:name=".ui.activity.buyAndSell.BuyActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
