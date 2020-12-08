@@ -78,7 +78,6 @@ class ItemListActivity : BaseBindingActivity() {
     }
 
     override fun setBinding() {
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_food_gain)
         //  viewModel = ViewModelProvider(this).get(VendorViewModel::class.java)
         binding!!.lifecycleOwner = this
@@ -87,9 +86,7 @@ class ItemListActivity : BaseBindingActivity() {
 
     override fun createActivityObject() {
         mActivity = this
-
         type = intent.getSerializableExtra("type") as BuySellType
-
         //Getting parent category from parent
         parentCategory = (intent.getSerializableExtra("category") as? Category)!!
 
@@ -197,7 +194,7 @@ class ItemListActivity : BaseBindingActivity() {
             R.id.imvRemoveImage -> {
                 removeImageSelection(view.tag as Int)
             }
-            R.id.btnSubmit ->{
+            R.id.btnSubmit -> {
                 var intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
             }
@@ -319,9 +316,8 @@ class ItemListActivity : BaseBindingActivity() {
         imageList.clear()
         dialog!!.setContentView(view)
         dialog!!.show()
-
         imageList.clear()
-
+        edtName.setText(parentCategory.CategoryName)
         val adapter = ArrayAdapter(
             this,
             R.layout.support_simple_spinner_dropdown_item,
@@ -394,7 +390,7 @@ class ItemListActivity : BaseBindingActivity() {
         unit: Unit,
         qty: String,
         priceUnit: Unit,
-        price : String
+        price: String
     ) {
 
         ProgressDialog.showProgressDialog(mActivity!!)
@@ -477,7 +473,7 @@ class ItemListActivity : BaseBindingActivity() {
         unit: String,
         qty: String,
         priceUnit: String,
-        price : String
+        price: String
     ): Boolean {
 
         if (TextUtils.isEmpty(name)) {

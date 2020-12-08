@@ -71,7 +71,6 @@ class AgricultureActivity : BaseBindingActivity() {
         val layoutManager1 = LinearLayoutManager(mActivity)
         binding!!.rvCategories.layoutManager = layoutManager1
         binding!!.rvCategories.setHasFixedSize(true)
-
         fetchCategoriesOfParentFromAPI()
 
     }

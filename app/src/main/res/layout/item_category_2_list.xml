@@ -23,19 +23,19 @@
 
                 <com.wasfat.utils.CustomFontTextView
                     android:id="@+id/txtCategory2Name"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_gravity="center"
                     android:layout_margin="@dimen/_10sdp"
-                    android:gravity="center"
                     android:text="@string/label_organic"
+                    android:layout_toLeftOf="@+id/rlRight"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/_16sdp"
                     app:CustomFontName="ProximaNovaBold" />
 
 
                 <RelativeLayout
+                    android:id="@+id/rlRight"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:layout_alignParentRight="true"
