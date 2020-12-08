@@ -13,7 +13,12 @@ import androidx.viewpager.widget.ViewPager
 import com.wasfat.R
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory.getClient
-import com.wasfat.ui.activity.*
+import com.wasfat.ui.activity.buyAndSell.BuyActivity
+import com.wasfat.ui.activity.buyAndSell.SellActivity
+import com.wasfat.ui.activity.event.EventCategoryActivity
+import com.wasfat.ui.activity.govtschemes.GovtSchemesActivity
+import com.wasfat.ui.activity.knowledgecenter.KnowledgeCenterActivity
+import com.wasfat.ui.activity.shareideas.ShareIdeaActivity
 import com.wasfat.ui.adapter.BannerAdapter
 import com.wasfat.ui.pojo.BannerResponse
 import com.wasfat.ui.pojo.BannerResponseItem

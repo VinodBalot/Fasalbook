@@ -15,6 +15,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.google.android.material.navigation.NavigationView
 import com.wasfat.R
+import com.wasfat.ui.activity.authentication.ChangePasswordActivity
+import com.wasfat.ui.activity.authentication.LoginActivity
 import com.wasfat.utils.SessionManager
 import com.wasfat.utils.UtilityMethod
 
