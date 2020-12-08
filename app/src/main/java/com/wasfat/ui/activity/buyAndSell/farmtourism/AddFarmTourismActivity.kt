@@ -241,7 +241,6 @@ class AddFarmTourismActivity : BaseBindingActivity() {
 
                         categoryList = response.body()!!.categoryList
 
-
                     }
                 }
             }
