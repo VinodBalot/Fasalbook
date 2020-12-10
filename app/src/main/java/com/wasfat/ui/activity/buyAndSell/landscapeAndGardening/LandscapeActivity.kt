@@ -166,11 +166,11 @@ class LandscapeActivity : BaseBindingActivity() {
                 ProgressDialog.hideProgressDialog()
                 if (response.body() != null) {
                     if (response.isSuccessful) {
-                            UtilityMethod.showToastMessageSuccess(
-                                mActivity!!,
-                                getString(R.string.label_item_delete_successful)
-                            )
-                            finish()
+                        UtilityMethod.showToastMessageSuccess(
+                            mActivity!!,
+                            getString(R.string.label_item_delete_successful)
+                        )
+                        finish()
                     }
                 }
             }
@@ -187,15 +187,14 @@ class LandscapeActivity : BaseBindingActivity() {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
-
         rootObject.addProperty("UserId", sessionManager!!.userId)
-        // rootObject.addProperty("LanguageId", "1")
-
+        rootObject.addProperty("Categoryid", parentCategory.PKID)
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
         val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
 
-        val call1: Call<UserLandscapeProductsResponsePOJO> = apiService1.getLandscapeItems(gsonObject)
+        val call1: Call<UserLandscapeProductsResponsePOJO> =
+            apiService1.getLandscapeItems(gsonObject)
         call1.enqueue(object : Callback<UserLandscapeProductsResponsePOJO?> {
             override fun onResponse(
                 call: Call<UserLandscapeProductsResponsePOJO?>,
@@ -247,7 +246,7 @@ class LandscapeActivity : BaseBindingActivity() {
             R.id.imvBack -> {
                 finish()
             }
-            R.id.btnSubmit ->{
+            R.id.btnSubmit -> {
                 var intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
             }

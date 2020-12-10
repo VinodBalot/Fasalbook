@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -179,6 +180,7 @@ class AddLandscapeActivity : BaseBindingActivity() {
                 }
             }
             override fun onFailure(call: Call<AddFarmItemResponse?>, t: Throwable) {
+                Log.d("1234", "error  : "+t.message)
                 ProgressDialog.hideProgressDialog()
             }
         })

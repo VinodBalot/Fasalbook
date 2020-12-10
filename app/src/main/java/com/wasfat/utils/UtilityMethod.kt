@@ -18,6 +18,7 @@ import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.UnderlineSpan
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -27,12 +28,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.FutureTarget
 import com.wasfat.R
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.ExecutionException
 import java.util.regex.Pattern
 
 object UtilityMethod {
@@ -284,19 +283,18 @@ object UtilityMethod {
         return filename
     }
 
-    fun imageEncoder(filePath: String): String{
-
-        var base64 : String = ""
-
-        val bytes = File(filePath).readBytes()
-        base64 = android.util.Base64.encodeToString(bytes, 0)
-
-
+    fun imageEncoder(filePath: String): String {
+        var base64: String = ""
+        val bm = BitmapFactory.decodeFile(filePath)
+        val baos = ByteArrayOutputStream()
+        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos) // bm is the bitmap object
+        val byteArrayImage = baos.toByteArray()
+        base64 = Base64.encodeToString(byteArrayImage, Base64.DEFAULT)
         return base64
     }
 
 
-     fun isLocalPath(p: String): Boolean {
+    fun isLocalPath(p: String): Boolean {
 
         return !(p.startsWith("http://")
                 || p.startsWith("https://"))
@@ -438,14 +436,14 @@ object UtilityMethod {
             showToastMessageError(activity, "Please enter password")
         } else if (!TextUtils.isEmpty(uName) && !isValidEmail(uName.toString())) {
             showToastMessageError(activity, "Please enter valid email address")
-        }else if (!TextUtils.isEmpty(uPass) && uPass.toString().length<4) {
+        } else if (!TextUtils.isEmpty(uPass) && uPass.toString().length < 4) {
             showToastMessageError(activity, "Password should be more then 4 digit")
-        }else if (!isValidPassword(uPass.toString())&& uPass.toString().length>=4) {
+        } else if (!isValidPassword(uPass.toString()) && uPass.toString().length >= 4) {
             makeLogin = true
         }
 
-    return makeLogin
-}
+        return makeLogin
+    }
 
     fun multiTextClicked(
         textView: TextView,

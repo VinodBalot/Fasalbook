@@ -132,7 +132,7 @@ class AgricultureActivity : BaseBindingActivity() {
         val rootObject = JsonObject()
 
         rootObject.addProperty("UserId", sessionManager!!.userId)
-        // rootObject.addProperty("LanguageId", "1")
+         rootObject.addProperty("CategoryId", parentCategory.PKID)
 
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
@@ -376,9 +376,9 @@ class AgricultureActivity : BaseBindingActivity() {
                     unitList.get(spinnerUnit.selectedItemPosition),
                     edtQty.text.toString(),
                     unitList.get(spinnerPriceUnit.selectedItemPosition),
-                    edtPrice.text.toString()
+                    edtPrice.text.toString(),
+                    edtSpecification.text.toString()
                 )
-
                 dialog.dismiss()
             }
         }
@@ -391,7 +391,8 @@ class AgricultureActivity : BaseBindingActivity() {
         unit: Unit,
         qty: String,
         priceUnit: Unit,
-        price: String
+        price: String,
+        specification: String
     ) {
 
         ProgressDialog.showProgressDialog(mActivity!!)
@@ -402,7 +403,11 @@ class AgricultureActivity : BaseBindingActivity() {
         var image2 = ""
         var image3 = ""
 
-        if (UtilityMethod.isLocalPath(imageList[0])) {
+        image1 = UtilityMethod.imageEncoder(imageList[0])
+      /*  image2 = UtilityMethod.imageEncoder(imageList[1])
+        image3 = UtilityMethod.imageEncoder(imageList[2])*/
+
+       /* if (UtilityMethod.isLocalPath(imageList[0])) {
 
             image1 = UtilityMethod.imageEncoder(imageList[0])
 
@@ -418,7 +423,7 @@ class AgricultureActivity : BaseBindingActivity() {
 
             image3 = UtilityMethod.imageEncoder(imageList[2])
 
-        }
+        }*/
 
         rootObject.addProperty("ProductId", productId)
         rootObject.addProperty("ProductName", name)
@@ -426,12 +431,11 @@ class AgricultureActivity : BaseBindingActivity() {
         rootObject.addProperty("Qty", qty)
         rootObject.addProperty("UnitId", unit.Id)
         rootObject.addProperty("Rate", price)
+        rootObject.addProperty("Specification", specification)
         rootObject.addProperty("RateUnitId", priceUnit.Id)
         rootObject.addProperty("UserId", sessionManager!!.userId)
         rootObject.addProperty("Published", "true")
         rootObject.addProperty("Image1", image1)
-        rootObject.addProperty("Image2", image2)
-        rootObject.addProperty("Image3", image3)
 
         val jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
@@ -502,13 +506,11 @@ class AgricultureActivity : BaseBindingActivity() {
             return false
         }
 
-        if (imageList.size != 3) {
-
+        if (imageList.size == 0) {
             UtilityMethod.showToastMessageError(
                 mActivity!!,
                 getString(R.string.label_add_item_images_count_warning)
             )
-
             return false
         }
 
