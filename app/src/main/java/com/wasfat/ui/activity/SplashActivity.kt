@@ -9,7 +9,6 @@ import android.util.Base64
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.wasfat.R
-import com.wasfat.ui.activity.authentication.LoginActivity
 import com.wasfat.utils.SessionManager
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -26,6 +25,8 @@ class SplashActivity : AppCompatActivity() {
         startSplashTimer()
     }
 
+
+
     private fun startSplashTimer() {
 
         Handler().postDelayed({
@@ -33,7 +34,7 @@ class SplashActivity : AppCompatActivity() {
                 var intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
             } else {
-                LoginActivity.startActivity(this@SplashActivity, null, true)
+                SelectLanguageActivity.startActivity(this@SplashActivity, true)
             }
             finish()
 

@@ -110,7 +110,7 @@ class AgricultureCategory2Activity : BaseBindingActivity() {
         val rootObject = JsonObject()
 
         rootObject.addProperty("CategoryId", parentCategory.PKID)
-        rootObject.addProperty("LanguageId", "1")
+        rootObject.addProperty("languageId", sessionManager!!.language)
 
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject

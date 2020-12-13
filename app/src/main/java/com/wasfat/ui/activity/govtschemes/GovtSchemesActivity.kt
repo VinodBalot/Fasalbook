@@ -169,7 +169,7 @@ class GovtSchemesActivity : BaseBindingActivity() {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
-        rootObject.addProperty("languageId", "1")
+        rootObject.addProperty("languageId", sessionManager!!.language)
         rootObject.addProperty("countryId", Constants.COUNTRYID)
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
@@ -221,7 +221,7 @@ class GovtSchemesActivity : BaseBindingActivity() {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
-        rootObject.addProperty("languageId", "1")
+        rootObject.addProperty("languageId", sessionManager!!.language)
         rootObject.addProperty("StateId", stateId)
 
         val jsonParser = JsonParser()

@@ -28,8 +28,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LandscapeCategory2Activity : BaseBindingActivity() {
-
-
     var binding: ActivityLandscapeCategory2Binding? = null
     var onClickListener: View.OnClickListener? = null
     var categoryList: ArrayList<Category> = ArrayList()
@@ -114,7 +112,7 @@ class LandscapeCategory2Activity : BaseBindingActivity() {
         val rootObject = JsonObject()
 
         rootObject.addProperty("CategoryId", parentCategory.PKID)
-        rootObject.addProperty("LanguageId", "1")
+        rootObject.addProperty("languageId", sessionManager!!.language)
 
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject

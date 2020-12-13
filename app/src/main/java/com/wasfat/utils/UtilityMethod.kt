@@ -18,7 +18,6 @@ import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.text.style.RelativeSizeSpan
 import android.text.style.UnderlineSpan
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +28,10 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.wasfat.R
-import java.io.*
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -117,19 +119,13 @@ object UtilityMethod {
 
 
     fun setLocate(Lang: String, context: Context) {
-
         val locale = Locale(Lang)
-
         Locale.setDefault(locale)
-
         val config = Configuration()
-
         config.locale = locale
         context.resources.updateConfiguration(config, context.resources.displayMetrics)
-
         val sessionManager = SessionManager()
         sessionManager.language = Lang
-
     }
 
     fun setZeroBeforeNine(digit: Int): String {
@@ -285,17 +281,14 @@ object UtilityMethod {
 
     fun imageEncoder(filePath: String): String {
         var base64: String = ""
-        val bm = BitmapFactory.decodeFile(filePath)
-        val baos = ByteArrayOutputStream()
-        bm.compress(Bitmap.CompressFormat.JPEG, 100, baos) // bm is the bitmap object
-        val byteArrayImage = baos.toByteArray()
-        base64 = Base64.encodeToString(byteArrayImage, Base64.DEFAULT)
+        val bytes = File(filePath).readBytes()
+        base64 = android.util.Base64.encodeToString(bytes, 0)
         return base64
+
     }
 
 
     fun isLocalPath(p: String): Boolean {
-
         return !(p.startsWith("http://")
                 || p.startsWith("https://"))
 

@@ -196,7 +196,7 @@ class FarmTourismActivity : BaseBindingActivity() {
         val rootObject = JsonObject()
 
         rootObject.addProperty("UserId", sessionManager!!.userId)
-        // rootObject.addProperty("LanguageId", "1")
+        // rootObject.addProperty("languageId", sessionManager!!.language)
 
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject

@@ -81,7 +81,12 @@ class LandscapeActivity : BaseBindingActivity() {
     private fun setupFabButton() {
         binding!!.fabAdd.visibility = View.VISIBLE
         binding!!.fabAdd.setOnClickListener {
-            AddLandscapeActivity.startActivity(mActivity!!, parentCategory.PKID, false)
+            AddLandscapeActivity.startActivity(
+                mActivity!!,
+                parentCategory.PKID,
+                parentCategory.CategoryName,
+                false
+            )
         }
     }
 

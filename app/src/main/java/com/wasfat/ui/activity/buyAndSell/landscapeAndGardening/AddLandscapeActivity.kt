@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
@@ -23,7 +24,9 @@ import com.wasfat.network.RestApiFactory
 import com.wasfat.ui.adapter.ImageListRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
 import com.wasfat.ui.pojo.AddFarmItemResponse
+import com.wasfat.ui.pojo.Category
 import com.wasfat.ui.pojo.Unit
+import com.wasfat.ui.pojo.UnitListResponsePOJO
 import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.UtilityMethod
 import pl.aprilapps.easyphotopicker.DefaultCallback
@@ -38,9 +41,11 @@ class AddLandscapeActivity : BaseBindingActivity() {
     private lateinit var parentCategoryId: String
     var binding: ActivityAddLandscapeBinding? = null
     var onClickListener: View.OnClickListener? = null
-
+    var unitList: ArrayList<Unit> = ArrayList()
+    var unitNameList: ArrayList<String> = ArrayList()
     var imageList: ArrayList<String> = ArrayList()
     var imageListRVAdapter: ImageListRVAdapter? = null
+    var productName = ""
 
 
     companion object {
@@ -48,10 +53,12 @@ class AddLandscapeActivity : BaseBindingActivity() {
         fun startActivity(
             activity: Activity,
             categoryId: Int,
+            productName: String,
             isClear: Boolean
         ) {
             val intent = Intent(activity, AddLandscapeActivity::class.java)
             intent.putExtra("categoryId", categoryId)
+            intent.putExtra("productName", productName)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -68,19 +75,18 @@ class AddLandscapeActivity : BaseBindingActivity() {
         mActivity = this
 
         parentCategoryId = intent.getStringExtra("categoryId").toString()
+        productName = intent.getStringExtra("productName").toString()
 
     }
 
     override fun initializeObject() {
-       onClickListener = this
-
+        onClickListener = this
         val layoutManager1 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding!!.rvImage.layoutManager = layoutManager1
         binding!!.rvImage.setHasFixedSize(true)
-
         imageListRVAdapter = ImageListRVAdapter(mActivity, onClickListener, imageList)
         binding!!.rvImage.adapter = imageListRVAdapter
-
+        getUnitListFromAPI()
     }
 
     override fun setListeners() {
@@ -88,6 +94,7 @@ class AddLandscapeActivity : BaseBindingActivity() {
         binding!!.rlImage.setOnClickListener(onClickListener)
         binding!!.imvAddMore.setOnClickListener(onClickListener)
         binding!!.btnAddLandscape.setOnClickListener(onClickListener)
+        binding!!.edtProductName.setText(productName)
     }
 
     override fun onClick(view: View?) {
@@ -118,7 +125,9 @@ class AddLandscapeActivity : BaseBindingActivity() {
                 ) {
                     addLandscapeItemThroughAPI(
                         binding!!.edtProductName.text.toString(),
-                        binding!!.edtSpecification.text.toString()
+                        binding!!.edtSpecification.text.toString(),
+                        binding!!.edtProductName.text.toString(),
+                        binding!!.spinnerPriceUnit.selectedItem.toString()
                     )
                 }
             }
@@ -131,25 +140,27 @@ class AddLandscapeActivity : BaseBindingActivity() {
 
     private fun addLandscapeItemThroughAPI(
         name: String,
-        specification: String
+        specification: String,
+        price: String,
+        priceUnitId: String
     ) {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
 
         var image1 = UtilityMethod.imageEncoder(imageList[0])
-        var image2 =  UtilityMethod.imageEncoder(imageList[1])
-        var image3 =  UtilityMethod.imageEncoder(imageList[2])
+        //   var image2 = UtilityMethod.imageEncoder(imageList[1])
+        //  var image3 = UtilityMethod.imageEncoder(imageList[2])
 
         rootObject.addProperty("ProductId", 0)
         rootObject.addProperty("ProductName", name)
-        rootObject.addProperty("Specification", specification )
+        rootObject.addProperty("Specification", specification)
         rootObject.addProperty("CategoryId", parentCategoryId)
         rootObject.addProperty("UserId", sessionManager!!.userId)
+        rootObject.addProperty("Rate", price)
+        rootObject.addProperty("RateUnitId", priceUnitId)
         rootObject.addProperty("Published", binding!!.cbPublished.isChecked)
-        rootObject.addProperty("Image1", image1)
-        rootObject.addProperty("Image2", image2)
-        rootObject.addProperty("Image3", image3)
+        rootObject.addProperty("Image1", "")
 
         val jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
@@ -179,8 +190,9 @@ class AddLandscapeActivity : BaseBindingActivity() {
                     }
                 }
             }
+
             override fun onFailure(call: Call<AddFarmItemResponse?>, t: Throwable) {
-                Log.d("1234", "error  : "+t.message)
+                Log.d("1234", "error  : " + t.message)
                 ProgressDialog.hideProgressDialog()
             }
         })
@@ -188,18 +200,14 @@ class AddLandscapeActivity : BaseBindingActivity() {
     }
 
     private fun removeImageSelection(position: Int) {
-
         imageList.removeAt(position)
         imageListRVAdapter!!.notifyItemRemoved(position)
         imageListRVAdapter!!.notifyItemRangeChanged(position, imageList.size)
         imageListRVAdapter!!.notifyDataSetChanged()
-
         setVisibiltyForImageSelection()
-
     }
 
     private fun setVisibiltyForImageSelection() {
-
         if (imageList.size >= 3) {
             binding!!.rvImage.visibility = View.VISIBLE
             binding!!.rlImage.visibility = View.GONE
@@ -231,7 +239,7 @@ class AddLandscapeActivity : BaseBindingActivity() {
             return false
         }
 
-        if (imageList.size != 3) {
+        if (imageList.size == 0) {
 
             UtilityMethod.showToastMessageError(
                 mActivity!!,
@@ -247,13 +255,13 @@ class AddLandscapeActivity : BaseBindingActivity() {
     private fun showImageSelectionDialog() {
 
         val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
-        val builder = AlertDialog.Builder( mActivity!!)
+        val builder = AlertDialog.Builder(mActivity!!)
         builder.setTitle("Add Photo!")
         builder.setItems(options) { dialog, item ->
             if (options[item] == "Take Photo") {
-                EasyImage.openCameraForImage( mActivity!!, 100)
+                EasyImage.openCameraForImage(mActivity!!, 100)
             } else if (options[item] == "Choose from Gallery") {
-                EasyImage.openGallery( mActivity!!, 200)
+                EasyImage.openGallery(mActivity!!, 200)
             } else if (options[item] == "Cancel") {
                 dialog.dismiss()
             }
@@ -301,7 +309,7 @@ class AddLandscapeActivity : BaseBindingActivity() {
                 override fun onCanceled(source: EasyImage.ImageSource, type: Int) {
                     if (source == ImageProvider.CAMERA) {
                         val photoFile =
-                            EasyImage.lastlyTakenButCanceledPhoto( mActivity!!)
+                            EasyImage.lastlyTakenButCanceledPhoto(mActivity!!)
                         photoFile?.delete()
                     }
                 }
@@ -363,6 +371,39 @@ class AddLandscapeActivity : BaseBindingActivity() {
             }
         }
 
+    }
+
+    private fun getUnitListFromAPI() {
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+        val call1: Call<UnitListResponsePOJO> = apiService1.getProductUnitList()
+
+        call1.enqueue(object : Callback<UnitListResponsePOJO?> {
+            override fun onResponse(
+                call: Call<UnitListResponsePOJO?>,
+                response: Response<UnitListResponsePOJO?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+                        var list: ArrayList<Unit> = response.body()!!.unitList
+                        list.forEach {
+                            unitNameList.add(it.Name)
+                            unitList.add(it)
+                        }
+                        val adapter = ArrayAdapter(
+                            mActivity!!,
+                            R.layout.support_simple_spinner_dropdown_item,
+                            unitNameList
+                        )
+                        binding!!.spinnerPriceUnit.adapter = adapter
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<UnitListResponsePOJO?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
     }
 
 }

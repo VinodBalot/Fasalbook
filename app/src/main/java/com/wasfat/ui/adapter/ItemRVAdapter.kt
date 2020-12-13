@@ -1,23 +1,18 @@
 package com.wasfat.ui.home.adapter
 
 import android.app.Activity
-import android.util.Log
-import android.view.View
 import androidx.databinding.ViewDataBinding
 import com.bumptech.glide.Glide
 import com.os.urservice.ui.components.adapters.RecyclerBaseAdapter
 import com.wasfat.R
-import com.wasfat.ui.pojo.Category
 import com.wasfat.ui.pojo.UserProduct
-import com.wasfat.utils.UtilityMethod
 import kotlinx.android.synthetic.main.view_item_list.view.*
-import kotlin.system.exitProcess
 
 class ItemRVAdapter(
     private val context: Activity,
-    private val onClickListener:(UserProduct) -> Unit,
+    private val onClickListener: (UserProduct) -> Unit,
     private val items: ArrayList<UserProduct>,
-    private val unitList : ArrayList<com.wasfat.ui.pojo.Unit>
+    private val unitList: ArrayList<com.wasfat.ui.pojo.Unit>
 ) : RecyclerBaseAdapter() {
 
     override fun getLayoutIdForPosition(position: Int): Int = R.layout.view_item_list
@@ -28,15 +23,15 @@ class ItemRVAdapter(
 
         viewDataBinding.root.txtItemName.text = items[position].ProductName
         viewDataBinding.root.llMain.tag = position
-        viewDataBinding.root.llMain.setOnClickListener{ onClickListener(items[position]) }
+        viewDataBinding.root.llMain.setOnClickListener { onClickListener(items[position]) }
 
         var image = ""
 
-        if(items[position].ImageList.isNotEmpty()){
+        if (items[position].ImageList.isNotEmpty()) {
 
             items[position].ImageList.forEach {
 
-                if(it.Path != "" && it.ImageName != ""){
+                if (it.Path != "" && it.ImageName != "") {
 
                     image = it.Path + "/" + it.ImageName
 
@@ -44,10 +39,8 @@ class ItemRVAdapter(
 
             }
         }
-
-        Log.d("TAG", "putViewDataBinding: " + image)
-
-        Glide.with(context).load(image).into(viewDataBinding.root.ivItemIcon)
+        Glide.with(context).load(image).placeholder(R.drawable.no_image_available)
+            .into(viewDataBinding.root.ivItemIcon)
 
         viewDataBinding.root.txtItemQuantity.text = items[position].Qty
         viewDataBinding.root.txtItemUnit.text = unitList[items[position].UnitId.toInt()].Name

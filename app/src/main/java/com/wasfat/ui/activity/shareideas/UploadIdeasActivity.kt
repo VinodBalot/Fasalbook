@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.View
 import android.widget.Toast
@@ -143,7 +144,11 @@ class UploadIdeasActivity : BaseBindingActivity() {
     }
 
     private fun shareIdeaVideo() {
-        //TODO : Handle Share Videos here
+        val galleryIntent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+        )
+        startActivityForResult(galleryIntent, 1)
     }
 
     private fun shareIdeaInText(title: String, shortDescription: String) {
@@ -336,5 +341,8 @@ class UploadIdeasActivity : BaseBindingActivity() {
                     }
                 }
             })
+    /*    if () {
+
+        }*/
     }
 }

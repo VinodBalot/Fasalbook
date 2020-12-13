@@ -68,7 +68,7 @@ class StaticPageActivity : BaseBindingActivity() {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
-        rootObject.addProperty("languageId", 1)
+        rootObject.addProperty("languageId", sessionManager!!.language)
 
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject

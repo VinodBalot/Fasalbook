@@ -224,7 +224,7 @@ class AddFarmTourismActivity : BaseBindingActivity() {
         val rootObject = JsonObject()
 
         rootObject.addProperty("CategoryId", parentCategory.PKID)
-        rootObject.addProperty("LanguageId", "1")
+        rootObject.addProperty("languageId", sessionManager!!.language)
 
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
@@ -372,7 +372,7 @@ class AddFarmTourismActivity : BaseBindingActivity() {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
-        rootObject.addProperty("languageId", "1")
+        rootObject.addProperty("languageId", sessionManager!!.language)
         rootObject.addProperty("countryId", Constants.COUNTRYID)
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
@@ -407,7 +407,7 @@ class AddFarmTourismActivity : BaseBindingActivity() {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
-        rootObject.addProperty("languageId", "1")
+        rootObject.addProperty("languageId", sessionManager!!.language)
         rootObject.addProperty("stateId", stateId)
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
@@ -442,7 +442,7 @@ class AddFarmTourismActivity : BaseBindingActivity() {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
-        rootObject.addProperty("languageId", "1")
+        rootObject.addProperty("languageId", sessionManager!!.language)
         rootObject.addProperty("cityId", cityId)
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
@@ -497,15 +497,15 @@ class AddFarmTourismActivity : BaseBindingActivity() {
         rootObject.addProperty("ContactNo", contactNumber)
         rootObject.addProperty("Facilities", facilities)
         rootObject.addProperty("Attraction", attractions)
-        rootObject.addProperty("lat", 0)
-        rootObject.addProperty("lmg", 0)
+        rootObject.addProperty("lat", latitude)
+        rootObject.addProperty("lmg", longitude)
         rootObject.addProperty("UserId", sessionManager!!.userId)
         rootObject.addProperty("Published", published)
         rootObject.addProperty("BlockID", blockId)
         rootObject.addProperty("EmailId", email)
         rootObject.addProperty("Website", website)
         rootObject.addProperty("Price", price)
-        rootObject.addProperty("Image", imageBase64)
+        rootObject.addProperty("Image", "")
 
 
         val jsonParser = JsonParser()
@@ -702,15 +702,16 @@ class AddFarmTourismActivity : BaseBindingActivity() {
             if (data!!.getStringExtra("mLongtitude")!!.isNotEmpty()) {
                 longitude = data!!.getStringExtra("mLongtitude")!!
             }
-       /*     if (data!!.getStringExtra("addresses")!!.isNotEmpty()) {
+            if (data!!.getStringExtra("addresses")!!.isNotEmpty()) {
                 binding!!.edtAddress.setText(data!!.getStringExtra("addresses"))
             }
-            if (!data!!.getStringExtra("locality")!!.isEmpty()) {
-                binding!!.edtCity.setText(data!!.getStringExtra("locality"))
-            }
-            if (!data!!.getStringExtra("locality")!!.isEmpty()) {
-                binding!!.edtState.setText(data!!.getStringExtra("adminArea"))
-            }*/
+            /*
+           if (!data!!.getStringExtra("locality")!!.isEmpty()) {
+               binding!!.edtCity.setText(data!!.getStringExtra("locality"))
+           }
+           if (!data!!.getStringExtra("locality")!!.isEmpty()) {
+               binding!!.edtState.setText(data!!.getStringExtra("adminArea"))
+           }*/
         }
 
         EasyImage.handleActivityResult(
@@ -756,6 +757,7 @@ class AddFarmTourismActivity : BaseBindingActivity() {
                     }
                 }
             })
+
     }
 
 

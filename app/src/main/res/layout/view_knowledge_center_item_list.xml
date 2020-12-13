@@ -20,8 +20,7 @@
                 android:id="@+id/ivItemIcon"
                 android:layout_width="0dp"
                 android:scaleType="centerCrop"
-                android:layout_height="@dimen/_50sdp"
-                android:src="@drawable/wheat" />
+                android:layout_height="@dimen/_50sdp" />
 
             <LinearLayout
                 android:layout_marginLeft="@dimen/_12sdp"
@@ -39,9 +38,8 @@
                     android:layout_gravity="center"
                     android:gravity="left"
                     android:textStyle="bold"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp"
-                    android:text="50"
                     app:CustomFontName="ProximaNovaReg" />
 
                 <com.wasfat.utils.CustomFontTextView
@@ -52,8 +50,7 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_gravity="center"
                     android:gravity="left"
-                    android:text="50"
-                    android:textColor="@color/white"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/_10sdp"
                     app:CustomFontName="ProximaNovaReg" />
 

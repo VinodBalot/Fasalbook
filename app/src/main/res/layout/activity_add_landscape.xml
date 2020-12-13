@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -18,7 +17,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="Add Landscape Item"
+                android:text="Add Landscape"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16sdp"
                 app:CustomFontName="ProximaNovaBold" />
@@ -51,8 +50,49 @@
                     android:layout_height="@dimen/_40sdp"
                     android:background="@drawable/bg_backgound_corner_grey"
                     android:hint="Product Name"
+                    android:clickable="false"
+                    android:editable="false"
+                    android:focusable="false"
                     android:inputType="textCapWords"
                     android:paddingLeft="@dimen/_10sdp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <com.wasfat.utils.CustomFontEditText
+                        android:id="@+id/edtPrice"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_backgound_corner_grey"
+                        android:hint="Price"
+                        android:inputType="numberDecimal"
+                        android:paddingLeft="@dimen/_10sdp" />
+
+                    <com.wasfat.utils.CustomFontTextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.8"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:text="Per Unit" />
+
+                    <Spinner
+                        android:id="@+id/spinnerPriceUnit"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:layout_weight="1.2"
+                        android:background="@drawable/bg_backgound_corner_grey"
+                        android:hint="Unit"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:spinnerMode="dropdown" />
+
+                </LinearLayout>
 
                 <com.wasfat.utils.CustomFontEditText
                     android:id="@+id/edtSpecification"
@@ -123,22 +163,22 @@
                 </HorizontalScrollView>
 
                 <LinearLayout
-                    android:layout_margin="@dimen/_10sdp"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_30sdp"
+                    android:layout_margin="@dimen/_10sdp"
                     android:orientation="horizontal">
 
                     <CheckBox
                         android:id="@+id/cbPublished"
                         android:layout_width="@dimen/_25sdp"
-                        android:layout_height="@dimen/_25sdp"/>
+                        android:layout_height="@dimen/_25sdp" />
 
                     <TextView
-                        android:textStyle="bold"
-                        android:textSize="@dimen/_14sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/farm_tourism_publish_message"/>
+                        android:text="@string/farm_tourism_publish_message"
+                        android:textSize="@dimen/_14sdp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
@@ -148,7 +188,7 @@
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_round_green"
-                    android:text="Add Landscape Item"
+                    android:text="Add Landscape"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sdp" />

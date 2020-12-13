@@ -133,6 +133,8 @@
     <string name="label_enter_short_description">Please enter short description</string>
     <string name="label_confirm_address">Confirm Address</string>
     <string name="label_map">Map</string>
+    <string name="enter_service_offered">Please enter service offered</string>
+    <string name="label_privacy_policy">Privacy Policy</string>
 
 
 </resources>

@@ -2,25 +2,17 @@ package com.wasfat.ui.activity.buyAndSell.agricultureAndAlliedServices
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import com.wasfat.R
 import com.wasfat.databinding.ActivityAddAlliedServicesBinding
-import com.wasfat.databinding.ActivityAddLandscapeBinding
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory
-import com.wasfat.ui.activity.buyAndSell.landscapeAndGardening.AddLandscapeActivity
-import com.wasfat.ui.adapter.ImageListRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
 import com.wasfat.ui.pojo.AddFarmItemResponse
-import com.wasfat.ui.pojo.BuySellType
-import com.wasfat.ui.pojo.Category
 import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.UtilityMethod
 import retrofit2.Call
@@ -32,16 +24,19 @@ class AddAlliedServicesActivity : BaseBindingActivity() {
     private lateinit var parentCategoryId: String
     var binding: ActivityAddAlliedServicesBinding? = null
     var onClickListener: View.OnClickListener? = null
+    var productName = ""
 
     companion object {
 
         fun startActivity(
             activity: Activity,
             categoryId: Int,
+            productName: String,
             isClear: Boolean
         ) {
             val intent = Intent(activity, AddAlliedServicesActivity::class.java)
             intent.putExtra("categoryId", categoryId)
+            intent.putExtra("productName", productName)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -56,8 +51,8 @@ class AddAlliedServicesActivity : BaseBindingActivity() {
 
     override fun createActivityObject() {
         mActivity = this
-
         parentCategoryId = intent.getStringExtra("categoryId").toString()
+        productName = intent.getStringExtra("productName").toString()
 
     }
 
@@ -69,6 +64,7 @@ class AddAlliedServicesActivity : BaseBindingActivity() {
     override fun setListeners() {
         binding!!.imvClose.setOnClickListener(onClickListener)
         binding!!.btnAddLandscape.setOnClickListener(onClickListener)
+        binding!!.edtProductName.setText(productName)
     }
 
     override fun onClick(view: View?) {
@@ -99,7 +95,7 @@ class AddAlliedServicesActivity : BaseBindingActivity() {
     private fun isValidFormData(
         name: String,
         specification: String,
-        servicesOffered : String
+        servicesOffered: String
     ): Boolean {
 
         if (TextUtils.isEmpty(name)) {
@@ -107,13 +103,11 @@ class AddAlliedServicesActivity : BaseBindingActivity() {
             return false
         }
 
-        if (TextUtils.isEmpty(specification)) {
-            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_unit_value))
-            return false
-        }
-
         if (TextUtils.isEmpty(servicesOffered)) {
-            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_unit_value))
+            UtilityMethod.showToastMessageError(
+                mActivity!!,
+                getString(R.string.enter_service_offered)
+            )
             return false
         }
 
@@ -123,7 +117,7 @@ class AddAlliedServicesActivity : BaseBindingActivity() {
     private fun addLandscapeItemThroughAPI(
         name: String,
         specification: String,
-        servicesOffered : String
+        servicesOffered: String
     ) {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
@@ -131,8 +125,8 @@ class AddAlliedServicesActivity : BaseBindingActivity() {
 
         rootObject.addProperty("ProductId", 0)
         rootObject.addProperty("ProductName", name)
-        rootObject.addProperty("Specification", specification )
-        rootObject.addProperty("ServiceOffered", servicesOffered )
+        rootObject.addProperty("Specification", specification)
+        rootObject.addProperty("ServiceOffered", servicesOffered)
         rootObject.addProperty("CategoryId", parentCategoryId)
         rootObject.addProperty("UserId", sessionManager!!.userId)
         rootObject.addProperty("Published", binding!!.cbPublished.isChecked)
@@ -165,6 +159,7 @@ class AddAlliedServicesActivity : BaseBindingActivity() {
                     }
                 }
             }
+
             override fun onFailure(call: Call<AddFarmItemResponse?>, t: Throwable) {
                 ProgressDialog.hideProgressDialog()
             }

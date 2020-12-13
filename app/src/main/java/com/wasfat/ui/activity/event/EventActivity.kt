@@ -113,7 +113,7 @@ class EventActivity : BaseBindingActivity() {
         val rootObject = JsonObject()
 
         rootObject.addProperty("CategoryId",eventCategory.PKID)
-        rootObject.addProperty("LanguageId", "1")
+        rootObject.addProperty("languageId", sessionManager!!.language)
 
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject

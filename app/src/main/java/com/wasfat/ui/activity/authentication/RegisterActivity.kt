@@ -151,7 +151,7 @@ class RegisterActivity : BaseBindingActivity() {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
-        rootObject.addProperty("languageId", "1")
+        rootObject.addProperty("languageId", sessionManager!!.language)
         rootObject.addProperty("countryId", Constants.COUNTRYID)
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
@@ -186,7 +186,7 @@ class RegisterActivity : BaseBindingActivity() {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
-        rootObject.addProperty("languageId", "1")
+        rootObject.addProperty("languageId", sessionManager!!.language)
         rootObject.addProperty("stateId", stateId)
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
@@ -221,7 +221,7 @@ class RegisterActivity : BaseBindingActivity() {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
-        rootObject.addProperty("languageId", "1")
+        rootObject.addProperty("languageId", sessionManager!!.language)
         rootObject.addProperty("cityId", cityId)
         var jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject

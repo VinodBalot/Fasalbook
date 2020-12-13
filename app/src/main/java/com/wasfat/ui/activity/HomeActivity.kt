@@ -37,7 +37,6 @@ class HomeActivity : AppCompatActivity() {
         sessionManager = SessionManager()
         UtilityMethod.setLocate(sessionManager!!.language, baseContext)
 
-
         drawerLayout = findViewById(R.id.drawer_layout)
         imgMenu = findViewById(R.id.imgMenu)
         imgSearch = findViewById(R.id.imgSearch)
@@ -74,11 +73,21 @@ class HomeActivity : AppCompatActivity() {
         val rlShareApp = view.findViewById<RelativeLayout>(R.id.rlShareApp)
         val rlLogout = view.findViewById<RelativeLayout>(R.id.rlLogout)
         val rlSuggestions = view.findViewById<RelativeLayout>(R.id.rlSuggestions)
+        val rlPrivacyPolicy = view.findViewById<RelativeLayout>(R.id.rlPrivacyPolicy)
+
+        rlPrivacyPolicy.setOnClickListener {
+            drawerLayout!!.closeDrawer(Gravity.LEFT)
+            val bundle = Bundle()
+            bundle.putString("title", "Privacy Policy")
+            bundle.putString("url", "http://fasalbook.com/privacy-policy.aspx")
+            WebViewActivity.startActivity(this, bundle, false)
+        }
 
         rlChangeLanguage.setOnClickListener {
             drawerLayout!!.closeDrawer(Gravity.LEFT)
             showChangeLang()
         }
+
 
         rlChangePassword.setOnClickListener {
             drawerLayout!!.closeDrawer(Gravity.LEFT)
@@ -111,13 +120,12 @@ class HomeActivity : AppCompatActivity() {
         mBuilder.setTitle("Choose Language")
         mBuilder.setSingleChoiceItems(listItmes, -1) { dialog, which ->
             if (which == 0) {
-                UtilityMethod.setLocate("hi", baseContext)
+                UtilityMethod.setLocate("2", baseContext)
                 recreate()
             } else if (which == 1) {
-                UtilityMethod.setLocate("en", baseContext)
+                UtilityMethod.setLocate("1", baseContext)
                 recreate()
             }
-
             dialog.dismiss()
         }
         val mDialog = mBuilder.create()

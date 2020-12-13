@@ -14,7 +14,6 @@ import com.wasfat.databinding.ActivityAlliedServicesBinding
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory
 import com.wasfat.ui.activity.HomeActivity
-import com.wasfat.ui.activity.buyAndSell.landscapeAndGardening.AddLandscapeActivity
 import com.wasfat.ui.base.BaseBindingActivity
 import com.wasfat.ui.home.adapter.ServiceRVAdapter
 import com.wasfat.ui.pojo.*
@@ -82,18 +81,20 @@ class AlliedServicesActivity : BaseBindingActivity() {
     private fun setupFabButton() {
         binding!!.fabAdd.visibility = View.VISIBLE
         binding!!.fabAdd.setOnClickListener {
-            AddAlliedServicesActivity.startActivity(mActivity!!, parentCategory.PKID, false)
+            AddAlliedServicesActivity.startActivity(
+                mActivity!!,
+                parentCategory.PKID,
+                parentCategory.CategoryName,
+                false
+            )
         }
     }
 
     private fun setAdapter() {
-
         val layoutManager1 = LinearLayoutManager(this)
         binding!!.rvUserFarms.layoutManager = layoutManager1
         binding!!.rvUserFarms.setHasFixedSize(true)
-
         fetchUserLandscapeFromAPI()
-
     }
 
     private fun serviceItemClicked(service: UserServiceProduct) {
@@ -254,7 +255,7 @@ class AlliedServicesActivity : BaseBindingActivity() {
             R.id.imvBack -> {
                 finish()
             }
-            R.id.btnSubmit ->{
+            R.id.btnSubmit -> {
                 var intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
             }
