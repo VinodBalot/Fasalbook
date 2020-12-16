@@ -75,7 +75,7 @@ class EditLandscapeActivity : BaseBindingActivity() {
     override fun createActivityObject() {
         mActivity = this
 
-        userLandscapeProduct = intent.getStringExtra("userLandscapeProduct") as UserLandscapeProduct
+        userLandscapeProduct = intent.getSerializableExtra("userLandscapeProduct") as UserLandscapeProduct
         parentCategoryId = intent.getStringExtra("categoryId").toString()
 
     }
@@ -93,6 +93,7 @@ class EditLandscapeActivity : BaseBindingActivity() {
         binding!!.txtDialogTitle.text = getString(R.string.label_edit_item_dialog_title)
         binding!!.edtProductName.setText(userLandscapeProduct.ProductName)
         binding!!.edtSpecification.setText(userLandscapeProduct.ProductSmallDesc)
+        binding!!.cbPublished.isChecked = userLandscapeProduct.Published.toBoolean()
 
         userLandscapeProduct.ImageList.forEach {
             if (it.ImageName.isNotEmpty()) {

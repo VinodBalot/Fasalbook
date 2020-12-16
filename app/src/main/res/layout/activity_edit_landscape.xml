@@ -45,13 +45,15 @@
                 android:orientation="vertical">
 
 
-                <com.wasfat.utils.CustomFontEditText
+                <com.wasfat.utils.CustomFontTextView
                     android:id="@+id/edtProductName"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/_14sdp"
+                    android:text="Category"
                     android:background="@drawable/bg_backgound_corner_grey"
-                    android:hint="Product Name"
-                    android:inputType="textCapWords"
                     android:paddingLeft="@dimen/_10sdp" />
 
                 <com.wasfat.utils.CustomFontEditText

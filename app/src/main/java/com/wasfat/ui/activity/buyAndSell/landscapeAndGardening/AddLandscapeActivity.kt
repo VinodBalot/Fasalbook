@@ -57,7 +57,7 @@ class AddLandscapeActivity : BaseBindingActivity() {
             isClear: Boolean
         ) {
             val intent = Intent(activity, AddLandscapeActivity::class.java)
-            intent.putExtra("categoryId", categoryId)
+            intent.putExtra("categoryId", categoryId.toString())
             intent.putExtra("productName", productName)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -149,8 +149,8 @@ class AddLandscapeActivity : BaseBindingActivity() {
         val rootObject = JsonObject()
 
         var image1 = UtilityMethod.imageEncoder(imageList[0])
-        //   var image2 = UtilityMethod.imageEncoder(imageList[1])
-        //  var image3 = UtilityMethod.imageEncoder(imageList[2])
+        var image2 = UtilityMethod.imageEncoder(imageList[1])
+        var image3 = UtilityMethod.imageEncoder(imageList[2])
 
         rootObject.addProperty("ProductId", 0)
         rootObject.addProperty("ProductName", name)
@@ -160,7 +160,9 @@ class AddLandscapeActivity : BaseBindingActivity() {
         rootObject.addProperty("Rate", price)
         rootObject.addProperty("RateUnitId", priceUnitId)
         rootObject.addProperty("Published", binding!!.cbPublished.isChecked)
-        rootObject.addProperty("Image1", "")
+        rootObject.addProperty("Image1", image1)
+        rootObject.addProperty("Image2", image2)
+        rootObject.addProperty("Image3", image3)
 
         val jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
@@ -239,7 +241,7 @@ class AddLandscapeActivity : BaseBindingActivity() {
             return false
         }
 
-        if (imageList.size == 0) {
+        if (imageList.size != 3) {
 
             UtilityMethod.showToastMessageError(
                 mActivity!!,
@@ -286,12 +288,18 @@ class AddLandscapeActivity : BaseBindingActivity() {
                     if (type == 100) {
 
                         imageList.add(imageFiles[0].absolutePath)
+
+                        Log.d("TAG", "onImagesPicked: CAMERA IMAGE : " +imageFiles[0].absolutePath )
+
                         imageListRVAdapter!!.notifyDataSetChanged()
                         setVisibiltyForImageSelection()
 
                     } else {
 
                         imageList.add(imageFiles[0].absolutePath)
+
+                        Log.d("TAG", "onImagesPicked: GALLERY IMAGE : " +imageFiles[0].absolutePath )
+
                         imageListRVAdapter!!.notifyDataSetChanged()
                         setVisibiltyForImageSelection()
 

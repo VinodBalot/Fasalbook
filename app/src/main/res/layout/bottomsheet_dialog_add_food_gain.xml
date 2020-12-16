@@ -182,7 +182,7 @@
 
 
                 <com.wasfat.utils.CustomFontEditText
-                    android:id="@+id/edtSpecification"
+                    android:id="@+id/edtServicesOffered"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_100sdp"
                     android:layout_marginTop="@dimen/_10sdp"

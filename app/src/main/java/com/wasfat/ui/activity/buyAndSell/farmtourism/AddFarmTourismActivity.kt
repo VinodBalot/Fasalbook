@@ -165,10 +165,6 @@ class AddFarmTourismActivity : BaseBindingActivity() {
                     reqDataBlock
                 )
             }
-            R.id.btnAddressMap -> {
-                //TODO: Open MAP for address
-                Toast.makeText(mActivity!!, "Map Will Open Here", Toast.LENGTH_SHORT).show()
-            }
             R.id.imvRemoveImage -> {
                 selectedImageFilePath = null
                 binding!!.rvImage.visibility = View.GONE

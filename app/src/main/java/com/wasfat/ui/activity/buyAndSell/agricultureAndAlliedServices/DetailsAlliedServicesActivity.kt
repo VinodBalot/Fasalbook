@@ -29,7 +29,7 @@ class DetailsAlliedServicesActivity : BaseBindingActivity() {
     companion object {
 
         fun startActivity(activity: Activity, userServiceProduct: UserServiceProduct, isClear: Boolean) {
-            val intent = Intent(activity, DetailsLandscapeActivity::class.java)
+            val intent = Intent(activity, DetailsAlliedServicesActivity::class.java)
             intent.putExtra("userServiceProduct", userServiceProduct)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -46,7 +46,7 @@ class DetailsAlliedServicesActivity : BaseBindingActivity() {
         mActivity = this
 
         //Getting product from parent
-        userServiceProduct = (intent.getSerializableExtra("userLandscape") as? UserServiceProduct)!!
+        userServiceProduct = (intent.getSerializableExtra("userServiceProduct") as? UserServiceProduct)!!
     }
 
     override fun initializeObject() {
