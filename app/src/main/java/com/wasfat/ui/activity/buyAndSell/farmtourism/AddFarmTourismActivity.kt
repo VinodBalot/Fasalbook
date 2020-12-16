@@ -501,7 +501,7 @@ class AddFarmTourismActivity : BaseBindingActivity() {
         rootObject.addProperty("EmailId", email)
         rootObject.addProperty("Website", website)
         rootObject.addProperty("Price", price)
-        rootObject.addProperty("Image", "")
+        rootObject.addProperty("Image", imageBase64)
 
 
         val jsonParser = JsonParser()
@@ -692,15 +692,18 @@ class AddFarmTourismActivity : BaseBindingActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 101) {
-            if (data!!.getStringExtra("mLatitude")!!.isNotEmpty()) {
-                latitude = data!!.getStringExtra("mLatitude")!!
+            if (resultCode == RESULT_OK) {
+                if (data!!.getStringExtra("mLatitude")!!.isNotEmpty()) {
+                    latitude = data!!.getStringExtra("mLatitude")!!
+                }
+                if (data!!.getStringExtra("mLongtitude")!!.isNotEmpty()) {
+                    longitude = data!!.getStringExtra("mLongtitude")!!
+                }
+                if (data!!.getStringExtra("addresses")!!.isNotEmpty()) {
+                    binding!!.edtAddress.setText(data!!.getStringExtra("addresses"))
+                }
             }
-            if (data!!.getStringExtra("mLongtitude")!!.isNotEmpty()) {
-                longitude = data!!.getStringExtra("mLongtitude")!!
-            }
-            if (data!!.getStringExtra("addresses")!!.isNotEmpty()) {
-                binding!!.edtAddress.setText(data!!.getStringExtra("addresses"))
-            }
+
             /*
            if (!data!!.getStringExtra("locality")!!.isEmpty()) {
                binding!!.edtCity.setText(data!!.getStringExtra("locality"))

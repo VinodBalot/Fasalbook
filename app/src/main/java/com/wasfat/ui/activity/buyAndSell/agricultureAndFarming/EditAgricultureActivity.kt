@@ -162,6 +162,7 @@ class EditAgricultureActivity : BaseBindingActivity() {
             unitNameList
         )
         binding!!.spinnerUnit.adapter = adapter
+        binding!!.spinnerPriceUnit.adapter = adapter
         adapter.notifyDataSetChanged()
 
         //Edit current Item
@@ -189,7 +190,6 @@ class EditAgricultureActivity : BaseBindingActivity() {
 
         imageListRVAdapter = ImageListRVAdapter(mActivity, onClickListener, imageList)
         binding!!.rvImage.adapter = imageListRVAdapter
-
 
         }
 

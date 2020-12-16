@@ -223,12 +223,10 @@ class AddAndEditFormAgricultureActivity : BaseBindingActivity() {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
-        var image1 = ""
-        if (UtilityMethod.isLocalPath(imageList[0])) {
-            image1 = UtilityMethod.imageEncoder(imageList[0])
-            Log.d("1234", "base 64 1: " + image1)
 
-        }
+        var image1 = UtilityMethod.imageEncoder(imageList[0])
+        Log.d("1234", "base 64 1: " + image1)
+
         rootObject.addProperty("ProductId", productId)
         rootObject.addProperty("ProductName", name)
         rootObject.addProperty("CategoryId", parentCategory.PKID)
@@ -239,7 +237,8 @@ class AddAndEditFormAgricultureActivity : BaseBindingActivity() {
         rootObject.addProperty("RateUnitId", priceUnit.Id)
         rootObject.addProperty("UserId", sessionManager!!.userId)
         rootObject.addProperty("Published", "true")
-        rootObject.addProperty("Image1", "")
+        rootObject.addProperty("Image1", image1)
+
 
         val jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject

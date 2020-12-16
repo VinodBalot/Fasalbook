@@ -885,14 +885,16 @@ class EditFarmActivity : BaseBindingActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == 101) {
-            if (data!!.getStringExtra("mLatitude")!!.isNotEmpty()) {
-                latitude = data!!.getStringExtra("mLatitude")!!
-            }
-            if (data!!.getStringExtra("mLongtitude")!!.isNotEmpty()) {
-                longitude = data!!.getStringExtra("mLongtitude")!!
-            }
-            if (data!!.getStringExtra("addresses")!!.isNotEmpty()) {
-                binding!!.edtAddress.setText(data!!.getStringExtra("addresses"))
+            if (resultCode == RESULT_OK) {
+                if (data!!.getStringExtra("mLatitude")!!.isNotEmpty()) {
+                    latitude = data!!.getStringExtra("mLatitude")!!
+                }
+                if (data!!.getStringExtra("mLongtitude")!!.isNotEmpty()) {
+                    longitude = data!!.getStringExtra("mLongtitude")!!
+                }
+                if (data!!.getStringExtra("addresses")!!.isNotEmpty()) {
+                    binding!!.edtAddress.setText(data!!.getStringExtra("addresses"))
+                }
             }
             /*
            if (!data!!.getStringExtra("locality")!!.isEmpty()) {
