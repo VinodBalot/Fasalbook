@@ -3,6 +3,7 @@ package com.wasfat.ui.activity.buyAndSell
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
@@ -80,18 +81,21 @@ class SellActivity : BaseBindingActivity() {
 
     private fun categoryItemClicked(category: Category) {
 
-        when(category.CategoryName){
+        Log.d("TAG", "categoryItemClicked: " + category.PKID + " - " + category.CategoryName)
 
-            "Agriculture & Farming" -> {
+
+        when(category.PKID){
+
+            11 -> {
                 AgricultureCategory1Activity.startActivity(mActivity!!, category,  BuySellType.SELL, false)
             }
-            "Landscape & Gardening" ->{
+            12 ->{
                 LandscapeCategory1Activity.startActivity(mActivity!!, category,  BuySellType.SELL, false)
             }
-            "Farm Tourism & Hospitality" ->{
+            13 ->{
                 FarmTourismActivity.startActivity(mActivity!!, category,  BuySellType.SELL, false)
             }
-            "Agriculture & Allied Services" ->{
+            14 ->{
                 AlliedServicesCategory1Activity.startActivity(mActivity!!, category,  BuySellType.SELL, false)
             }
 

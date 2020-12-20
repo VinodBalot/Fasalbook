@@ -26,7 +26,6 @@ class SplashActivity : AppCompatActivity() {
     }
 
 
-
     private fun startSplashTimer() {
 
         Handler().postDelayed({

@@ -4,8 +4,11 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.net.Uri
 import android.provider.MediaStore
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -26,6 +29,10 @@ import com.wasfat.ui.pojo.AddWriteUpIdeaResponse
 import com.wasfat.ui.pojo.Category
 import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.UtilityMethod
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
 import retrofit2.Call
@@ -198,6 +205,77 @@ class UploadIdeasActivity : BaseBindingActivity() {
 
     }
 
+    // Uploading Video
+    private fun uploadFile(videoPath: String) {
+        ProgressDialog.showProgressDialog(this)
+
+        val file: File = File(videoPath)
+        val requestBody = RequestBody.create("*/*".toMediaTypeOrNull(), file)
+        val fileToUpload: MultipartBody.Part =
+            MultipartBody.Part.createFormData("file", file.getName(), requestBody)
+        val filename = RequestBody.create("text/plain".toMediaTypeOrNull(), file.name)
+
+        var gsonObject = JsonObject()
+        val rootObject = JsonObject()
+        rootObject.addProperty("file", "0")
+        rootObject.addProperty("CategoryId", parentCategory.PKID)
+        rootObject.addProperty("UserId", sessionManager!!.userId)
+        rootObject.addProperty("Published", isPublished)
+
+        var jsonParser = JsonParser()
+        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+
+        val call1: Call<AddWriteUpIdeaResponse> = apiService1.ideasAdd(gsonObject)
+        call1.enqueue(object : Callback<AddWriteUpIdeaResponse?> {
+            override fun onResponse(
+                call: Call<AddWriteUpIdeaResponse?>,
+                response: Response<AddWriteUpIdeaResponse?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+                        Toast.makeText(mActivity!!, "Successful done.", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                }
+            }
+            override fun onFailure(call: Call<AddWriteUpIdeaResponse?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
+//        val call: Call<*> = apiService1.uploadFile(fileToUpload, filename)
+//        call.enqueue(object : Callback<Any?> {
+//
+//            fun onResponse(call: Call<*>?, response: Response<*>) {
+//
+//                val serverResponse: ServerResponse? = response.body()
+//
+//                if (serverResponse != null) {
+//                    if (serverResponse.getSuccess()) {
+//                        Toast.makeText(
+//                            applicationContext,
+//                            serverResponse.getMessage(),
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    } else {
+//                        Toast.makeText(
+//                            applicationContext,
+//                            serverResponse.getMessage(),
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
+//                } else {
+//                    assert(serverResponse != null)
+//                    Log.v("Response", serverResponse.toString())
+//                }
+//
+//            }
+//
+//            fun onFailure(call: Call<*>?, t: Throwable) {}
+//        })
+    }
 
     private fun removeImageSelection(position: Int) {
 
@@ -207,6 +285,7 @@ class UploadIdeasActivity : BaseBindingActivity() {
         imageListRVAdapter!!.notifyDataSetChanged()
 
         setVisibiltyForImageSelection()
+
     }
 
     private fun setVisibiltyForImageSelection() {
@@ -239,7 +318,6 @@ class UploadIdeasActivity : BaseBindingActivity() {
         }
         builder.show()
     }
-
 
     fun checkingPermissionIsEnabledOrNot(): Boolean {
         val FirstPermissionResult: Int =
@@ -299,6 +377,24 @@ class UploadIdeasActivity : BaseBindingActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode === 1 && resultCode === RESULT_OK && null != data) {
+
+            // Get the Video from data
+            val selectedVideo: Uri? = data.data
+            val filePathColumn = arrayOf(MediaStore.Video.Media.DATA)
+
+            val cursor: Cursor =
+                contentResolver.query(selectedVideo!!, filePathColumn, null, null, null)!!
+            cursor.moveToFirst()
+            val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
+            val videoPath = cursor.getString(columnIndex)
+            uploadFile(videoPath)
+            cursor.close()
+
+        } else {
+            Toast.makeText(this, "You haven't picked Image/Video", Toast.LENGTH_LONG).show()
+        }
 
         EasyImage.handleActivityResult(
             requestCode,

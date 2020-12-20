@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Fasalbook</string>
 
 
     <!-- Custom font name -->
@@ -55,86 +54,107 @@
     <string name="label_other_services">Other Services</string>
     <string name="label_organic">Organic</string>
     <string name="label_nonorganic">Non-Organic</string>
-    <string name="label_logout_message">Are you sure you want to logout ?</string>
-    <string name="label_ok">OK</string>
-    <string name="label_cancel">CANCEL</string>
-    <string name="select_state">Select State</string>
-    <string name="select_City">Select City</string>
-    <string name="enter_mobile_number">Please enter mobile number</string>
-    <string name="enter_valid_email_id">Please enter valid email address</string>
-    <string name="enter_full_name">Please enter name of item</string>
-    <string name="enter_unit_value">Please enter unit value</string>
-    <string name="enter_quantity">Please enter quantity</string>
-    <string name="label_product_not_found">Product not found</string>
-    <string name="enter_password">PLease enter password</string>
-    <string name="minimum_6_characters">Please enter at least 6 characters</string>
-    <string name="label_select_state">Please select state</string>
-    <string name="label_select_city">Please select city</string>
-    <string name="label_select_block">Please select block</string>
-    <string name="label_enter_village_name">Please enter village name</string>
-    <string name="label_enter_pin_code">Please enter pin code</string>
-    <string name="label_enter_company_name">Please enter company  name</string>
-    <string name="enter_sex">Please select gender</string>
-    <string name="enter_date_of_birth">Please select Date of birth</string>
-    <string name="select_block">Select Block</string>
-    <string name="enter_name">Please enter name</string>
-    <string name="label_user_registerd">Register Successful</string>
-    <string name="label_user_no_registerd">User not registered</string>
-    <string name="enter_old_password">Please enter old password</string>
-    <string name="label_password_doesnot_match">Password doesn\'t match</string>
-    <string name="label_password_change_successful">Password change successful</string>
+    <string name="label_logout_message">क्या आप लॉग आउट करना चाहते हैं?</string>
+    <string name="label_ok">ठीक</string>
+    <string name="label_cancel">रद्द करना</string>
+    <string name="select_state">राज्य चुनें</string>
+    <string name="select_City">शहर चुनें</string>
+    <string name="enter_mobile_number">कृपया मोबाइल नंबर दर्ज करें</string>
+    <string name="enter_valid_email_id">कृपया मान्य ईमेल पता दर्ज करें</string>
+    <string name="enter_full_name">कृपया आइटम का नाम दर्ज करें</string>
+    <string name="enter_unit_value">कृपया इकाई मूल्य दर्ज करें</string>
+    <string name="enter_quantity">कृपया मात्रा दर्ज करें</string>
+    <string name="label_product_not_found">उत्पाद नहीं मिला</string>
+    <string name="enter_password">कृप्या पास्वर्ड भरो</string>
+    <string name="minimum_6_characters">कृपया कम से कम 6 अक्षर दर्ज करें</string>
+    <string name="label_select_state">कृपया राज्य चुनें</string>
+    <string name="label_select_city">कृपया शहर चुनें</string>
+    <string name="label_select_block">कृपया ब्लॉक चुनें</string>
+    <string name="label_enter_village_name">कृपया गाँव का नाम दर्ज करें</string>
+    <string name="label_enter_pin_code">कृपया पिन कोड दर्ज करें</string>
+    <string name="label_enter_company_name">कृपया कंपनी का नाम दर्ज करें</string>
+    <string name="enter_sex">कृपया लिंग चुनें</string>
+    <string name="enter_date_of_birth">कृपया जन्म तिथि चुनें</string>
+    <string name="select_block">ब्लॉक का चयन करें</string>
+    <string name="enter_name">कृपया नाम दर्ज करें</string>
+    <string name="label_user_registerd">सफल रजिस्टर</string>
+    <string name="label_user_no_registerd">उपयोगकर्ता पंजीकृत नहीं है</string>
+    <string name="enter_old_password">कृपया पुराना पासवर्ड डालें</string>
+    <string name="label_password_doesnot_match">पासवर्ड मेल नहीं खाता है</string>
+    <string name="label_password_change_successful">पासवर्ड परिवर्तन सफल</string>
 
-    <string name="label_user_login_successful">Login Successful</string>
-    <string name="label_user_login_failed">Login Failed</string>
+    <string name="label_user_login_successful">सफलतापूर्ण प्रवेश</string>
+    <string name="label_user_login_failed">लॉगिन विफल</string>
 
-    <string name="label_events_category">Events</string>
+    <string name="label_events_category">आयोजन</string>
 
 
-    <string name="label_sell_item_add_successful">Item added Successfully</string>
-    <string name="label_sell_item_add_unsuccessful">Item is not added</string>
+    <string name="label_sell_item_add_successful">आइटम सफलतापूर्वक जोड़ा गया</string>
+    <string name="label_sell_item_add_unsuccessful">आइटम नहीं जोड़ा गया है</string>
 
-    <string name="label_item_delete_successful">Item deleted Successfully</string>
-    <string name="label_item_delete_unsuccessful">Item is not deleted</string>
+    <string name="label_item_delete_successful">आइटम सफलतापूर्वक हटा दिया गया</string>
+    <string name="label_item_delete_unsuccessful">आइटम हटाया नहीं गया है</string>
 
-    <string name="label_user_already_registerd">User Already Registered</string>
+    <string name="label_user_already_registerd">उपयोगकर्ता पहले से पंजीकृत है</string>
 
-    <string name="label_add_item_images_count_warning">Please add only 3 Images</string>
+    <string name="label_add_item_images_count_warning">कृपया केवल 3 छवियाँ जोड़ें</string>
 
-    <string name="label_add_item_dialog_title">Add Item</string>
-    <string name="label_edit_item_dialog_title">Edit Item</string>
+    <string name="label_add_item_dialog_title">सामान जोडें</string>
+    <string name="label_edit_item_dialog_title">संपादित आइटम</string>
 
-    <string name="label_edit_item_dialog_button">Save</string>
-    <string name="label_add_item_dialog_button">Add</string>
-    <string name="farm_tourism_publish_message">Are you sure to publish this ?</string>
-    <string name="enter_farm_name">Enter Farm Name</string>
-    <string name="enter_farm_address">Enter Address</string>
-    <string name="enter_farm_contact_number">Enter Contact Number</string>
-    <string name="enter_farm_facitilites">Enter Facilities</string>
-    <string name="enter_farm_attraction">Enter Attraction</string>
-    <string name="select_farm_image">Please selected Image</string>
-    <string name="label_select_address_from_map">Select Address From Map</string>
-    <string name="enter_farm_contact_email">Enter Contact Email</string>
-    <string name="enter_farm_website">Enter Website</string>
-    <string name="enter_farm_price">Enter Price</string>
-    <string name="label_add_farm_attractions">Add Farm Attractions</string>
-    <string name="label_no_record_found">No Record Found</string>
-    <string name="label_share_idea_upload_image_msg">You can upload any image, news cuttings etc.</string>
-    <string name="label_upload_image">Upload Image</string>
-    <string name="label_share_video">Share Video</string>
-    <string name="label_upload_video">Upload Video</string>
-    <string name="label_share_idea_upload_video_msg">You can upload video to share your idea</string>
-    <string name="label_select_image">Select Image</string>
-    <string name="label_share_images">Share Images</string>
-    <string name="label_share_idea_upload_text_msg">You can share your ideas in write-up</string>
-    <string name="label_ideas_in_text">Write-up</string>
-    <string name="label_title">Title</string>
-    <string name="label_short_description">Short Description</string>
-    <string name="label_enter_title">Please enter title</string>
-    <string name="label_enter_short_description">Please enter short description</string>
-    <string name="label_confirm_address">Confirm Address</string>
-    <string name="label_map">Map</string>
-    <string name="enter_service_offered">Please enter service offered</string>
-    <string name="label_privacy_policy">Privacy Policy</string>
+    <string name="label_edit_item_dialog_button">सहेजें</string>
+    <string name="label_add_item_dialog_button">जोड़ना</string>
+    <string name="farm_tourism_publish_message">क्या आप इसे प्रकाशित करना सुनिश्चित करते हैं?</string>
+    <string name="enter_farm_name">फार्म का नाम दर्ज करें</string>
+    <string name="enter_farm_address">पता लिखिए</string>
+    <string name="enter_farm_contact_number">संपर्क नंबर दर्ज करें</string>
+    <string name="enter_farm_facitilites">सुविधाएं दर्ज करें</string>
+    <string name="enter_farm_attraction">आकर्षण दर्ज करें</string>
+    <string name="select_farm_image">कृपया चयनित छवि</string>
+    <string name="label_select_address_from_map">मानचित्र से पता चुनें</string>
+    <string name="enter_farm_contact_email">संपर्क ईमेल दर्ज करें</string>
+    <string name="enter_farm_website">वेबसाइट दर्ज करें</string>
+    <string name="enter_farm_price">मूल्य दर्ज करें</string>
+    <string name="label_add_farm_attractions">फार्म आकर्षण जोड़ें</string>
+    <string name="label_no_record_found">कोई रिकॉर्ड नहीं मिला</string>
+    <string name="label_share_idea_upload_image_msg">आप कोई भी इमेज, न्यूज कटिंग आदि अपलोड कर सकते हैं।</string>
+    <string name="label_upload_image">तस्वीर डालिये</string>
+    <string name="label_share_video">वीडियो शेयर करें</string>
+    <string name="label_upload_video">विडियो को अपलोड करें</string>
+    <string name="label_share_idea_upload_video_msg">आप अपने विचार साझा करने के लिए वीडियो अपलोड कर सकते हैं</string>
+    <string name="label_select_image">छवि चुने</string>
+    <string name="label_share_images">शेयर छवियाँ</string>
+    <string name="label_share_idea_upload_text_msg">आप अपने विचारों को राइट-अप में साझा कर सकते हैं</string>
+    <string name="label_ideas_in_text">लिखें</string>
+    <string name="label_title">शीर्षक</string>
+    <string name="label_short_description">संक्षिप्त वर्णन</string>
+    <string name="label_enter_title">कृपया शीर्षक दर्ज करें</string>
+    <string name="label_enter_short_description">कृपया संक्षिप्त विवरण दर्ज करें</string>
+    <string name="label_confirm_address">पते की पुष्टि</string>
+    <string name="label_map">नक्शा</string>
+    <string name="enter_service_offered">कृपया सेवा की पेशकश दर्ज करें</string>
+    <string name="label_privacy_policy">गोपनीयता नीति</string>
+    <string name="label_choose_language_dialog">भाषा चुनें</string>
+    <string name="label_image_dialog_item_take_photo">Take Photo</string>
+    <string name="label_image_dialog_item_choose_from_gallery">Choose from Gallery</string>
+    <string name="label_image_dialog_cancel">Cancel</string>
+    <string name="label_image_dialog_title">Add Photo!</string>
+    <string name="label_phone_verification_msg">Please enter your 10 digit Phone Number, we will send 6 digit verification code to verify it</string>
+    <string name="label_phone_verification">Phone Verification</string>
+    <string name="label_enter_your_phone">Enter Your Phone</string>
+    <string name="label_send_otp">Send OTP</string>
+    <string name="label_verify_otp">Verify OTP</string>
+    <string name="label_enter_4_digit_otp">Enter 6 digit OTP</string>
+    <string name="label_enter_the_received_otp_here">Enter the received OTP here</string>
+    <string name="label_otp_sent">OTP Sent</string>
+    <string name="label_otp_not_sent">OTP is not sent</string>
+    <string name="label_verification_failed">Verification Failed</string>
+    <string name="label_verification_success">Verification Successful</string>
+    <string name="label_send_otp_first">Please send the OTP first</string>
+    <string name="label_password_not_changed">Password not changed</string>
+    <string name="label_update_password">Update Password</string>
+    <string name="label_enter_new_password">Enter New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
 
 
 </resources>

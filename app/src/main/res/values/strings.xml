@@ -135,5 +135,26 @@
     <string name="label_map">Map</string>
     <string name="enter_service_offered">Please enter service offered</string>
     <string name="label_privacy_policy">Privacy Policy</string>
+    <string name="label_choose_language_dialog">Choose Language</string>
+    <string name="label_image_dialog_item_take_photo">Take Photo</string>
+    <string name="label_image_dialog_item_choose_from_gallery">Choose from Gallery</string>
+    <string name="label_image_dialog_cancel">Cancel</string>
+    <string name="label_image_dialog_title">Add Photo!</string>
+    <string name="label_phone_verification_msg">Please enter your 10 digit Phone Number, we will send 6 digit verification code to verify it</string>
+    <string name="label_phone_verification">Phone Verification</string>
+    <string name="label_enter_your_phone">Enter Your Phone</string>
+    <string name="label_send_otp">Send OTP</string>
+    <string name="label_verify_otp">Verify OTP</string>
+    <string name="label_enter_4_digit_otp">Enter 6 digit OTP</string>
+    <string name="label_enter_the_received_otp_here">Enter the received OTP here</string>
+    <string name="label_otp_sent">OTP Sent</string>
+    <string name="label_otp_not_sent">OTP is not sent</string>
+    <string name="label_verification_failed">Verification Failed</string>
+    <string name="label_verification_success">Verification Successful</string>
+    <string name="label_send_otp_first">Please send the OTP first</string>
+    <string name="label_password_not_changed">Password not changed</string>
+    <string name="label_update_password">Update Password</string>
+    <string name="label_enter_new_password">Enter New Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
 
 </resources>

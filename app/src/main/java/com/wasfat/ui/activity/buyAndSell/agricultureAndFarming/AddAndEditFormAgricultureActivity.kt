@@ -159,18 +159,14 @@ class AddAndEditFormAgricultureActivity : BaseBindingActivity() {
     }
 
     private fun setVisibiltyForImageSelection() {
-        if (imageList.size >= 3) {
-            binding!!.rvImage!!.visibility = View.VISIBLE
-            binding!!.rlImage!!.visibility = View.GONE
-            binding!!.imvAddMoreLayout!!.visibility = View.GONE
-        } else if (imageList.size in 1..2) {
-            binding!!.rvImage!!.visibility = View.VISIBLE
-            binding!!.rlImage!!.visibility = View.GONE
-            binding!!.imvAddMoreLayout!!.visibility = View.VISIBLE
-        } else {
-            binding!!.rvImage!!.visibility = View.GONE
-            binding!!.rlImage!!.visibility = View.VISIBLE
-            binding!!.imvAddMoreLayout!!.visibility = View.GONE
+        if (imageList.size == 1) {
+            binding!!.rvImage.visibility = View.VISIBLE
+            binding!!.rlImage.visibility = View.GONE
+            binding!!.imvAddMoreLayout.visibility = View.GONE
+        }else {
+            binding!!.rvImage.visibility = View.GONE
+            binding!!.rlImage.visibility = View.VISIBLE
+            binding!!.imvAddMoreLayout.visibility = View.GONE
         }
 
     }
@@ -224,7 +220,16 @@ class AddAndEditFormAgricultureActivity : BaseBindingActivity() {
         var gsonObject = JsonObject()
         val rootObject = JsonObject()
 
-        var image1 = UtilityMethod.imageEncoder(imageList[0])
+        var image1 = ""
+        var image2 = ""
+        var image3 = ""
+
+        if (UtilityMethod.isLocalPath(imageList[0])) {
+
+            image1 = UtilityMethod.imageEncoder(imageList[0])
+
+        }
+
         Log.d("1234", "base 64 1: " + image1)
 
         rootObject.addProperty("ProductId", productId)
@@ -238,6 +243,8 @@ class AddAndEditFormAgricultureActivity : BaseBindingActivity() {
         rootObject.addProperty("UserId", sessionManager!!.userId)
         rootObject.addProperty("Published", "true")
         rootObject.addProperty("Image1", image1)
+        rootObject.addProperty("Image2", image2)
+        rootObject.addProperty("Image3", image3)
 
 
         val jsonParser = JsonParser()
@@ -323,21 +330,22 @@ class AddAndEditFormAgricultureActivity : BaseBindingActivity() {
 
     private fun showImageSelectionDialog() {
 
-        val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
-        val builder = AlertDialog.Builder(this@AddAndEditFormAgricultureActivity)
-        builder.setTitle("Add Photo!")
+        val options = arrayOf<CharSequence>(getString(R.string.label_image_dialog_item_take_photo), getString(
+            R.string.label_image_dialog_item_choose_from_gallery), getString(R.string.label_image_dialog_cancel))
+        val builder = AlertDialog.Builder(mActivity!!)
+        builder.setTitle(getString(R.string.label_image_dialog_title))
         builder.setItems(options) { dialog, item ->
-            if (options[item] == "Take Photo") {
-                EasyImage.openCameraForImage(this@AddAndEditFormAgricultureActivity, 100)
-            } else if (options[item] == "Choose from Gallery") {
-                EasyImage.openGallery(this@AddAndEditFormAgricultureActivity, 200)
-            } else if (options[item] == "Cancel") {
+            if (options[item] == getString(R.string.label_image_dialog_item_take_photo)) {
+                EasyImage.openCameraForImage(mActivity!!, 100)
+            } else if (options[item] == getString(
+                    R.string.label_image_dialog_item_choose_from_gallery)) {
+                EasyImage.openGallery(mActivity!!, 200)
+            } else if (options[item] ==  getString(R.string.label_image_dialog_cancel)) {
                 dialog.dismiss()
             }
         }
         builder.show()
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

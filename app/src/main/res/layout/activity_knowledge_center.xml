@@ -45,10 +45,11 @@
             android:id="@+id/textNoRecordFound"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:layout_centerInParent="true"
             android:layout_margin="@dimen/_10sdp"
             android:text="@string/label_no_record_found"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="@dimen/_14sdp"
             app:CustomFontName="ProximaNovaBold" />
 

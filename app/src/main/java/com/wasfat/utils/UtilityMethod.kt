@@ -119,11 +119,22 @@ object UtilityMethod {
 
 
     fun setLocate(Lang: String, context: Context) {
-        val locale = Locale(Lang)
-        Locale.setDefault(locale)
-        val config = Configuration()
-        config.locale = locale
-        context.resources.updateConfiguration(config, context.resources.displayMetrics)
+
+        var locale : Locale
+
+        if(Lang == "1"){
+           locale = Locale("en")
+            Locale.setDefault(locale)
+            val config = Configuration()
+            config.locale = locale
+            context.resources.updateConfiguration(config, context.resources.displayMetrics)
+        }else if(Lang == "2"){
+            locale = Locale("hi")
+            Locale.setDefault(locale)
+            val config = Configuration()
+            config.locale = locale
+            context.resources.updateConfiguration(config, context.resources.displayMetrics)
+        }
         val sessionManager = SessionManager()
         sessionManager.language = Lang
     }

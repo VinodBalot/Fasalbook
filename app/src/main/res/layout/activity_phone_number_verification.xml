@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".ui.activity.authentication.PhoneNumberVerificationActivity">
+
+            <RelativeLayout
+                android:id="@+id/appbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_45sdp"
+                android:background="@color/colorPrimary">
+
+                <ImageView
+                    android:id="@+id/imvBack"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:background="@drawable/bg_ripple_mask"
+                    android:src="@drawable/ic_baseline_arrow_back_24"
+                    android:tint="@color/white" />
+
+
+                <com.wasfat.utils.CustomFontTextView
+                    android:id="@+id/textTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="@string/label_phone_verification"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14sdp"
+                    app:CustomFontName="ProximaNovaBold" />
+
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:context=".MainActivity"
+                android:layout_margin="@dimen/_15sdp"
+                android:orientation="vertical">
+
+                <com.wasfat.utils.CustomFontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:text="@string/label_phone_verification_msg"
+                    android:textColor="@color/grey_900"
+                    android:textSize="@dimen/_12sdp" />
+
+                <EditText
+                    android:maxLength="10"
+                    android:id="@+id/edtPhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:layout_margin="10dp"
+                    android:padding="10dp"
+                    android:background="@drawable/bg_backgound_corner_grey"
+                    android:inputType="number"
+                    android:hint="@string/label_enter_your_phone"
+                    />
+
+                <Button
+                    android:id="@+id/btnSendOtp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:text="@string/label_send_otp"
+                    android:layout_margin="10dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_round_green"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_margin="@dimen/_10sdp"
+                android:background="@color/grey_400" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_15sdp"
+                android:orientation="vertical">
+
+                <com.wasfat.utils.CustomFontTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:text="@string/label_enter_the_received_otp_here"
+                    android:textColor="@color/grey_900"
+                    android:textSize="@dimen/_12sdp" />
+
+                <EditText
+                    android:maxLength="6"
+                    android:id="@+id/edtOtp"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:ems="4"
+                    android:layout_margin="10dp"
+                    android:padding="10dp"
+                    android:background="@drawable/bg_backgound_corner_grey"
+                    android:inputType="number"
+                    android:hint="@string/label_enter_4_digit_otp"
+                    />
+
+                <Button
+                    android:id="@+id/btnVerify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:text="@string/label_verify_otp"
+                    android:layout_margin="10dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/bg_round_green"/>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+</layout>

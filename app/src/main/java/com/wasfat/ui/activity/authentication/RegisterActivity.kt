@@ -61,11 +61,13 @@ class RegisterActivity : BaseBindingActivity() {
     val reqDataCity: HashMap<String, Int> = HashMap()
     val reqDataBlock: HashMap<String, Int> = HashMap()
 
+    lateinit var phoneNumber: String
+
     companion object {
 
-        fun startActivity(activity: Activity, bundle: Bundle?, isClear: Boolean) {
+        fun startActivity(activity: Activity,  phoneNumber: String, isClear: Boolean) {
             val intent = Intent(activity, RegisterActivity::class.java)
-            if (bundle != null) intent.putExtra("bundle", bundle)
+            intent.putExtra("phoneNumber", phoneNumber)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             activity.startActivity(intent)
@@ -85,6 +87,10 @@ class RegisterActivity : BaseBindingActivity() {
 
     override fun initializeObject() {
         onClickListener = this
+        phoneNumber = intent.getStringExtra("phoneNumber").toString()
+
+        binding!!.edtMobile.setText(phoneNumber)
+
         callGetStateListByCountryAPI()
     }
 
@@ -340,7 +346,7 @@ class RegisterActivity : BaseBindingActivity() {
         rootObject.addProperty("Sex", gender)
         rootObject.addProperty("BlockId", blockId)
         rootObject.addProperty("PostCode", binding!!.edtPincode.text.toString())
-        rootObject.addProperty("MobilePhone", binding!!.edtMobile.text.toString())
+        rootObject.addProperty("MobilePhone", phoneNumber)
         rootObject.addProperty("EmailId", binding!!.edtEmail.text.toString())
         rootObject.addProperty("Password", binding!!.edtPassword.text.toString())
         rootObject.addProperty("OfficeName", binding!!.edtNameOFCompany.text.toString())

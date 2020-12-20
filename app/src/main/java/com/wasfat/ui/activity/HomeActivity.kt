@@ -117,8 +117,15 @@ class HomeActivity : AppCompatActivity() {
     private fun showChangeLang() {
         val listItmes = arrayOf("हिंदी", "English")
         val mBuilder = AlertDialog.Builder(this@HomeActivity)
-        mBuilder.setTitle("Choose Language")
-        mBuilder.setSingleChoiceItems(listItmes, -1) { dialog, which ->
+        mBuilder.setTitle(getString(R.string.label_choose_language_dialog))
+
+        var checkedItem : Int = -1
+        if(sessionManager!!.language == "1"){
+            checkedItem = 1
+        }else if(sessionManager!!.language == "2"){
+            checkedItem = 0
+        }
+        mBuilder.setSingleChoiceItems(listItmes, checkedItem) { dialog, which ->
             if (which == 0) {
                 UtilityMethod.setLocate("2", baseContext)
                 recreate()

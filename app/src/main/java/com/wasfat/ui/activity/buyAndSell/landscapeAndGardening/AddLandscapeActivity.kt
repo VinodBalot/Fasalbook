@@ -149,8 +149,6 @@ class AddLandscapeActivity : BaseBindingActivity() {
         val rootObject = JsonObject()
 
         var image1 = UtilityMethod.imageEncoder(imageList[0])
-        var image2 = UtilityMethod.imageEncoder(imageList[1])
-        var image3 = UtilityMethod.imageEncoder(imageList[2])
 
         rootObject.addProperty("ProductId", 0)
         rootObject.addProperty("ProductName", name)
@@ -161,8 +159,8 @@ class AddLandscapeActivity : BaseBindingActivity() {
         rootObject.addProperty("RateUnitId", priceUnitId)
         rootObject.addProperty("Published", binding!!.cbPublished.isChecked)
         rootObject.addProperty("Image1", image1)
-        rootObject.addProperty("Image2", image2)
-        rootObject.addProperty("Image3", image3)
+        rootObject.addProperty("Image2", "")
+        rootObject.addProperty("Image3", "")
 
         val jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
@@ -210,15 +208,11 @@ class AddLandscapeActivity : BaseBindingActivity() {
     }
 
     private fun setVisibiltyForImageSelection() {
-        if (imageList.size >= 3) {
+        if (imageList.size == 1) {
             binding!!.rvImage.visibility = View.VISIBLE
             binding!!.rlImage.visibility = View.GONE
             binding!!.imvAddMoreLayout.visibility = View.GONE
-        } else if (imageList.size in 1..2) {
-            binding!!.rvImage.visibility = View.VISIBLE
-            binding!!.rlImage.visibility = View.GONE
-            binding!!.imvAddMoreLayout.visibility = View.VISIBLE
-        } else {
+        }else {
             binding!!.rvImage.visibility = View.GONE
             binding!!.rlImage.visibility = View.VISIBLE
             binding!!.imvAddMoreLayout.visibility = View.GONE
@@ -241,7 +235,7 @@ class AddLandscapeActivity : BaseBindingActivity() {
             return false
         }
 
-        if (imageList.size != 3) {
+        if (imageList.size == 0) {
 
             UtilityMethod.showToastMessageError(
                 mActivity!!,
@@ -256,15 +250,17 @@ class AddLandscapeActivity : BaseBindingActivity() {
 
     private fun showImageSelectionDialog() {
 
-        val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
+        val options = arrayOf<CharSequence>(getString(R.string.label_image_dialog_item_take_photo), getString(
+                    R.string.label_image_dialog_item_choose_from_gallery), getString(R.string.label_image_dialog_cancel))
         val builder = AlertDialog.Builder(mActivity!!)
-        builder.setTitle("Add Photo!")
+        builder.setTitle(getString(R.string.label_image_dialog_title))
         builder.setItems(options) { dialog, item ->
-            if (options[item] == "Take Photo") {
+            if (options[item] == getString(R.string.label_image_dialog_item_take_photo)) {
                 EasyImage.openCameraForImage(mActivity!!, 100)
-            } else if (options[item] == "Choose from Gallery") {
+            } else if (options[item] == getString(
+                    R.string.label_image_dialog_item_choose_from_gallery)) {
                 EasyImage.openGallery(mActivity!!, 200)
-            } else if (options[item] == "Cancel") {
+            } else if (options[item] ==  getString(R.string.label_image_dialog_cancel)) {
                 dialog.dismiss()
             }
         }

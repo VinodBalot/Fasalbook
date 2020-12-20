@@ -3,6 +3,7 @@ package com.wasfat.ui.activity.buyAndSell
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
@@ -93,22 +94,24 @@ class BuyActivity : BaseBindingActivity() {
 
     private fun categoryItemClicked(category: Category) {
 
-        when(category.CategoryName){
+        Log.d("TAG", "categoryItemClicked: " + category.PKID + " - " + category.CategoryName)
 
-            "Agriculture & Farming" -> {
-                AgricultureCategory1Activity.startActivity(mActivity!!, category, BuySellType.BUY, false)
-            }
-            "Landscape & Gardening" ->{
-                LandscapeCategory1Activity.startActivity(mActivity!!, category, BuySellType.BUY, false)
-            }
-            "Farm Tourism & Hospitality" ->{
-                FarmTourismActivity.startActivity(mActivity!!, category, BuySellType.BUY, false)
-            }
-            "Agriculture & Allied Services" ->{
-                AlliedServicesCategory1Activity.startActivity(mActivity!!, category, BuySellType.BUY, false)
-            }
-        }
+        when(category.PKID){
 
+                11 -> {
+                    AgricultureCategory1Activity.startActivity(mActivity!!, category,  BuySellType.SELL, false)
+                }
+                12 ->{
+                    LandscapeCategory1Activity.startActivity(mActivity!!, category,  BuySellType.SELL, false)
+                }
+                13 ->{
+                    FarmTourismActivity.startActivity(mActivity!!, category,  BuySellType.SELL, false)
+                }
+                14 ->{
+                    AlliedServicesCategory1Activity.startActivity(mActivity!!, category,  BuySellType.SELL, false)
+                }
+
+            }
     }
 
     private fun fetchAllCategoriesFromAPI(){
