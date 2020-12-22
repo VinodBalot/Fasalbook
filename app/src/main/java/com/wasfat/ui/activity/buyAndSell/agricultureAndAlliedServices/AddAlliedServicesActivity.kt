@@ -35,7 +35,7 @@ class AddAlliedServicesActivity : BaseBindingActivity() {
             isClear: Boolean
         ) {
             val intent = Intent(activity, AddAlliedServicesActivity::class.java)
-            intent.putExtra("categoryId", categoryId)
+            intent.putExtra("categoryId", categoryId.toString())
             intent.putExtra("productName", productName)
             if (isClear) intent.flags =
                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -76,14 +76,14 @@ class AddAlliedServicesActivity : BaseBindingActivity() {
             R.id.btnAddLandscape -> {
                 if (isValidFormData(
                         binding!!.edtProductName.text.toString(),
-                        binding!!.edtSpecification.text.toString(),
-                        binding!!.edtServices.text.toString()
+                        binding!!.edtServicesOffered.text.toString(),
+                        binding!!.edtSpecification.text.toString()
                     )
                 ) {
                     addLandscapeItemThroughAPI(
                         binding!!.edtProductName.text.toString(),
-                        binding!!.edtSpecification.text.toString(),
-                        binding!!.edtServices.text.toString()
+                        binding!!.edtServicesOffered.text.toString(),
+                        binding!!.edtSpecification.text.toString()
                     )
                 }
             }
@@ -94,8 +94,8 @@ class AddAlliedServicesActivity : BaseBindingActivity() {
 
     private fun isValidFormData(
         name: String,
-        specification: String,
-        servicesOffered: String
+        servicesOffered: String,
+        specification: String
     ): Boolean {
 
         if (TextUtils.isEmpty(name)) {
@@ -116,8 +116,8 @@ class AddAlliedServicesActivity : BaseBindingActivity() {
 
     private fun addLandscapeItemThroughAPI(
         name: String,
-        specification: String,
-        servicesOffered: String
+        servicesOffered: String,
+        specification: String
     ) {
         ProgressDialog.showProgressDialog(mActivity!!)
         var gsonObject = JsonObject()

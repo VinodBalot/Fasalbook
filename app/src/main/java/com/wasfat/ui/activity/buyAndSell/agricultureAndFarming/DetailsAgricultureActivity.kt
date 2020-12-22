@@ -82,7 +82,7 @@ class DetailsAgricultureActivity : BaseBindingActivity() {
         binding!!.rvImageList.layoutManager = layoutManager1
         binding!!.rvImageList.setHasFixedSize(true)
 
-        imageListRVAdapter = ImageListRVAdapter(this,onClickListener,imageList)
+        imageListRVAdapter = ImageListRVAdapter(this,null,imageList)
         binding!!.rvImageList.adapter = imageListRVAdapter
 
     }

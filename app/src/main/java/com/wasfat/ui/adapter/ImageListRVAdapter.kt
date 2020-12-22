@@ -27,7 +27,13 @@ class ImageListRVAdapter(
 
             viewDataBinding.root.imvRemoveImage.tag = position
 
-            viewDataBinding.root.imvRemoveImage.setOnClickListener(onClickListener)
+            if(onClickListener != null){
+                viewDataBinding.root.imvRemoveImage.visibility = View.VISIBLE
+                viewDataBinding.root.imvRemoveImage.setOnClickListener(onClickListener)
+            }else{
+                viewDataBinding.root.imvRemoveImage.visibility = View.GONE
+            }
+
 
             Glide.with(context!!)
                 .load(imageList[position])

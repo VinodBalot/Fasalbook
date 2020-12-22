@@ -40,6 +40,7 @@ class KnowledgeCenterActivity : BaseBindingActivity() {
     }
 
     override fun setBinding() {
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_knowledge_center)
         //  viewModel = ViewModelProvider(this).get(VendorViewModel::class.java)
         binding!!.lifecycleOwner = this
@@ -51,6 +52,7 @@ class KnowledgeCenterActivity : BaseBindingActivity() {
     }
 
     override fun initializeObject() {
+
         onClickListener = this
         val layoutManager1 = LinearLayoutManager(mActivity)
         binding!!.rvCategory.layoutManager = layoutManager1
@@ -124,7 +126,6 @@ class KnowledgeCenterActivity : BaseBindingActivity() {
                 ProgressDialog.hideProgressDialog()
             }
         })
-
 
     }
 

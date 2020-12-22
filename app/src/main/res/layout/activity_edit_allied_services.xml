@@ -44,28 +44,29 @@
                 android:layout_margin="@dimen/_10sdp"
                 android:orientation="vertical">
 
-
-                <com.wasfat.utils.CustomFontEditText
+                <com.wasfat.utils.CustomFontTextView
                     android:id="@+id/edtProductName"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:background="@drawable/bg_backgound_corner_grey"
                     android:hint="Product Name"
-                    android:inputType="textCapWords"
+                   android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/_14sdp"
                     android:paddingLeft="@dimen/_10sdp" />
 
                 <com.wasfat.utils.CustomFontEditText
-                    android:id="@+id/edtSpecification"
+                    android:id="@+id/edtServicesOffered"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_backgound_corner_grey"
-                    android:hint="Specification"
+                    android:hint="Services Offered"
                     android:paddingLeft="@dimen/_10sdp"
                     android:spinnerMode="dropdown" />
 
                 <com.wasfat.utils.CustomFontEditText
-                    android:id="@+id/edtServices"
+                    android:id="@+id/edtSpecification"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_10sdp"

@@ -50,7 +50,6 @@ class SelectLanguageActivity : BaseBindingActivity() {
         binding!!.imvBack.setOnClickListener(onClickListener)
         binding!!.btnSelectLanguage.setOnClickListener(onClickListener)
 
-
         binding!!.rgLanguage.setOnCheckedChangeListener { group, checkedId ->
             val rb = findViewById<View>(checkedId) as RadioButton
             if (rb.id == R.id.rbEnglish) {

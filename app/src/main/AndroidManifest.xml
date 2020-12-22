@@ -25,7 +25,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeOld">
-        <activity android:name=".ui.activity.buyAndSell.landscapeAndGardening.DetailsLandscapeActivity"></activity>
+        <activity android:name=".ui.activity.authentication.PhoneNumberVerificationActivity"></activity>
+        <activity android:name=".ui.activity.buyAndSell.landscapeAndGardening.DetailsLandscapeActivity" />
         <activity android:name=".ui.activity.buyAndSell.landscapeAndGardening.EditLandscapeActivity" />
         <activity android:name=".ui.activity.buyAndSell.landscapeAndGardening.AddLandscapeActivity" />
         <activity android:name=".ui.activity.buyAndSell.landscapeAndGardening.LandscapeActivity" />
@@ -141,7 +142,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeOld.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
-
         <activity
             android:name=".ui.activity.SelectLanguageActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -149,7 +149,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeOld.NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
-
         <activity
             android:name=".ui.activity.buyAndSell.agricultureAndFarming.AddAndEditFormAgricultureActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"

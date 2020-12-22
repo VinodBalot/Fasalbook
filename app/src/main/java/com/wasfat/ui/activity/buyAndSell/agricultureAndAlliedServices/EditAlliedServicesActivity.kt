@@ -63,7 +63,7 @@ class EditAlliedServicesActivity : BaseBindingActivity() {
     override fun createActivityObject() {
         mActivity = this
 
-        userServiceProduct = intent.getStringExtra("userServiceProduct") as UserServiceProduct
+        userServiceProduct = intent.getSerializableExtra("userServiceProduct") as UserServiceProduct
         parentCategoryId = intent.getStringExtra("categoryId").toString()
 
     }
@@ -81,7 +81,8 @@ class EditAlliedServicesActivity : BaseBindingActivity() {
         binding!!.txtDialogTitle.text = getString(R.string.label_edit_item_dialog_title)
         binding!!.edtProductName.setText(userServiceProduct.ProductName)
         binding!!.edtSpecification.setText(userServiceProduct.ProductSmallDesc)
-        binding!!.edtServices.setText(userServiceProduct.ServiceOffered)
+        binding!!.edtServicesOffered.setText(userServiceProduct.ServiceOffered)
+        binding!!.cbPublished.isChecked = userServiceProduct.Published.toBoolean()
 
     }
 
@@ -100,13 +101,13 @@ class EditAlliedServicesActivity : BaseBindingActivity() {
                 if (isValidFormData(
                         binding!!.edtProductName.text.toString(),
                         binding!!.edtSpecification.text.toString(),
-                        binding!!.edtServices.text.toString()
+                        binding!!.edtServicesOffered.text.toString()
                     )
                 ) {
                     addLandscapeItemThroughAPI(
                         binding!!.edtProductName.text.toString(),
                         binding!!.edtSpecification.text.toString(),
-                        binding!!.edtServices.text.toString()
+                        binding!!.edtServicesOffered.text.toString()
                     )
                 }
             }
@@ -126,13 +127,8 @@ class EditAlliedServicesActivity : BaseBindingActivity() {
             return false
         }
 
-        if (TextUtils.isEmpty(specification)) {
-            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_unit_value))
-            return false
-        }
-
         if (TextUtils.isEmpty(servicesOffered)) {
-            UtilityMethod.showToastMessageError(mActivity!!, getString(R.string.enter_unit_value))
+            UtilityMethod.showToastMessageError(mActivity!!,  getString(R.string.enter_service_offered))
             return false
         }
 

@@ -75,7 +75,7 @@ class EditLandscapeActivity : BaseBindingActivity() {
     override fun createActivityObject() {
         mActivity = this
 
-        userLandscapeProduct = intent.getStringExtra("userLandscapeProduct") as UserLandscapeProduct
+        userLandscapeProduct = intent.getSerializableExtra("userLandscapeProduct") as UserLandscapeProduct
         parentCategoryId = intent.getStringExtra("categoryId").toString()
 
     }
@@ -93,6 +93,7 @@ class EditLandscapeActivity : BaseBindingActivity() {
         binding!!.txtDialogTitle.text = getString(R.string.label_edit_item_dialog_title)
         binding!!.edtProductName.setText(userLandscapeProduct.ProductName)
         binding!!.edtSpecification.setText(userLandscapeProduct.ProductSmallDesc)
+        binding!!.cbPublished.isChecked = userLandscapeProduct.Published.toBoolean()
 
         userLandscapeProduct.ImageList.forEach {
             if (it.ImageName.isNotEmpty()) {
@@ -169,24 +170,11 @@ class EditLandscapeActivity : BaseBindingActivity() {
         val rootObject = JsonObject()
 
         var image1 = ""
-        var image2 = ""
-        var image3 = ""
+
 
         if (UtilityMethod.isLocalPath(imageList[0])) {
 
             image1 = UtilityMethod.imageEncoder(imageList[0])
-
-        }
-
-        if (UtilityMethod.isLocalPath(imageList[1])) {
-
-            image2 = UtilityMethod.imageEncoder(imageList[1])
-
-        }
-
-        if (UtilityMethod.isLocalPath(imageList[2])) {
-
-            image3 = UtilityMethod.imageEncoder(imageList[2])
 
         }
 
@@ -197,8 +185,8 @@ class EditLandscapeActivity : BaseBindingActivity() {
         rootObject.addProperty("UserId", sessionManager!!.userId)
         rootObject.addProperty("Published", binding!!.cbPublished.isChecked)
         rootObject.addProperty("Image1", image1)
-        rootObject.addProperty("Image2", image2)
-        rootObject.addProperty("Image3", image3)
+        rootObject.addProperty("Image2", "")
+        rootObject.addProperty("Image3", "")
 
         val jsonParser = JsonParser()
         gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
@@ -248,15 +236,11 @@ class EditLandscapeActivity : BaseBindingActivity() {
 
     private fun setVisibiltyForImageSelection() {
 
-        if (imageList.size >= 3) {
+        if (imageList.size == 1) {
             binding!!.rvImage.visibility = View.VISIBLE
             binding!!.rlImage.visibility = View.GONE
             binding!!.imvAddMoreLayout.visibility = View.GONE
-        } else if (imageList.size in 1..2) {
-            binding!!.rvImage.visibility = View.VISIBLE
-            binding!!.rlImage.visibility = View.GONE
-            binding!!.imvAddMoreLayout.visibility = View.VISIBLE
-        } else {
+        }else {
             binding!!.rvImage.visibility = View.GONE
             binding!!.rlImage.visibility = View.VISIBLE
             binding!!.imvAddMoreLayout.visibility = View.GONE
@@ -279,7 +263,7 @@ class EditLandscapeActivity : BaseBindingActivity() {
             return false
         }
 
-        if (imageList.size != 3) {
+        if (imageList.size == 0) {
 
             UtilityMethod.showToastMessageError(
                 mActivity!!,
@@ -294,15 +278,17 @@ class EditLandscapeActivity : BaseBindingActivity() {
 
     private fun showImageSelectionDialog() {
 
-        val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
-        val builder = AlertDialog.Builder( mActivity!!)
-        builder.setTitle("Add Photo!")
+        val options = arrayOf<CharSequence>(getString(R.string.label_image_dialog_item_take_photo), getString(
+            R.string.label_image_dialog_item_choose_from_gallery), getString(R.string.label_image_dialog_cancel))
+        val builder = AlertDialog.Builder(mActivity!!)
+        builder.setTitle(getString(R.string.label_image_dialog_title))
         builder.setItems(options) { dialog, item ->
-            if (options[item] == "Take Photo") {
-                EasyImage.openCameraForImage( mActivity!!, 100)
-            } else if (options[item] == "Choose from Gallery") {
-                EasyImage.openGallery( mActivity!!, 200)
-            } else if (options[item] == "Cancel") {
+            if (options[item] == getString(R.string.label_image_dialog_item_take_photo)) {
+                EasyImage.openCameraForImage(mActivity!!, 100)
+            } else if (options[item] == getString(
+                    R.string.label_image_dialog_item_choose_from_gallery)) {
+                EasyImage.openGallery(mActivity!!, 200)
+            } else if (options[item] ==  getString(R.string.label_image_dialog_cancel)) {
                 dialog.dismiss()
             }
         }

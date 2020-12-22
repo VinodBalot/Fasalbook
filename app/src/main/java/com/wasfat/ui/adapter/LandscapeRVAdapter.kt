@@ -15,7 +15,7 @@ class LandscapeRVAdapter(
     private val items: ArrayList<UserLandscapeProduct>
 ) : RecyclerBaseAdapter() {
 
-    override fun getLayoutIdForPosition(position: Int): Int = R.layout.view_item_list
+    override fun getLayoutIdForPosition(position: Int): Int = R.layout.view_landscape_item_list
 
     override fun getViewModel(position: Int): Any? = 0//items[position]
 
@@ -41,6 +41,7 @@ class LandscapeRVAdapter(
         Glide.with(context).load(image).placeholder(R.drawable.no_image_available)
             .into(viewDataBinding.root.ivItemIcon)
         viewDataBinding.root.txtItemName.text = items[position].ProductName
+        viewDataBinding.root.txtItemUnit.text = items[position].ProductSmallDesc
         viewDataBinding.root.llMain.tag = position
         viewDataBinding.root.llMain.setOnClickListener { onClickListener(items[position]) }
 

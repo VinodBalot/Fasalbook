@@ -16,6 +16,7 @@ import com.wasfat.network.RestApiFactory
 import com.wasfat.ui.activity.HomeActivity
 import com.wasfat.ui.base.BaseBindingActivity
 import com.wasfat.ui.pojo.LoginResponse
+import com.wasfat.ui.pojo.PhoneVerificationType
 import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.UtilityMethod
 import retrofit2.Call
@@ -64,10 +65,10 @@ class LoginActivity : BaseBindingActivity() {
 
         when (view!!.id) {
             R.id.txtSignup -> {
-                RegisterActivity.startActivity(mActivity!!, null, false)
+                PhoneNumberVerificationActivity.startActivity(mActivity!!, PhoneVerificationType.NEW_SIGN_UP, false)
             }
             R.id.txtForgotPassword -> {
-                ForgotPasswordActivity.startActivity(mActivity!!, null, false)
+                PhoneNumberVerificationActivity.startActivity(mActivity!!, PhoneVerificationType.FORGOT_PASSWORD, false)
             }
             R.id.btnLogin -> {
 

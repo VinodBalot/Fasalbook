@@ -5,7 +5,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.text.Editable
+import android.text.Html
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
@@ -45,6 +47,9 @@ class EditFarmActivity : BaseBindingActivity() {
     private var cityId: Int = -1
     private var stateId: Int = -1
     private var blockId: Int = -1
+
+    private var latitude = ""
+    private var longitude = ""
 
     var stateList: ArrayList<Statelist> = ArrayList()
     var stateNameList: ArrayList<String> = ArrayList()
@@ -138,7 +143,14 @@ class EditFarmActivity : BaseBindingActivity() {
         callGetBlockListByStateAPI()
         fetchCategoriesOfParentFromAPI()
 
-        binding!!.edtFarmName.setText( farm.FarmName )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            binding!!.edtFarmName.text =
+                Html.fromHtml(farm.FarmName, Html.FROM_HTML_MODE_COMPACT) as Editable?;
+        } else {
+            binding!!.edtFarmName.text= Html.fromHtml(farm.FarmName) as Editable?;
+        }
+
+       // binding!!.edtFarmName.setText( farm.FarmName )
         binding!!.edtAddress.setText(farm.Address )
         binding!!.edtContactNumber.setText(farm.ContactNo)
         binding!!.edtEmail.setText(farm.EmailId)
@@ -206,8 +218,11 @@ class EditFarmActivity : BaseBindingActivity() {
                 )
             }
             R.id.btnAddressMap ->{
-                //TODO: Open MAP for address
-                Toast.makeText(mActivity!!,"Map Will Open Here",Toast.LENGTH_SHORT).show()
+                val intent = Intent(
+                    mActivity!!,
+                    LocationMapsActivity::class.java
+                )
+                startActivityForResult(intent, 101)
             }
             R.id.rlImage -> {
                 if (checkingPermissionIsEnabledOrNot()) {
@@ -420,8 +435,8 @@ class EditFarmActivity : BaseBindingActivity() {
         rootObject.addProperty("Website", website)
         rootObject.addProperty("Price", price)
         rootObject.addProperty("Published", published)
-        rootObject.addProperty("lat", 0)
-        rootObject.addProperty("lmg", 0)
+        rootObject.addProperty("lat", latitude)
+        rootObject.addProperty("lmg", longitude)
         rootObject.addProperty("UserId", sessionManager!!.userId)
         rootObject.addProperty("BlockID", blockId)
 
@@ -868,6 +883,27 @@ class EditFarmActivity : BaseBindingActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 101) {
+            if (resultCode == RESULT_OK) {
+                if (data!!.getStringExtra("mLatitude")!!.isNotEmpty()) {
+                    latitude = data!!.getStringExtra("mLatitude")!!
+                }
+                if (data!!.getStringExtra("mLongtitude")!!.isNotEmpty()) {
+                    longitude = data!!.getStringExtra("mLongtitude")!!
+                }
+                if (data!!.getStringExtra("addresses")!!.isNotEmpty()) {
+                    binding!!.edtAddress.setText(data!!.getStringExtra("addresses"))
+                }
+            }
+            /*
+           if (!data!!.getStringExtra("locality")!!.isEmpty()) {
+               binding!!.edtCity.setText(data!!.getStringExtra("locality"))
+           }
+           if (!data!!.getStringExtra("locality")!!.isEmpty()) {
+               binding!!.edtState.setText(data!!.getStringExtra("adminArea"))
+           }*/
+        }
 
         EasyImage.handleActivityResult(
             requestCode,

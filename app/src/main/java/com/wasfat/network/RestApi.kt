@@ -151,6 +151,19 @@ interface RestApi {
     @POST("products/deleteService")
     fun deleteServiceItem(@Body jsonData: JsonObject): Call<DeleteFarmResponse>
 
+
+    @Headers("Content-Type: application/json")
+    @POST("users/newusersms")
+    fun sendOtpToThisNumber(@Body jsonData: JsonObject): Call<OTPVerificationResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("users/forgetpasswordsms")
+    fun sendOtpForForgetPassword(@Body jsonData: JsonObject): Call<OTPVerificationResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("users/forgetpassword")
+    fun updateAccountPassword(@Body jsonData: JsonObject): Call<OTPVerificationResponse>
+
     /*
   @Headers("Content-Type: application/json")
   @POST("signup")

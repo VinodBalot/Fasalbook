@@ -35,10 +35,7 @@ import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.wasfat.R
 import com.wasfat.ui.base.BaseActivity
-import com.wasfat.utils.AppUtils
-import com.wasfat.utils.Constants
-import com.wasfat.utils.FetchAddressIntentService
-import com.wasfat.utils.LocationProvider
+import com.wasfat.utils.*
 import kotlinx.android.synthetic.main.activity_map_location.*
 import java.util.*
 
@@ -96,16 +93,23 @@ class LocationMapsActivity : BaseActivity(), OnMapReadyCallback,
                 mFusedLocationProviderClient!!.lastLocation
             locationResult.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+
                     val location: Location? = task.result
-                    val currentLatLng = LatLng(
-                        location!!.latitude,
-                        location!!.longitude
-                    )
-                    val update: CameraUpdate = CameraUpdateFactory.newLatLngZoom(
-                        currentLatLng,
-                        15f
-                    )
-                    mMap!!.animateCamera(update)
+
+                    if(location != null){
+                        val currentLatLng = LatLng(
+                            location.latitude,
+                            location.longitude
+                        )
+                        val update: CameraUpdate = CameraUpdateFactory.newLatLngZoom(
+                            currentLatLng,
+                            15f
+                        )
+                        mMap!!.animateCamera(update)
+                    }else{
+                        enableGPSAutoMatically()
+                    }
+
                 }
             }
         } catch (e: SecurityException) {
@@ -325,8 +329,8 @@ class LocationMapsActivity : BaseActivity(), OnMapReadyCallback,
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GPS_REQUEST_CODE) {
             Log.e("tag", "GPS_REQUEST_CODE" + data?.getStringExtra("result"))
-            if (resultCode == Activity.RESULT_OK)
-                getCurrentLocation()
+            if (resultCode == RESULT_OK)
+                 getCurrentLocation()
         } else if (requestCode == GPS_SETTING_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 GPS_PERMISSION_ENABLE = true
@@ -349,6 +353,7 @@ class LocationMapsActivity : BaseActivity(), OnMapReadyCallback,
             dialog.dismiss()
         }
         alertDialog.setNegativeButton("Cancel") { dialog, which ->
+            finish()
             dialog.dismiss()
         }
         val alertDialog1 = alertDialog.create()

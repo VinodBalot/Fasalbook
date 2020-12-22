@@ -9,7 +9,6 @@
             android:background="@drawable/bg_gradient"
             >
 
-
             <LinearLayout
                 android:id="@+id/loginForm"
                 android:layout_width="match_parent"
