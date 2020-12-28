@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,7 +33,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="@string/label_forgot_password"
+                    android:text="@string/label_feedback"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14sdp" />
 
@@ -58,23 +57,11 @@
                     android:orientation="vertical">
 
                     <com.wasfat.utils.CustomFontEditText
-                        android:id="@+id/edtNewPassword"
+                        android:id="@+id/edtFeedback"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
+                        android:layout_height="@dimen/_100sdp"
                         android:background="@color/white"
-                        android:hint="@string/label_enter_new_password"
-                        android:inputType="textPassword"
-                        android:paddingLeft="@dimen/_10sdp"
-                        android:textColorHint="@color/colorBlack" />
-
-                    <com.wasfat.utils.CustomFontEditText
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:id="@+id/edtConfirmPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
-                        android:background="@color/white"
-                        android:hint="@string/confirm_new_password"
-                        android:inputType="textPassword"
+                        android:hint="@string/label_enter_suggestion"
                         android:paddingLeft="@dimen/_10sdp"
                         android:textColorHint="@color/colorBlack" />
 
@@ -85,9 +72,10 @@
                         android:layout_alignParentBottom="true"
                         android:layout_marginTop="@dimen/_20sdp"
                         android:background="@color/colorDarkGradient"
-                        android:text="@string/label_update_password"
+                        android:text="@string/label_send_feedback"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_16sdp"
+                        android:textSize="@dimen/_14sdp"
+                        android:textAllCaps="false"
                         app:CustomFontName="ProximaNovaBold" />
 
 

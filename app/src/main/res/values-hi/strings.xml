@@ -166,5 +166,10 @@
     <string name="label_resentOtp_time">Resent OTP in </string>
     <string name="hint_hyph">-</string>
     <string name="please_enter_otp">Please enter otp</string>
+    <string name="label_forgot_password">Forgot Password</string>
+    <string name="label_feedback">Feedback</string>
+    <string name="label_enter_suggestion">Write a message...</string>
+    <string name="label_send_feedback">Send Feedback</string>
+    <string name="label_suggestion_added">Suggestion Added</string>
 
 </resources>

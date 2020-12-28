@@ -125,7 +125,6 @@ class UploadIdeasActivity : BaseBindingActivity() {
                 removeImageSelection(view.tag as Int)
             }
             R.id.btShareText -> {
-
                 if (TextUtils.isEmpty(binding!!.edtTitle.text.toString())) {
                     UtilityMethod.showErrorToastMessage(
                         mActivity!!,

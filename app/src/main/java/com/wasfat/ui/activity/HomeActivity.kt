@@ -98,6 +98,18 @@ class HomeActivity : AppCompatActivity() {
             StaticPageActivity.startActivity(this, "about", false)
 
         }
+
+        rlSuggestions.setOnClickListener {
+            drawerLayout!!.closeDrawer(Gravity.LEFT)
+            FeedbackActivity.startActivity(this, null, false)
+        }
+
+        rlProfile.setOnClickListener {
+            drawerLayout!!.closeDrawer(Gravity.LEFT)
+            ChangeProfileActivity.startActivity(this, null, false)
+        }
+
+
         rlShareApp.setOnClickListener {
             drawerLayout!!.closeDrawer(Gravity.LEFT)
             val shareIntent = Intent()
@@ -119,10 +131,10 @@ class HomeActivity : AppCompatActivity() {
         val mBuilder = AlertDialog.Builder(this@HomeActivity)
         mBuilder.setTitle(getString(R.string.label_choose_language_dialog))
 
-        var checkedItem : Int = -1
-        if(sessionManager!!.language == "1"){
+        var checkedItem: Int = -1
+        if (sessionManager!!.language == "1") {
             checkedItem = 1
-        }else if(sessionManager!!.language == "2"){
+        } else if (sessionManager!!.language == "2") {
             checkedItem = 0
         }
         mBuilder.setSingleChoiceItems(listItmes, checkedItem) { dialog, which ->

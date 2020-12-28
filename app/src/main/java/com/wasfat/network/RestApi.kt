@@ -164,6 +164,11 @@ interface RestApi {
     @POST("users/forgetpassword")
     fun updateAccountPassword(@Body jsonData: JsonObject): Call<OTPVerificationResponse>
 
+    @Headers("Content-Type: application/json")
+    @POST("users/feedback")
+    fun feedback(@Body jsonData: JsonObject): Call<AddWriteUpIdeaResponse>
+
+
     /*
   @Headers("Content-Type: application/json")
   @POST("signup")
