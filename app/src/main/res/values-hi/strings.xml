@@ -155,6 +155,16 @@
     <string name="label_update_password">Update Password</string>
     <string name="label_enter_new_password">Enter New Password</string>
     <string name="confirm_new_password">Confirm New Password</string>
-
+    <string name="label_next">Next</string>
+    <string name="label_enterotp">Enter OTP here</string>
+    <string name="label_enter_here">Enter code here</string>
+    <string name="label_verify">Verify</string>
+    <string name="label_resend_code">Resend OTP</string>
+    <string name="label_second">Seconds</string>
+    <string name="label_verification">Verification</string>
+    <string name="label_otpSmsinfo">We have sent you an access code view sms for mobile number verifications.</string>
+    <string name="label_resentOtp_time">Resent OTP in </string>
+    <string name="hint_hyph">-</string>
+    <string name="please_enter_otp">Please enter otp</string>
 
 </resources>

@@ -2,7 +2,6 @@ package com.wasfat.ui.activity.authentication
 
 import android.app.Activity
 import android.content.Intent
-import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
@@ -12,9 +11,8 @@ import com.wasfat.R
 import com.wasfat.databinding.ActivityPhoneNumberVerificationBinding
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory
+import com.wasfat.ui.activity.OTPVerificationActivity
 import com.wasfat.ui.base.BaseBindingActivity
-import com.wasfat.ui.pojo.AddFarmItemResponse
-import com.wasfat.ui.pojo.BuySellType
 import com.wasfat.ui.pojo.OTPVerificationResponse
 import com.wasfat.ui.pojo.PhoneVerificationType
 import com.wasfat.utils.ProgressDialog
@@ -31,8 +29,8 @@ class PhoneNumberVerificationActivity : BaseBindingActivity() {
 
     lateinit var verificationType: PhoneVerificationType
 
-    var generatedOTP : String = ""
-    var phoneNumber : String = ""
+    var generatedOTP: String = ""
+    var phoneNumber: String = ""
 
     companion object {
 
@@ -76,17 +74,22 @@ class PhoneNumberVerificationActivity : BaseBindingActivity() {
             }
             R.id.btnSendOtp -> {
                 if (binding!!.edtPhoneNumber.text.isNotEmpty()) {
-
                     phoneNumber = binding!!.edtPhoneNumber.text.toString().trim()
 
-                    when(verificationType){
-
+                    when (verificationType) {
                         PhoneVerificationType.NEW_SIGN_UP -> {
-                            sendOtpForNewSignUP(phoneNumber)
+                           // sendOtpForNewSignUP(phoneNumber)
+                            val intent = Intent(mActivity!!, OTPVerificationActivity::class.java)
+                            intent.putExtra("phoneNumber", phoneNumber)
+                            intent.putExtra("PhoneVerificationType", "NEW_SIGN_UP")
+                            startActivity(intent)
                         }
-
-                        PhoneVerificationType.FORGOT_PASSWORD ->{
-                            sendOtpForForgotPassword(phoneNumber)
+                        PhoneVerificationType.FORGOT_PASSWORD -> {
+                          //  sendOtpForForgotPassword(phoneNumber)
+                            val intent = Intent(mActivity!!, OTPVerificationActivity::class.java)
+                            intent.putExtra("phoneNumber", phoneNumber)
+                            intent.putExtra("PhoneVerificationType", "FORGOT_PASSWORD")
+                            startActivity(intent)
                         }
 
                     }
@@ -99,163 +102,7 @@ class PhoneNumberVerificationActivity : BaseBindingActivity() {
                 }
             }
             R.id.btnVerify -> {
-                if (binding!!.edtOtp.text.isNotEmpty()) {
-
-                    verifyOTP(binding!!.edtOtp.text.toString().trim())
-
-                } else {
-                    UtilityMethod.showToastMessageDefault(
-                        mActivity!!,
-                        getString(R.string.label_enter_your_phone)
-                    )
-                }
             }
         }
     }
-
-    private fun verifyOTP(userOtp: String) {
-
-        if(generatedOTP != ""){
-
-            if(userOtp == generatedOTP){
-
-                UtilityMethod.showToastMessageSuccess(
-                    mActivity!!,
-                    getString(R.string.label_verification_success)
-                )
-
-                when(verificationType){
-
-                    PhoneVerificationType.NEW_SIGN_UP -> {
-                        RegisterActivity.startActivity(mActivity!!, phoneNumber, false)
-                        finish()
-                    }
-
-                    PhoneVerificationType.FORGOT_PASSWORD ->{
-                        ForgotPasswordActivity.startActivity(mActivity!!, phoneNumber, false)
-                        finish()
-                    }
-
-                }
-
-            }else{
-
-                UtilityMethod.showToastMessageError(
-                    mActivity!!,
-                    getString(R.string.label_verification_failed)
-                )
-            }
-
-        }else{
-
-            UtilityMethod.showToastMessageError(
-                mActivity!!,
-             getString(R.string.label_send_otp_first)
-            )
-        }
-
-    }
-
-    private fun sendOtpForNewSignUP(phoneNumber: String) {
-
-        ProgressDialog.showProgressDialog(mActivity!!)
-
-        generatedOTP = generateOtp()
-
-        var gsonObject = JsonObject()
-        val rootObject = JsonObject()
-
-        rootObject.addProperty("UserName", phoneNumber)
-        rootObject.addProperty("Text", generatedOTP)
-
-        val jsonParser = JsonParser()
-        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
-        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
-
-        val call1: Call<OTPVerificationResponse> = apiService1.sendOtpToThisNumber(gsonObject)
-        call1.enqueue(object : Callback<OTPVerificationResponse?> {
-            override fun onResponse(
-                call: Call<OTPVerificationResponse?>,
-                response: Response<OTPVerificationResponse?>
-            ) {
-                ProgressDialog.hideProgressDialog()
-                if (response.body() != null) {
-                    if (response.isSuccessful) {
-                        if (response.body()!!.Response == "Sent") {
-                            UtilityMethod.showToastMessageSuccess(
-                                mActivity!!,
-                                getString(R.string.label_otp_sent)
-                            )
-                        } else {
-                            UtilityMethod.showToastMessageError(
-                                mActivity!!,
-                                getString(R.string.label_otp_not_sent)
-                            )
-                        }
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<OTPVerificationResponse?>, t: Throwable) {
-                Log.d("1234", "error  : " + t.message)
-                ProgressDialog.hideProgressDialog()
-            }
-        })
-
-    }
-
-    private fun sendOtpForForgotPassword(phoneNumber: String) {
-
-        ProgressDialog.showProgressDialog(mActivity!!)
-
-        generatedOTP = generateOtp()
-
-        var gsonObject = JsonObject()
-        val rootObject = JsonObject()
-
-        rootObject.addProperty("UserName", phoneNumber)
-        rootObject.addProperty("Text", generatedOTP)
-
-        val jsonParser = JsonParser()
-        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
-        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
-
-        val call1: Call<OTPVerificationResponse> = apiService1.sendOtpForForgetPassword(gsonObject)
-        call1.enqueue(object : Callback<OTPVerificationResponse?> {
-            override fun onResponse(
-                call: Call<OTPVerificationResponse?>,
-                response: Response<OTPVerificationResponse?>
-            ) {
-                ProgressDialog.hideProgressDialog()
-                if (response.body() != null) {
-                    if (response.isSuccessful) {
-                        if (response.body()!!.Response == "Sent") {
-                            UtilityMethod.showToastMessageSuccess(
-                                mActivity!!,
-                                getString(R.string.label_otp_sent)
-                            )
-                        } else {
-                            UtilityMethod.showToastMessageError(
-                                mActivity!!,
-                                getString(R.string.label_otp_not_sent)
-                            )
-                        }
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<OTPVerificationResponse?>, t: Throwable) {
-                Log.d("1234", "error  : " + t.message)
-                ProgressDialog.hideProgressDialog()
-            }
-        })
-
-    }
-
-    private fun generateOtp()
-    : String {
-        val random = Random()
-        return String.format("%06d", random.nextInt(999999) + 1)
-    }
-
 }

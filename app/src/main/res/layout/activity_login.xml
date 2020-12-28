@@ -2,129 +2,125 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-        <RelativeLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gradient">
+
+        <LinearLayout
+            android:id="@+id/loginForm"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_gradient"
-            >
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_20sdp"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:gravity="center"
+                    android:src="@drawable/name_logo" />
+
+                <!--                    <com.wasfat.utils.CustomFontTextView-->
+                <!--                        android:layout_width="wrap_content"-->
+                <!--                        android:layout_height="@dimen/_40sdp"-->
+                <!--                        android:layout_centerInParent="true"-->
+                <!--                        android:layout_marginTop="@dimen/_20sdp"-->
+                <!--                        android:background="@drawable/bg_button_dark_gradient"-->
+                <!--                        android:gravity="center"-->
+                <!--                        android:paddingLeft="@dimen/_20sdp"-->
+                <!--                        android:paddingRight="@dimen/_20sdp"-->
+                <!--                        android:text="Login"-->
+                <!--                        android:textColor="@color/white"-->
+                <!--                        android:textSize="@dimen/_16sdp"-->
+                <!--                        app:CustomFontName="ProximaNovaBold" />-->
+
+
+            </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/loginForm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_60sdp"
                 android:orientation="vertical">
 
-
-                <RelativeLayout
+                <com.wasfat.utils.CustomFontEditText
+                    android:id="@+id/edtMobile"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="@dimen/_40sdp"
+                    android:background="@color/white"
+                    android:hint=" Mobile Number"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:textColorHint="@color/colorBlack" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_centerInParent="true"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:gravity="center"
-                        android:src="@drawable/name_logo"
-                       />
-
-<!--                    <com.wasfat.utils.CustomFontTextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="@dimen/_40sdp"-->
-<!--                        android:layout_centerInParent="true"-->
-<!--                        android:layout_marginTop="@dimen/_20sdp"-->
-<!--                        android:background="@drawable/bg_button_dark_gradient"-->
-<!--                        android:gravity="center"-->
-<!--                        android:paddingLeft="@dimen/_20sdp"-->
-<!--                        android:paddingRight="@dimen/_20sdp"-->
-<!--                        android:text="Login"-->
-<!--                        android:textColor="@color/white"-->
-<!--                        android:textSize="@dimen/_16sdp"-->
-<!--                        app:CustomFontName="ProximaNovaBold" />-->
+                <com.wasfat.utils.CustomFontEditText
+                    android:id="@+id/edtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@color/white"
+                    android:hint=" Password"
+                    android:inputType="textPassword"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:textColorHint="@color/colorBlack" />
 
 
-                </RelativeLayout>
-
-                <LinearLayout
+                <com.wasfat.utils.CustomFontButton
+                    android:id="@+id/btnLogin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_60sdp"
-                    android:orientation="vertical">
-
-                    <com.wasfat.utils.CustomFontEditText
-                        android:id="@+id/edtMobile"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
-                        android:background="@color/white"
-                        android:hint=" Mobile Number"
-                        android:inputType="number"
-                        android:maxLength="10"
-                        android:paddingLeft="@dimen/_10sdp"
-                        android:textColorHint="@color/colorBlack" />
-
-                    <com.wasfat.utils.CustomFontEditText
-                        android:id="@+id/edtPassword"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:background="@color/white"
-                        android:hint=" Password"
-                        android:inputType="textPassword"
-                        android:paddingLeft="@dimen/_10sdp"
-                        android:textColorHint="@color/colorBlack" />
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:background="@color/colorDarkGradient"
+                    android:text="Login"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_16sdp"
+                    app:CustomFontName="ProximaNovaBold" />
 
 
-                    <com.wasfat.utils.CustomFontButton
-                        android:id="@+id/btnLogin"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:background="@color/colorDarkGradient"
-                        android:text="Login"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_16sdp"
-                        app:CustomFontName="ProximaNovaBold" />
-
-
-                    <com.wasfat.utils.CustomFontTextView
-                        android:id="@+id/txtForgotPassword"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_margin="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:hint="Forgot Password?"
-                        android:inputType="textPassword"
-                        android:padding="@dimen/_10sdp"
-                        android:textColorHint="@color/colorBlack"
-                        android:textSize="@dimen/_14sdp" />
-
-
-                </LinearLayout>
+                <com.wasfat.utils.CustomFontTextView
+                    android:id="@+id/txtForgotPassword"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:hint="Forgot Password?"
+                    android:inputType="textPassword"
+                    android:padding="@dimen/_10sdp"
+                    android:textColorHint="@color/colorBlack"
+                    android:textSize="@dimen/_14sdp"
+                    app:CustomFontName="ProximaNovaReg" />
 
 
             </LinearLayout>
 
-            <com.wasfat.utils.CustomFontTextView
 
-                android:layout_below="@+id/loginForm"
-                android:id="@+id/txtSignup"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:gravity="bottom"
-                android:hint="Don't have an account? Sign up"
-                android:inputType="textPassword"
-                android:padding="@dimen/_10sdp"
-                android:textColorHint="@color/colorBlack"
-                android:textSize="@dimen/_14sdp" />
+        </LinearLayout>
+
+        <com.wasfat.utils.CustomFontTextView
+            android:id="@+id/txtSignup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:gravity="bottom"
+            android:hint="Don't have an account? Sign up"
+            android:inputType="textPassword"
+            android:padding="@dimen/_10sdp"
+            android:textColorHint="@color/colorBlack"
+            android:textSize="@dimen/_14sdp" />
 
 
-        </RelativeLayout>
+    </RelativeLayout>
 </layout>

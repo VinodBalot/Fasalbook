@@ -79,19 +79,15 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textColor="@android:color/white"
-                    android:text="@string/label_send_otp"
+                    android:text="@string/label_next"
                     android:layout_margin="10dp"
                     android:layout_gravity="center"
                     android:background="@drawable/bg_round_green"/>
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_1sdp"
-                android:layout_margin="@dimen/_10sdp"
-                android:background="@color/grey_400" />
 
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_15sdp"
