@@ -77,17 +77,13 @@ class HomeActivity : AppCompatActivity() {
 
         rlPrivacyPolicy.setOnClickListener {
             drawerLayout!!.closeDrawer(Gravity.LEFT)
-            val bundle = Bundle()
-            bundle.putString("title", "Privacy Policy")
-            bundle.putString("url", "http://fasalbook.com/privacy-policy.aspx")
-            WebViewActivity.startActivity(this, bundle, false)
+            StaticPageActivity.startActivity(this, "privacyPolicy", false)
         }
 
         rlChangeLanguage.setOnClickListener {
             drawerLayout!!.closeDrawer(Gravity.LEFT)
             showChangeLang()
         }
-
 
         rlChangePassword.setOnClickListener {
             drawerLayout!!.closeDrawer(Gravity.LEFT)
@@ -96,7 +92,6 @@ class HomeActivity : AppCompatActivity() {
         rlAboutApp.setOnClickListener {
             drawerLayout!!.closeDrawer(Gravity.LEFT)
             StaticPageActivity.startActivity(this, "about", false)
-
         }
 
         rlSuggestions.setOnClickListener {

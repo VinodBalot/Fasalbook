@@ -34,6 +34,8 @@ class SplashActivity : AppCompatActivity() {
                 startActivity(intent)
             } else {
                 SelectLanguageActivity.startActivity(this@SplashActivity, true)
+            /*    var intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)*/
             }
             finish()
 

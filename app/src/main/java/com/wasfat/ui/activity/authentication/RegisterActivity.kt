@@ -55,12 +55,9 @@ class RegisterActivity : BaseBindingActivity() {
     var cityNameList: ArrayList<String> = ArrayList()
     var blockList: ArrayList<Blocklist> = ArrayList()
     var blockNameList: ArrayList<String> = ArrayList()
-
-    var viewModel: RegisterViewModel? = null
     val reqDataState: HashMap<String, Int> = HashMap()
     val reqDataCity: HashMap<String, Int> = HashMap()
     val reqDataBlock: HashMap<String, Int> = HashMap()
-
     lateinit var phoneNumber: String
 
     companion object {
@@ -76,7 +73,6 @@ class RegisterActivity : BaseBindingActivity() {
 
     override fun setBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register)
-        // viewModel = ViewModelProvider(this).get(RegisterViewModel::class.java)
         binding!!.lifecycleOwner = this
 
     }
@@ -88,9 +84,7 @@ class RegisterActivity : BaseBindingActivity() {
     override fun initializeObject() {
         onClickListener = this
         phoneNumber = intent.getStringExtra("phoneNumber").toString()
-
         binding!!.edtMobile.setText(phoneNumber)
-
         callGetStateListByCountryAPI()
     }
 

@@ -2,10 +2,10 @@ package com.wasfat.network
 
 import com.google.gson.JsonObject
 import com.wasfat.ui.pojo.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Headers
-import retrofit2.http.POST
+import retrofit2.http.*
 import java.util.*
 
 
@@ -128,6 +128,15 @@ interface RestApi {
     fun getAboutApp(@Body jsonData: JsonObject): Call<AboutAppResponse>
 
     @Headers("Content-Type: application/json")
+    @POST("users/getuserprofile")
+    fun getUserInfo(@Body jsonData: JsonObject): Call<GetUserProfilePOJO>
+
+    @Headers("Content-Type: application/json")
+    @POST("cms/privacypolicy")
+    fun getPrivacyPolicy(@Body jsonData: JsonObject): Call<AboutAppResponse>
+
+
+    @Headers("Content-Type: application/json")
     @POST("products/addeditlg")
     fun addEditLandscapeItem(@Body jsonData: JsonObject): Call<AddFarmItemResponse>
 
@@ -169,10 +178,17 @@ interface RestApi {
     fun feedback(@Body jsonData: JsonObject): Call<AddWriteUpIdeaResponse>
 
 
-    /*
-  @Headers("Content-Type: application/json")
-  @POST("signup")
-  fun signup(@Body reqData: HashMap<String, String>): Observable<UserResponsePOJO>
-*/
+    @Multipart
+    @Headers("Accept: application/json")
+    @POST("media/addIdea")
+    fun shareIdea(
+        @Part("userid") userid: RequestBody,
+        @Part("categoryid") categoryid: RequestBody,
+        @Part("ideatype") ideatype: RequestBody,
+        @Part("title") title: RequestBody,
+        @Part("details") details: RequestBody,
+        @Part("published") published: RequestBody,
+        @Part file: MultipartBody.Part?
+    ): Call<AddWriteUpIdeaResponse>
 
 }

@@ -20,8 +20,7 @@
                 android:id="@+id/ivItemIcon"
                 android:layout_width="0dp"
                 android:scaleType="centerCrop"
-                android:layout_height="@dimen/_50sdp"
-                android:src="@drawable/wheat" />
+                android:layout_height="@dimen/_50sdp" />
 
             <LinearLayout
                 android:layout_marginLeft="@dimen/_12sdp"
@@ -37,7 +36,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="left"
-                    android:text="Wheat"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_14sdp"
                     app:CustomFontName="ProximaNovaBold" />
@@ -55,7 +53,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:text="50"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12sdp"
                         app:CustomFontName="ProximaNovaReg" />
@@ -66,7 +63,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="left"
-                        android:text="Qtl"
                         android:textColor="@color/grey_900"
                         android:textSize="@dimen/_10sdp"
                         app:CustomFontName="ProximaNovaReg" />

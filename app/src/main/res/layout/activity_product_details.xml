@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="Food Gains"
+                android:text="@string/label_product_details"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14sdp"
                 app:CustomFontName="ProximaNovaBold" />
@@ -72,16 +72,6 @@
                             android:layout_weight="5"
                             android:gravity="center"
                             android:text="Name of Item"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp"
-                            app:CustomFontName="ProximaNovaBold" />
-
-                        <com.wasfat.utils.CustomFontTextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2.5"
-                            android:gravity="center"
-                            android:text="Unit"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sdp"
                             app:CustomFontName="ProximaNovaBold" />
@@ -130,6 +120,7 @@
                             android:gravity="center"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sdp"
+                            android:visibility="gone"
                             app:CustomFontName="ProximaNovaReg" />
 
 
@@ -145,95 +136,22 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_40sdp"
-                        android:layout_gravity="right"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:background="@color/white"
-                        android:gravity="right"
-                        android:weightSum="3">
-
-
-                        <com.wasfat.utils.CustomFontTextView
-                            android:id="@+id/txtProductPrice"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.6"
-                            android:gravity="center"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp"
-                            app:CustomFontName="ProximaNovaReg" />
-
-                        <com.wasfat.utils.CustomFontTextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.3"
-                            android:gravity="center"
-                            android:text="Per"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp"
-                            app:CustomFontName="ProximaNovaReg" />
-
-
-                        <com.wasfat.utils.CustomFontTextView
-                            android:id="@+id/txtPriceUnit"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.6"
-                            android:gravity="center"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_14sdp"
-                            app:CustomFontName="ProximaNovaReg" />
-
-                    </LinearLayout>
-
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_1sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:background="@color/grey_400" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/_10sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:weightSum="5">
+                    <ImageView
+                        android:id="@+id/imvProduct"
+                        android:layout_width="200dp"
+                        android:layout_height="200dp" />
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rvImageList"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-
-
-                        <!--                        <ImageView-->
-                        <!--                            android:id="@+id/ivImg1"-->
-                        <!--                            android:layout_width="@dimen/_60sdp"-->
-                        <!--                            android:layout_height="@dimen/_60sdp"-->
-                        <!--                            android:src="@drawable/wheat" />-->
-
-                        <!--                        <ImageView-->
-                        <!--                            android:id="@+id/ivImg2"-->
-                        <!--                            android:layout_width="@dimen/_60sdp"-->
-                        <!--                            android:layout_height="@dimen/_60sdp"-->
-                        <!--                            android:layout_marginLeft="@dimen/_10sdp"-->
-                        <!--                            android:src="@drawable/wheat" />-->
-
-                        <!--                        <ImageView-->
-                        <!--                            android:id="@+id/ivImg3"-->
-                        <!--                            android:layout_width="@dimen/_60sdp"-->
-                        <!--                            android:layout_height="@dimen/_60sdp"-->
-                        <!--                            android:layout_marginLeft="@dimen/_10sdp"-->
-                        <!--                            android:src="@drawable/wheat" />-->
-
-                    </LinearLayout>
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llSpecification"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/llmain"
@@ -245,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:gravity="center"
-                        android:text="Specification"
+                        android:text="@string/specification"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_16sdp"
                         app:CustomFontName="ProximaNovaBold" />
@@ -273,22 +191,6 @@
 
         </androidx.core.widget.NestedScrollView>
 
-
-        <RelativeLayout
-            android:id="@+id/btnSubmit"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/colorDarkGradient">
-
-            <ImageView
-                android:layout_width="@dimen/_30sdp"
-                android:layout_height="@dimen/_30ssp"
-                android:layout_centerInParent="true"
-                android:padding="@dimen/_5sdp"
-                android:src="@drawable/homeicon" />
-
-        </RelativeLayout>
 
     </RelativeLayout>
 

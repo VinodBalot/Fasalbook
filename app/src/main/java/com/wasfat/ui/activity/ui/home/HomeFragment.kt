@@ -92,8 +92,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setAdapter() {
-        adapter = BannerAdapter(activity, bannerList)
-        viewpager!!.adapter = adapter
+
         llSell!!.setOnClickListener {
             SellActivity.startActivity(requireActivity(), null, false)
         }
@@ -113,6 +112,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
             ShareIdeaActivity.startActivity(requireActivity(), false)
         }
 
+        adapter = BannerAdapter(activity, bannerList)
+        viewpager!!.adapter = adapter
         indicator!!.setViewPager(viewpager)
         viewpager!!.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageSelected(position: Int) {
@@ -149,7 +150,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
             override fun run() {
                 handler.post(update)
             }
-        }, 1000, 1000)
+        }, 1500, 1500)
     }
 
     private fun initializeView(view: View) {

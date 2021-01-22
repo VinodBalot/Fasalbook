@@ -7,30 +7,31 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import com.wasfat.R
 import com.wasfat.databinding.ActivityProductSearchBinding
-import com.wasfat.network.ApiResponse
+import com.wasfat.network.RestApi
+import com.wasfat.network.RestApiFactory
 import com.wasfat.ui.base.BaseBindingActivity
+import com.wasfat.ui.home.adapter.SearchProductRVAdapter
+import com.wasfat.ui.pojo.UserProduct
+import com.wasfat.ui.pojo.UserProductsResponsePOJO
+import com.wasfat.utils.ProgressDialog
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class SearchActivity : BaseBindingActivity() {
 
     var binding: ActivityProductSearchBinding? = null
     var onClickListener: View.OnClickListener? = null
-
-/*    private var productList: ArrayList<ProductListData> = ArrayList()
-    private var productRVAdapter: ProductListRVAdapter? = null*/
-
-    var selectedItemPosition = -1
-
+    var productList: ArrayList<UserProduct> = ArrayList()
+    var searchProductRVAdapter: SearchProductRVAdapter? = null
 
     companion object {
 
@@ -55,7 +56,6 @@ class SearchActivity : BaseBindingActivity() {
 
     override fun initializeObject() {
         onClickListener = this
-        getIntentData()
         binding!!.searchView.requestFocus()
         val searchManager: SearchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         binding!!.searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName));
@@ -65,7 +65,7 @@ class SearchActivity : BaseBindingActivity() {
         binding!!.searchView.requestFocusFromTouch()
         binding!!.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-               // callProductListDataApi(query.toString())
+                callProductListDataApi(query.toString())
                 return false
             }
 
@@ -75,29 +75,61 @@ class SearchActivity : BaseBindingActivity() {
         })
 
 
+    }
+
+    private fun callProductListDataApi(searchText: String) {
+        ProgressDialog.showProgressDialog(mActivity!!)
+        val rootObject = JsonObject()
+        rootObject.addProperty("StateId", "0")
+        rootObject.addProperty("CityId", "0")
+        rootObject.addProperty("BlockId", "0")
+        rootObject.addProperty("CategoryId", "0")
+        rootObject.addProperty("searchText", searchText)
+
+        val jsonParser = JsonParser()
+        val gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
+        val call1: Call<UserProductsResponsePOJO> = apiService1.getProductsFromSearch(gsonObject)
+        call1.enqueue(object : Callback<UserProductsResponsePOJO?> {
+            override fun onResponse(
+                call: Call<UserProductsResponsePOJO?>,
+                response: Response<UserProductsResponsePOJO?>
+            ) {
+                ProgressDialog.hideProgressDialog()
+                if (response.body() != null) {
+                    if (response.isSuccessful) {
+                        productList.clear()
+                        productList = response.body()!!.productList
+                        val layoutManager1 = LinearLayoutManager(this@SearchActivity)
+                        binding!!.rvProducts.layoutManager = layoutManager1
+                        binding!!.rvProducts.setHasFixedSize(true)
+                        searchProductRVAdapter =
+                            SearchProductRVAdapter(mActivity!!, productList, onClickListener)
+                        binding!!.rvProducts.adapter = searchProductRVAdapter
+                        if (productList.size == 0) {
+                            binding!!.rvProducts.visibility = View.GONE
+                            binding!!.txtNoProductFound.visibility = View.VISIBLE
+                        } else {
+                            Log.d("1234", "product list : " + productList.size)
+                            binding!!.rvProducts.visibility = View.VISIBLE
+                            binding!!.txtNoProductFound.visibility = View.GONE
+                        }
+
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<UserProductsResponsePOJO?>, t: Throwable) {
+                ProgressDialog.hideProgressDialog()
+            }
+        })
 
     }
 
-    private fun getIntentData() {
-        if (intent.extras != null) {
-            var categoryId = intent.getBundleExtra("bundle")!!.getString("categoryId")
-
-        }
-    }
 
     override fun setListeners() {
 
 
-    }
-
-    private fun setAdapters() {
-       /* binding!!.rvProducts.visibility = View.VISIBLE
-        val layoutManager1 = GridLayoutManager(this, 2)
-        binding!!.rvProducts.layoutManager = layoutManager1
-        binding!!.rvProducts.setHasFixedSize(true)
-        productRVAdapter = ProductListRVAdapter(mActivity!!, data!!, onClickListener)
-        binding!!.rvProducts.adapter = productRVAdapter
-*/
     }
 
 
@@ -107,7 +139,21 @@ class SearchActivity : BaseBindingActivity() {
             R.id.imvBack -> {
                 finish()
             }
+            R.id.llMain -> {
+                var position = view.tag as Int
+                var intent = Intent(mActivity!!, ProductDetailsActivity::class.java)
+                intent.putExtra("productName", productList[position].ProductName)
+                intent.putExtra("qty", productList[position].Qty)
+                intent.putExtra("image", productList[position].ImageList[0].Path+"/"+productList[position].ImageList[0].ImageName)
+                startActivity(intent)
+            }
         }
+
+    }
+
+    private fun categoryItemClicked(product: UserProduct) {
+
+        //showItemSelectionDialog(product)
 
     }
 

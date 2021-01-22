@@ -84,15 +84,13 @@ class OTPVerificationActivity : BaseBindingActivity() {
 
         when (view!!.id) {
             R.id.btnVerify -> {
-                var otp = binding!!.edtOne.text.toString().trim() +
-                        binding!!.edtTwo.text.toString().trim() +
-                        binding!!.edtThree.text.toString().trim() +
-                        binding!!.edtFour.text.toString().trim() +
-                        binding!!.edtFive.text.toString().trim() +
-                        binding!!.edtSix.text.toString().trim()
+                val otp = binding!!.otpView.text.toString()
+                Log.d("1234", "otp : " + otp);
                 if (otp.length == 6) {
+                    Log.d("1234", "otp 1: " + otp);
                     verifyOTP(otp)
                 } else {
+                    Log.d("1234", "otp 2: " + otp);
                     UtilityMethod.showErrorToastMessage(
                         mActivity!!,
                         getString(R.string.please_enter_otp)
@@ -122,8 +120,11 @@ class OTPVerificationActivity : BaseBindingActivity() {
 
     private fun verifyOTP(userOtp: String) {
 
+        Log.d("1234", "otp 3 : ");
         if (generatedOTP != "") {
+            Log.d("1234", "otp  4: " + generatedOTP);
             if (userOtp == generatedOTP) {
+                Log.d("1234", "otp  5: " + generatedOTP);
                 UtilityMethod.showToastMessageSuccess(
                     mActivity!!,
                     getString(R.string.label_verification_success)
@@ -148,6 +149,7 @@ class OTPVerificationActivity : BaseBindingActivity() {
             )
         }
     }
+
     private fun sendOtpForNewSignUP(phoneNumber: String) {
         ProgressDialog.showProgressDialog(mActivity!!)
         generatedOTP = generateOtp()

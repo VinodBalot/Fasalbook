@@ -99,16 +99,16 @@ class BuyActivity : BaseBindingActivity() {
         when(category.PKID){
 
                 11 -> {
-                    AgricultureCategory1Activity.startActivity(mActivity!!, category,  BuySellType.SELL, false)
+                    AgricultureCategory1Activity.startActivity(mActivity!!, category,  BuySellType.BUY, false)
                 }
                 12 ->{
-                    LandscapeCategory1Activity.startActivity(mActivity!!, category,  BuySellType.SELL, false)
+                    LandscapeCategory1Activity.startActivity(mActivity!!, category,  BuySellType.BUY, false)
                 }
                 13 ->{
-                    FarmTourismActivity.startActivity(mActivity!!, category,  BuySellType.SELL, false)
+                    FarmTourismActivity.startActivity(mActivity!!, category,  BuySellType.BUY, false)
                 }
                 14 ->{
-                    AlliedServicesCategory1Activity.startActivity(mActivity!!, category,  BuySellType.SELL, false)
+                    AlliedServicesCategory1Activity.startActivity(mActivity!!, category,  BuySellType.BUY, false)
                 }
 
             }

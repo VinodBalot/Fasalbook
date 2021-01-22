@@ -55,7 +55,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
                         android:background="@color/white"
-                        android:hint="Name"
+                        android:hint="@string/label_name"
                         android:paddingLeft="@dimen/_10sdp"
                         android:textColorHint="@color/colorBlack" />
 
@@ -70,7 +70,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_margin="@dimen/_10sdp"
-                            android:text="Sex"
+                            android:text="@string/label_sex"
                             android:textColor="@color/black"
                             android:textSize="@dimen/_14sdp" />
 
@@ -86,14 +86,14 @@
                                 android:id="@+id/rbMale"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Male" />
+                                android:text="@string/label_male" />
 
                             <RadioButton
                                 android:id="@+id/rbFemale"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/_10sdp"
-                                android:text="Female" />
+                                android:text="@string/female" />
 
                         </RadioGroup>
 
@@ -109,7 +109,7 @@
                         android:background="@color/white"
                         android:editable="false"
                         android:focusable="false"
-                        android:hint="Date of Birth"
+                        android:hint="@string/label_date_of_birth"
                         android:paddingLeft="@dimen/_10sdp"
                         android:textColorHint="@color/colorBlack" />
 
@@ -119,7 +119,7 @@
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:background="@color/white"
-                        android:hint="Mobile No"
+                        android:hint="@string/label_mobile_number"
                         android:inputType="number"
                         android:maxLength="10"
                         android:paddingLeft="@dimen/_10sdp"
@@ -131,7 +131,7 @@
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:background="@color/white"
-                        android:hint="Email"
+                        android:hint="@string/label_email"
                         android:inputType="textEmailAddress"
                         android:paddingLeft="@dimen/_10sdp"
                         android:textColorHint="@color/colorBlack" />
@@ -234,7 +234,7 @@
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:background="@color/white"
-                        android:hint="Address"
+                        android:hint="@string/label_address"
                         android:paddingLeft="@dimen/_10sdp"
                         android:paddingRight="@dimen/_10sdp"
                         android:textColorHint="@color/colorBlack" />
@@ -246,7 +246,7 @@
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:background="@color/white"
-                        android:hint="Village/Colony"
+                        android:hint="@string/label_village"
                         android:paddingLeft="@dimen/_10sdp"
                         android:paddingRight="@dimen/_10sdp"
                         android:textColorHint="@color/colorBlack" />
@@ -257,7 +257,7 @@
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:background="@color/white"
-                        android:hint="Pin code"
+                        android:hint="@string/label_pincode"
                         android:inputType="number"
                         android:paddingLeft="@dimen/_10sdp"
                         android:textColorHint="@color/colorBlack" />
@@ -268,7 +268,7 @@
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_3sdp"
                         android:background="@color/white"
-                        android:hint="Name of Company/Firm/Group"
+                        android:hint="@string/label_name_of_company"
                         android:paddingLeft="@dimen/_10sdp"
                         android:textColorHint="@color/colorBlack" />
 
@@ -282,9 +282,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:background="@color/colorDarkGradient"
-                android:text="Submit"
+                android:text="@string/label_register"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16sdp"
+                android:textAllCaps="false"
                 app:CustomFontName="ProximaNovaBold" />
 
         </RelativeLayout>

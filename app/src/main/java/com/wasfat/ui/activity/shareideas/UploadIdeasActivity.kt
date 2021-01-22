@@ -2,9 +2,11 @@ package com.wasfat.ui.activity.shareideas
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
+import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
 import android.text.TextUtils
@@ -15,21 +17,17 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import com.wasfat.R
 import com.wasfat.databinding.ActivityUploadIdeasBinding
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory
-import com.wasfat.ui.adapter.ImageListRVAdapter
 import com.wasfat.ui.base.BaseBindingActivity
 import com.wasfat.ui.pojo.AddWriteUpIdeaResponse
 import com.wasfat.ui.pojo.Category
 import com.wasfat.utils.ProgressDialog
 import com.wasfat.utils.UtilityMethod
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -39,16 +37,20 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.net.URI
+import java.net.URLEncoder
 
 class UploadIdeasActivity : BaseBindingActivity() {
 
+    private var isShare: String = "image"
+    private var videoPath: String = ""
     private var isPublished: Int = 0
     var binding: ActivityUploadIdeasBinding? = null
     var onClickListener: View.OnClickListener? = null
-
-    var imageList: ArrayList<String> = ArrayList()
-    var imageListRVAdapter: ImageListRVAdapter? = null
     var imageBase64 = ""
+    var imageFile: File? = null
+    var newCuttingFile: File? = null
+    var videoFile: File? = null
 
     lateinit var parentCategory: Category
 
@@ -79,26 +81,28 @@ class UploadIdeasActivity : BaseBindingActivity() {
 
     override fun initializeObject() {
         onClickListener = this
-        val layoutManager1 = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding!!.rvImage.layoutManager = layoutManager1
-        binding!!.rvImage.setHasFixedSize(true)
-        imageListRVAdapter = ImageListRVAdapter(mActivity, onClickListener, imageList)
-        binding!!.rvImage.adapter = imageListRVAdapter
-
     }
 
     override fun setListeners() {
         binding!!.imvBack.setOnClickListener(onClickListener)
-        binding!!.btShareVideo.setOnClickListener(onClickListener)
-        binding!!.btShareText.setOnClickListener(onClickListener)
+        binding!!.btShareIdea.setOnClickListener(onClickListener)
+        binding!!.llUploadImage.setOnClickListener(onClickListener)
+        binding!!.llUploadNewsCutting.setOnClickListener(onClickListener)
+        binding!!.llUploadVideo.setOnClickListener(onClickListener)
+        binding!!.rbUploadImage.setOnClickListener(onClickListener)
+        binding!!.rbUploadNewCutting.setOnClickListener(onClickListener)
+        binding!!.rbUploadVideo.setOnClickListener(onClickListener)
         binding!!.rlImage.setOnClickListener(onClickListener)
-        binding!!.imvAddMore.setOnClickListener(onClickListener)
+        binding!!.rlUploadNewCutting.setOnClickListener(onClickListener)
+        binding!!.imvVideoImage.setOnClickListener(onClickListener)
         binding!!.cbPublished.setOnCheckedChangeListener { compoundButton, b ->
             if (b) {
                 isPublished = 1
             } else
                 isPublished = 0
         }
+
+
     }
 
     override fun onClick(view: View?) {
@@ -107,24 +111,7 @@ class UploadIdeasActivity : BaseBindingActivity() {
             R.id.imvBack -> {
                 finish()
             }
-            R.id.rlImage -> {
-                if (checkingPermissionIsEnabledOrNot()) {
-                    showImageSelectionDialog()
-                } else {
-                    requestMultiplePermission()
-                }
-            }
-            R.id.imvAddMore -> {
-                if (checkingPermissionIsEnabledOrNot()) {
-                    showImageSelectionDialog()
-                } else {
-                    requestMultiplePermission()
-                }
-            }
-            R.id.imvRemoveImage -> {
-                removeImageSelection(view.tag as Int)
-            }
-            R.id.btShareText -> {
+            R.id.btShareIdea -> {
                 if (TextUtils.isEmpty(binding!!.edtTitle.text.toString())) {
                     UtilityMethod.showErrorToastMessage(
                         mActivity!!,
@@ -136,14 +123,133 @@ class UploadIdeasActivity : BaseBindingActivity() {
                         getString(R.string.label_enter_short_description)
                     )
                 } else {
-                    shareIdeaInText(
-                        binding!!.edtTitle.text.toString(),
-                        binding!!.edtShareIdeaText.text.toString()
-                    )
+                    if (isShare == "image") {
+                        if (imageFile != null) {
+                            shareIdeaInText(
+                                binding!!.edtTitle.text.toString(),
+                                binding!!.edtShareIdeaText.text.toString(),
+                                imageFile!!,
+                                "1"
+                            )
+                        } else {
+                            UtilityMethod.showErrorToastMessage(
+                                mActivity!!,
+                                getString(R.string.please_upload_image)
+                            )
+                        }
+                    } else if (isShare == "newcutting") {
+                        if (newCuttingFile != null) {
+                            shareIdeaInText(
+                                binding!!.edtTitle.text.toString(),
+                                binding!!.edtShareIdeaText.text.toString(),
+                                newCuttingFile!!,
+                                "2"
+                            )
+                        } else {
+                            UtilityMethod.showErrorToastMessage(
+                                mActivity!!,
+                                getString(R.string.please_upload_new_cutting)
+                            )
+                        }
+
+
+                    } else if (isShare == "video") {
+                        if (videoFile != null) {
+                            shareIdeaInText(
+                                binding!!.edtTitle.text.toString(),
+                                binding!!.edtShareIdeaText.text.toString(),
+                                videoFile!!,
+                                "3"
+                            )
+                        } else {
+                            UtilityMethod.showErrorToastMessage(
+                                mActivity!!,
+                                getString(R.string.please_upload_video)
+                            )
+                        }
+                    }
                 }
             }
-            R.id.btShareVideo -> {
+            R.id.llUploadImage -> {
+                isShare = "image"
+                newCuttingFile = null
+                videoFile = null
+                binding!!.rbUploadImage.isChecked = true
+                binding!!.rbUploadNewCutting.isChecked = false
+                binding!!.rbUploadVideo.isChecked = false
+                binding!!.llMainImage.visibility = View.VISIBLE
+                binding!!.llMainVideo.visibility = View.GONE
+                binding!!.llMainNewCutting.visibility = View.GONE
+            }
+            R.id.rbUploadImage -> {
+                isShare = "image"
+                newCuttingFile = null
+                videoFile = null
+                binding!!.rbUploadImage.isChecked = true
+                binding!!.rbUploadNewCutting.isChecked = false
+                binding!!.rbUploadVideo.isChecked = false
+                binding!!.llMainImage.visibility = View.VISIBLE
+                binding!!.llMainVideo.visibility = View.GONE
+                binding!!.llMainNewCutting.visibility = View.GONE
+            }
+            R.id.llUploadNewsCutting -> {
+                isShare = "newcutting"
+                imageFile = null
+                videoFile = null
+                binding!!.rbUploadImage.isChecked = false
+                binding!!.rbUploadNewCutting.isChecked = true
+                binding!!.rbUploadVideo.isChecked = false
+                binding!!.llMainImage.visibility = View.GONE
+                binding!!.llMainVideo.visibility = View.GONE
+                binding!!.llMainNewCutting.visibility = View.VISIBLE
+            }
+            R.id.rbUploadNewCutting -> {
+                isShare = "newcutting"
+                imageFile = null
+                videoFile = null
+                binding!!.rbUploadImage.isChecked = false
+                binding!!.rbUploadNewCutting.isChecked = true
+                binding!!.rbUploadVideo.isChecked = false
+                binding!!.llMainImage.visibility = View.GONE
+                binding!!.llMainVideo.visibility = View.GONE
+                binding!!.llMainNewCutting.visibility = View.VISIBLE
+            }
+            R.id.llUploadVideo -> {
+                isShare = "video"
+                imageFile = null
+                newCuttingFile = null
+                binding!!.rbUploadImage.isChecked = false
+                binding!!.rbUploadNewCutting.isChecked = false
+                binding!!.rbUploadVideo.isChecked = true
+                binding!!.llMainImage.visibility = View.GONE
+                binding!!.llMainNewCutting.visibility = View.GONE
+                binding!!.llMainVideo.visibility = View.VISIBLE
+            }
+            R.id.rbUploadVideo -> {
+                isShare = "video"
+                imageFile = null
+                newCuttingFile = null
+                binding!!.rbUploadImage.isChecked = false
+                binding!!.rbUploadNewCutting.isChecked = false
+                binding!!.rbUploadVideo.isChecked = true
+                binding!!.llMainImage.visibility = View.GONE
+                binding!!.llMainNewCutting.visibility = View.GONE
+                binding!!.llMainVideo.visibility = View.VISIBLE
+            }
+            R.id.rlUploadNewCutting -> {
+                val intent = Intent(Intent.ACTION_GET_CONTENT)
+                intent.type = "file/*"
+                startActivityForResult(intent, 101)
+            }
+            R.id.imvVideoImage -> {
                 shareIdeaVideo()
+            }
+            R.id.rlImage -> {
+                if (checkingPermissionIsEnabledOrNot()) {
+                    showImageSelectionDialog()
+                } else {
+                    requestMultiplePermission()
+                }
             }
         }
 
@@ -157,28 +263,65 @@ class UploadIdeasActivity : BaseBindingActivity() {
         startActivityForResult(galleryIntent, 1)
     }
 
-    private fun shareIdeaInText(title: String, shortDescription: String) {
-        if (imageList.size != 0) {
-            imageList.forEach {
-                imageBase64 = UtilityMethod.imageEncoder(it)
-            }
+    private fun shareIdeaInText(
+        title: String,
+        shortDescription: String,
+        file: File,
+        ideatype: String
+    ) {
+
+        Log.d("1234", "file : "+file.absolutePath)
+
+        val title = RequestBody.create(
+            "multipart/form-data".toMediaTypeOrNull(),
+            title
+        )
+
+        val shortDescription = RequestBody.create(
+            "multipart/form-data".toMediaTypeOrNull(),
+            shortDescription
+        )
+        val userId = RequestBody.create(
+            "multipart/form-data".toMediaTypeOrNull(),
+            sessionManager!!.userId!!
+        )
+
+        val categoryid = RequestBody.create(
+            "multipart/form-data".toMediaTypeOrNull(),
+            parentCategory.PKID.toString()
+        )
+
+        val ideatype = RequestBody.create(
+            "multipart/form-data".toMediaTypeOrNull(),
+            ideatype
+        )
+
+        val published = RequestBody.create(
+            "multipart/form-data".toMediaTypeOrNull(),
+            isPublished.toString()
+        )
+
+        var body: MultipartBody.Part? = null
+        if (file != null) {
+            Log.d("1234", "file name : " + file!!.name)
+            val requestFile =
+                RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
+            body =
+                MultipartBody.Part.createFormData("file", file.name, requestFile)
         }
+
         ProgressDialog.showProgressDialog(mActivity!!)
-        var gsonObject = JsonObject()
-        val rootObject = JsonObject()
-        rootObject.addProperty("PKID", "0")
-        rootObject.addProperty("CategoryId", parentCategory.PKID)
-        rootObject.addProperty("UserId", sessionManager!!.userId)
-        rootObject.addProperty("Title", title)
-        rootObject.addProperty("Details", shortDescription)
-        rootObject.addProperty("Published", isPublished)
-        if (imageBase64.isNotEmpty())
-            rootObject.addProperty("Image", imageBase64)
-        rootObject.addProperty("News", "")
-        var jsonParser = JsonParser()
-        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
+
         val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
-        val call1: Call<AddWriteUpIdeaResponse> = apiService1.ideasAdd(gsonObject)
+        val call1: Call<AddWriteUpIdeaResponse> = apiService1.shareIdea(
+            userId,
+            categoryid,
+            ideatype,
+            title,
+            shortDescription,
+            published,
+            body
+        )
         call1.enqueue(object : Callback<AddWriteUpIdeaResponse?> {
             override fun onResponse(
                 call: Call<AddWriteUpIdeaResponse?>,
@@ -187,7 +330,11 @@ class UploadIdeasActivity : BaseBindingActivity() {
                 ProgressDialog.hideProgressDialog()
                 if (response.body() != null) {
                     if (response.isSuccessful) {
-                        Toast.makeText(mActivity!!, "Successful done.", Toast.LENGTH_SHORT).show()
+                        ProgressDialog.hideProgressDialog()
+                        UtilityMethod.showToastMessageSuccess(
+                            mActivity!!,
+                            getString(R.string.label_successful)
+                        )
                         finish()
                     }
                 }
@@ -197,112 +344,11 @@ class UploadIdeasActivity : BaseBindingActivity() {
                 ProgressDialog.hideProgressDialog()
             }
         })
-    }
 
-    private fun uploadImage(imageBase64: String) {
-
-
-    }
-
-    // Uploading Video
-    private fun uploadFile(videoPath: String) {
-        ProgressDialog.showProgressDialog(this)
-
-        val file: File = File(videoPath)
-        val requestBody = RequestBody.create("*/*".toMediaTypeOrNull(), file)
-        val fileToUpload: MultipartBody.Part =
-            MultipartBody.Part.createFormData("file", file.getName(), requestBody)
-        val filename = RequestBody.create("text/plain".toMediaTypeOrNull(), file.name)
-
-        var gsonObject = JsonObject()
-        val rootObject = JsonObject()
-        rootObject.addProperty("file", "0")
-        rootObject.addProperty("CategoryId", parentCategory.PKID)
-        rootObject.addProperty("UserId", sessionManager!!.userId)
-        rootObject.addProperty("Published", isPublished)
-
-        var jsonParser = JsonParser()
-        gsonObject = jsonParser.parse(rootObject.toString()) as JsonObject
-
-        val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
-
-        val call1: Call<AddWriteUpIdeaResponse> = apiService1.ideasAdd(gsonObject)
-        call1.enqueue(object : Callback<AddWriteUpIdeaResponse?> {
-            override fun onResponse(
-                call: Call<AddWriteUpIdeaResponse?>,
-                response: Response<AddWriteUpIdeaResponse?>
-            ) {
-                ProgressDialog.hideProgressDialog()
-                if (response.body() != null) {
-                    if (response.isSuccessful) {
-                        Toast.makeText(mActivity!!, "Successful done.", Toast.LENGTH_SHORT).show()
-                        finish()
-                    }
-                }
-            }
-            override fun onFailure(call: Call<AddWriteUpIdeaResponse?>, t: Throwable) {
-                ProgressDialog.hideProgressDialog()
-            }
-        })
-//        val call: Call<*> = apiService1.uploadFile(fileToUpload, filename)
-//        call.enqueue(object : Callback<Any?> {
-//
-//            fun onResponse(call: Call<*>?, response: Response<*>) {
-//
-//                val serverResponse: ServerResponse? = response.body()
-//
-//                if (serverResponse != null) {
-//                    if (serverResponse.getSuccess()) {
-//                        Toast.makeText(
-//                            applicationContext,
-//                            serverResponse.getMessage(),
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    } else {
-//                        Toast.makeText(
-//                            applicationContext,
-//                            serverResponse.getMessage(),
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-//                } else {
-//                    assert(serverResponse != null)
-//                    Log.v("Response", serverResponse.toString())
-//                }
-//
-//            }
-//
-//            fun onFailure(call: Call<*>?, t: Throwable) {}
-//        })
-    }
-
-    private fun removeImageSelection(position: Int) {
-
-        imageList.removeAt(position)
-        imageListRVAdapter!!.notifyItemRemoved(position)
-        imageListRVAdapter!!.notifyItemRangeChanged(position, imageList.size)
-        imageListRVAdapter!!.notifyDataSetChanged()
-
-        setVisibiltyForImageSelection()
-
-    }
-
-    private fun setVisibiltyForImageSelection() {
-
-        if (imageList.size > 0) {
-            binding!!.rvImage.visibility = View.VISIBLE
-            binding!!.rlImage.visibility = View.GONE
-            binding!!.imvAddMoreLayout.visibility = View.VISIBLE
-        } else {
-            binding!!.rvImage.visibility = View.GONE
-            binding!!.rlImage.visibility = View.VISIBLE
-            binding!!.imvAddMoreLayout.visibility = View.GONE
-        }
 
     }
 
     private fun showImageSelectionDialog() {
-
         val options = arrayOf<CharSequence>("Take Photo", "Choose from Gallery", "Cancel")
         val builder = AlertDialog.Builder(mActivity!!)
         builder.setTitle("Add Photo!")
@@ -376,25 +422,28 @@ class UploadIdeasActivity : BaseBindingActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode === 1 && resultCode === RESULT_OK && null != data) {
-
-            // Get the Video from data
             val selectedVideo: Uri? = data.data
             val filePathColumn = arrayOf(MediaStore.Video.Media.DATA)
-
             val cursor: Cursor =
                 contentResolver.query(selectedVideo!!, filePathColumn, null, null, null)!!
             cursor.moveToFirst()
             val columnIndex: Int = cursor.getColumnIndex(filePathColumn[0])
-            val videoPath = cursor.getString(columnIndex)
-            uploadFile(videoPath)
+            videoPath = cursor.getString(columnIndex)
+            videoFile = File(videoPath)
+            binding!!.imvVideoImage.setImageBitmap(
+                getThumbnailPathForLocalFile(
+                        mActivity!!,
+                selectedVideo
+            )
+            );
             cursor.close()
 
-        } else {
-            Toast.makeText(this, "You haven't picked Image/Video", Toast.LENGTH_LONG).show()
+        } else if (requestCode == 101 && resultCode == Activity.RESULT_OK && data != null) {
+            val uri = data.data
+            val path: String = getRealPathFromURI(this@UploadIdeasActivity, uri)!!
+            newCuttingFile = File(URI(path))
         }
-
         EasyImage.handleActivityResult(
             requestCode,
             resultCode,
@@ -406,17 +455,14 @@ class UploadIdeasActivity : BaseBindingActivity() {
                     source: EasyImage.ImageSource?,
                     type: Int
                 ) {
-
                     if (type == 100) {
-
-                        imageList.add(imageFiles[0].absolutePath)
-                        imageListRVAdapter!!.notifyDataSetChanged()
-                        setVisibiltyForImageSelection()
-
+                        imageFile = imageFiles[0].absoluteFile
+                        Glide.with(mActivity!!).load(imageFiles[0].absolutePath)
+                            .into(binding!!.imvImage)
                     } else {
-                        imageList.add(imageFiles[0].absolutePath)
-                        imageListRVAdapter!!.notifyDataSetChanged()
-                        setVisibiltyForImageSelection()
+                        imageFile = imageFiles[0].absoluteFile
+                        Glide.with(mActivity!!).load(imageFiles[0].absolutePath)
+                            .into(binding!!.imvImage)
                     }
                 }
 
@@ -436,8 +482,40 @@ class UploadIdeasActivity : BaseBindingActivity() {
                     }
                 }
             })
-    /*    if () {
+    }
 
-        }*/
+    fun getRealPathFromURI(context: Context, contentUri: Uri?): String? {
+        Log.d("imin", "onClick: in image conversion")
+        var cursor: Cursor? = null
+        return try {
+            val proj =
+                arrayOf(MediaStore.Images.Media.DATA)
+            cursor = context.contentResolver.query(contentUri!!, proj, null, null, null)
+            val column_index = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor!!.moveToFirst()
+            Log.d("imin", "onClick: in image conversion try")
+            cursor.getString(column_index)
+        } finally {
+            Log.d("imin", "onClick: in image conversion finally")
+            cursor?.close()
+        }
+    }
+
+    private fun getThumbnailPathForLocalFile(context: Activity, fileUri: Uri?): Bitmap? {
+        val fileId: Long = getFileId(context, fileUri)
+        return MediaStore.Video.Thumbnails.getThumbnail(
+            context.contentResolver,
+            fileId, MediaStore.Video.Thumbnails.MICRO_KIND, null
+        )
+    }
+
+    private fun getFileId(context: Activity, fileUri: Uri?): Long {
+        val cursor =
+            context.managedQuery(fileUri, null, null, null, null)
+        if (cursor.moveToFirst()) {
+            val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Video.Media._ID)
+            return cursor.getInt(columnIndex).toLong()
+        }
+        return 0
     }
 }

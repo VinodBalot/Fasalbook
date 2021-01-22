@@ -63,20 +63,89 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_backgound_corner_grey"
                     android:hint="Service Offered"
-                    android:textColor="@color/black"
                     android:paddingLeft="@dimen/_10sdp"
-                    android:spinnerMode="dropdown" />
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/black" />
 
                 <com.wasfat.utils.CustomFontEditText
                     android:id="@+id/edtSpecification"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:textColor="@color/black"
                     android:background="@drawable/bg_backgound_corner_grey"
                     android:hint="Specification"
                     android:paddingLeft="@dimen/_10sdp"
-                    android:spinnerMode="dropdown" />
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/black" />
+
+                <com.wasfat.utils.CustomFontEditText
+                    android:id="@+id/edtOfficeName"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_backgound_corner_grey"
+                    android:hint="Office"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:spinnerMode="dropdown"
+                    android:textColor="@color/black" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_backgound_corner_grey"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/edtState"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
+                        android:drawableTint="@color/colorBlack"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:hint="@string/select_state"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                    <Spinner
+                        android:id="@+id/spinnerState"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_40sdp"
+                        android:hint="State"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/bg_backgound_corner_grey">
+
+                    <EditText
+                        android:id="@+id/edtCity"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
+                        android:drawableTint="@color/colorBlack"
+                        android:editable="false"
+                        android:focusable="false"
+                        android:hint="@string/select_City"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingRight="@dimen/_10sdp"
+                        android:textColorHint="@color/colorBlack" />
+
+                </LinearLayout>
 
 
                 <LinearLayout

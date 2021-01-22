@@ -42,9 +42,9 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:layout_margin="@dimen/_10sdp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="@dimen/_10sdp"
                 android:orientation="vertical">
 
                 <com.wasfat.utils.CustomFontEditText
@@ -60,104 +60,78 @@
                     android:textSize="@dimen/_14sdp" />
 
                 <com.wasfat.utils.CustomFontEditText
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:id="@+id/edtShareIdeaText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:background="@drawable/bg_backgound_corner_grey"
                     android:hint="@string/label_short_description"
                     android:inputType="textCapWords"
-                    android:paddingLeft="@dimen/_10sdp"
                     android:minHeight="@dimen/_100sdp"
+                    android:paddingLeft="@dimen/_10sdp"
                     android:textColorHint="@color/black"
                     android:textSize="@dimen/_14sdp" />
 
 
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
                     android:orientation="vertical">
 
-                    <com.wasfat.utils.CustomFontTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_upload_video"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_14sdp" />
-
-                    <com.wasfat.utils.CustomFontTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:text="@string/label_share_idea_upload_video_msg"
-                        android:textSize="@dimen/_10sdp" />
-
-                    <com.wasfat.utils.CustomFontButton
-                        android:id="@+id/btShareVideo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/_20sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
-                        android:layout_marginRight="@dimen/_20sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        android:background="@drawable/bg_round_green"
-                        android:text="@string/label_upload_video"
-                        android:textColor="@color/white" />
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/_1sdp"
-                        android:layout_margin="@dimen/_10sdp"
-                        android:background="@color/grey_400" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <com.wasfat.utils.CustomFontTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/label_upload_image"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_14sdp" />
-
-                    <com.wasfat.utils.CustomFontTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/_10sdp"
-                        android:layout_marginRight="@dimen/_10sdp"
-                        android:text="@string/label_share_idea_upload_image_msg"
-                        android:textSize="@dimen/_10sdp" />
-
-                    <HorizontalScrollView
+                    <LinearLayout
+                        android:id="@+id/llUploadImage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:checked="true"
+                            android:id="@+id/rbUploadImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:text="@string/label_upload_image"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14sdp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/llMainImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:text="@string/label_share_idea_upload_image_msg"
+                            android:textSize="@dimen/_10sdp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/_10sdp"
                             android:layout_marginTop="@dimen/_10sdp"
-                            android:orientation="horizontal">
-
-                            <androidx.recyclerview.widget.RecyclerView
-                                android:id="@+id/rvImage"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:visibility="gone" />
+                            android:orientation="vertical">
 
                             <RelativeLayout
                                 android:id="@+id/rlImage"
                                 android:layout_width="@dimen/_100sdp"
                                 android:layout_height="@dimen/_100sdp"
                                 android:background="@drawable/bg_backgound_corner_grey">
+
+                                <ImageView
+                                    android:id="@+id/imvImage"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+
 
                                 <com.wasfat.utils.CustomFontTextView
                                     android:layout_width="match_parent"
@@ -172,27 +146,10 @@
 
                             </RelativeLayout>
 
-                            <LinearLayout
-                                android:id="@+id/imvAddMoreLayout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="@dimen/_40sdp"
-                                android:layout_gravity="center"
-                                android:layout_margin="@dimen/_5sdp"
-                                android:gravity="center"
-                                android:visibility="gone">
-
-                                <ImageView
-                                    android:id="@+id/imvAddMore"
-                                    android:layout_width="@dimen/_40sdp"
-                                    android:layout_height="@dimen/_40sdp"
-                                    android:layout_gravity="center"
-                                    android:layout_margin="@dimen/_10sdp"
-                                    android:background="@drawable/bg_ripple_mask"
-                                    android:src="@drawable/ic_baseline_add_circle_24"
-                                    android:visibility="visible" />
-                            </LinearLayout>
                         </LinearLayout>
-                    </HorizontalScrollView>
+
+                    </LinearLayout>
+
 
                     <View
                         android:layout_width="match_parent"
@@ -208,9 +165,172 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:gravity="center"
+                        android:id="@+id/llUploadNewsCutting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:id="@+id/rbUploadNewCutting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:text="@string/label_upload_new_cutting"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14sdp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/llMainNewCutting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:text="@string/label_share_idea_upload_document_file"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:id="@+id/rlUploadNewCutting"
+                                android:layout_width="@dimen/_100sdp"
+                                android:layout_height="@dimen/_100sdp"
+                                android:background="@drawable/bg_backgound_corner_grey">
+
+                                <com.wasfat.utils.CustomFontTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:background="@color/colorBlackTrans"
+                                    android:gravity="center"
+                                    android:padding="@dimen/_5sdp"
+                                    android:text="@string/label_upload_new_cutting"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/_12sdp" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:background="@color/grey_400" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/llUploadVideo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:id="@+id/rbUploadVideo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:text="@string/label_upload_video"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_14sdp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/llMainVideo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.wasfat.utils.CustomFontTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:text="@string/label_share_idea_upload_video_msg"
+                            android:textSize="@dimen/_10sdp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:orientation="horizontal">
+
+                            <RelativeLayout
+                                android:id="@+id/rlUploadVideo"
+                                android:layout_width="@dimen/_100sdp"
+                                android:layout_height="@dimen/_100sdp"
+                                android:background="@drawable/bg_backgound_corner_grey">
+
+                                <ImageView
+                                    android:id="@+id/imvVideoImage"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+
+
+                                <com.wasfat.utils.CustomFontTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:background="@color/colorBlackTrans"
+                                    android:gravity="center"
+                                    android:padding="@dimen/_5sdp"
+                                    android:text="@string/label_select_video"
+                                    android:textColor="@color/white"
+                                    android:textSize="@dimen/_12sdp" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_margin="@dimen/_10sdp"
+                        android:background="@color/grey_400" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_30sdp"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
                         <CheckBox
@@ -230,17 +350,18 @@
 
 
                     <com.wasfat.utils.CustomFontButton
-                        android:id="@+id/btShareText"
+                        android:id="@+id/btShareIdea"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginLeft="@dimen/_20sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_20sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:background="@drawable/bg_round_green"
                         android:text="@string/label_share_idea"
                         android:textColor="@color/white" />
+
 
                 </LinearLayout>
 

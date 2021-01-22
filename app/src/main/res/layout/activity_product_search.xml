@@ -47,6 +47,18 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:visibility="visible" />
 
+            <com.wasfat.utils.CustomFontTextView
+                android:id="@+id/txtNoProductFound"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:text="@string/label_product_not_found"
+                android:textColor="@color/grey_900"
+                android:textSize="@dimen/_18sdp"
+                android:visibility="gone"
+                app:CustomFontName="ProximaNovaBold" />
+
         </RelativeLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

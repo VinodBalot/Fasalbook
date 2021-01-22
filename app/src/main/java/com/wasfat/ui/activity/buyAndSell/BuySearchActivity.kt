@@ -20,6 +20,7 @@ import com.wasfat.databinding.ActivityBuySearchBinding
 import com.wasfat.network.RestApi
 import com.wasfat.network.RestApiFactory
 import com.wasfat.ui.activity.HomeActivity
+import com.wasfat.ui.activity.ProductDetailsActivity
 import com.wasfat.ui.base.BaseBindingActivity
 import com.wasfat.ui.home.adapter.ItemRVAdapter
 import com.wasfat.ui.pojo.*
@@ -29,8 +30,6 @@ import com.wasfat.utils.ProgressDialog
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 class BuySearchActivity : BaseBindingActivity() {
 
@@ -51,7 +50,7 @@ class BuySearchActivity : BaseBindingActivity() {
     val reqDataCity: HashMap<String, Int> = HashMap()
     val reqDataBlock: HashMap<String, Int> = HashMap()
 
-    lateinit var  parentCategory : Category
+    lateinit var parentCategory: Category
 
     var productList: ArrayList<UserProduct> = ArrayList()
     var itemRVAdapter: ItemRVAdapter? = null
@@ -82,21 +81,15 @@ class BuySearchActivity : BaseBindingActivity() {
     }
 
     override fun createActivityObject() {
-
         mActivity = this
-
-        //Getting parent category from parent
         parentCategory = (intent.getSerializableExtra("category") as? Category)!!
-
+        fetchAllProductsOfCategory(0, 0, 0)
     }
 
     override fun initializeObject() {
-
         binding!!.textTitle.text = parentCategory.CategoryName
-
         getUnitListFromAPI()
         callGetStateListByCountryAPI()
-
     }
 
     override fun setListeners() {
@@ -118,8 +111,16 @@ class BuySearchActivity : BaseBindingActivity() {
             R.id.imvBack -> {
                 finish()
             }
-            R.id.btnSubmit ->{
+            R.id.btnSubmit -> {
                 var intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.llMain -> {
+                var position = view.tag as Int
+                var intent = Intent(mActivity!!, ProductDetailsActivity::class.java)
+                intent.putExtra("productName", productList[position].ProductName)
+                intent.putExtra("qty", productList[position].Qty)
+                intent.putExtra("image", productList[position].ImageList[0].Path+"/"+productList[position].ImageList[0].ImageName)
                 startActivity(intent)
             }
         }
@@ -131,7 +132,7 @@ class BuySearchActivity : BaseBindingActivity() {
         binding!!.rvProduct.layoutManager = layoutManager1
         binding!!.rvProduct.setHasFixedSize(true)
 
-        fetchAllProductsOfCategory(0,0,0)
+        fetchAllProductsOfCategory(0, 0, 0)
 
     }
 
@@ -211,6 +212,7 @@ class BuySearchActivity : BaseBindingActivity() {
         val edtCity = view.findViewById(R.id.edtCity) as EditText
         val edtBlock = view.findViewById(R.id.edtBlock) as EditText
         val btnSearch = view.findViewById(R.id.btnAdd) as Button
+        val btnResetFilter = view.findViewById(R.id.btnResetFilter) as Button
 
         val dialog = BottomSheetDialog(mActivity!!)
         dialog!!.setContentView(view)
@@ -255,24 +257,29 @@ class BuySearchActivity : BaseBindingActivity() {
         }
 
         btnSearch.setOnClickListener {
-
             fetchAllProductsOfCategory(stateId, cityId, blockId)
             dialog!!.dismiss()
 
         }
+
+        btnResetFilter.setOnClickListener {
+            fetchAllProductsOfCategory(0, 0, 0)
+            dialog!!.dismiss()
+        }
     }
 
     private fun fetchAllProductsOfCategory(
-        stateId : Int,
-        cityId  : Int,
-        blockId : Int
-    ){
+        stateId: Int,
+        cityId: Int,
+        blockId: Int
+    ) {
 
         ProgressDialog.showProgressDialog(mActivity!!)
         val rootObject = JsonObject()
-        rootObject.addProperty("StateId",stateId)
+        rootObject.addProperty("StateId", stateId)
         rootObject.addProperty("CityId", cityId)
-        rootObject.addProperty("BlockId",blockId)
+        rootObject.addProperty("BlockId", blockId)
+        rootObject.addProperty("searchText", "")
         rootObject.addProperty("CategoryId", parentCategory.PKID)
 
         val jsonParser = JsonParser()
@@ -287,27 +294,19 @@ class BuySearchActivity : BaseBindingActivity() {
                 ProgressDialog.hideProgressDialog()
                 if (response.body() != null) {
                     if (response.isSuccessful) {
-
                         productList.clear()
-
                         productList = response.body()!!.productList
-
-                        Log.d("ITEMS", "onResponse: " + productList)
-
-                        itemRVAdapter = ItemRVAdapter(
+                         itemRVAdapter = ItemRVAdapter(
                             mActivity!!,
                             { product -> categoryItemClicked(product) },
                             productList, unitList
                         )
-
                         binding!!.rvProduct.adapter = itemRVAdapter
-
                         itemRVAdapter!!.notifyDataSetChanged()
-
-                        if(productList.size == 0){
+                        if (productList.size == 0) {
                             binding!!.rvProduct.visibility = View.GONE
                             binding!!.txtNoProductFound.visibility = View.VISIBLE
-                        }else{
+                        } else {
                             binding!!.rvProduct.visibility = View.VISIBLE
                             binding!!.txtNoProductFound.visibility = View.GONE
                         }
@@ -324,7 +323,7 @@ class BuySearchActivity : BaseBindingActivity() {
 
     }
 
-    private fun getUnitListFromAPI(){
+    private fun getUnitListFromAPI() {
 
         val apiService1 = RestApiFactory.getAddressClient()!!.create(RestApi::class.java)
         val call1: Call<UnitListResponsePOJO> = apiService1.getProductUnitList()
@@ -410,6 +409,8 @@ class BuySearchActivity : BaseBindingActivity() {
                 response: Response<CityResponsePOJO?>
             ) {
                 ProgressDialog.hideProgressDialog()
+                cityList.clear()
+                cityNameList.clear()
                 if (response.body() != null) {
                     if (response.isSuccessful) {
                         cityList = response.body()!!.citylist
@@ -445,6 +446,8 @@ class BuySearchActivity : BaseBindingActivity() {
                 response: Response<BlockResponsePOJO?>
             ) {
                 ProgressDialog.hideProgressDialog()
+                blockList.clear()
+                blockNameList.clear()
                 if (response.body() != null) {
                     if (response.isSuccessful) {
                         blockList = response.body()!!.blocklist
@@ -455,6 +458,7 @@ class BuySearchActivity : BaseBindingActivity() {
                     }
                 }
             }
+
             override fun onFailure(call: Call<BlockResponsePOJO?>, t: Throwable) {
 
                 Log.d("RegisterActivity", "onFailure: " + t.localizedMessage)

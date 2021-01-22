@@ -84,97 +84,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/txtEnterOTP"
-                android:layout_margin="@dimen/_5sdp"
                 android:gravity="center">
 
-                <com.wasfat.utils.CustomFontEditText
-                    android:id="@+id/edtOne"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginEnd="@dimen/dm_5dp"
-                    android:background="@drawable/shape_otp_bg"
-                    android:ems="10"
+                <com.chaos.view.PinView
+                    android:id="@+id/otp_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:cursorVisible="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:gravity="center"
-                    android:hint="@string/hint_hyph"
+                    android:imeOptions="actionDone"
                     android:inputType="number"
-                    android:maxLength="1"
-                    android:text=""
-                    android:textStyle="bold" />
-
-                <com.wasfat.utils.CustomFontEditText
-                    android:id="@+id/edtTwo"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginEnd="@dimen/dm_5dp"
-                    android:background="@drawable/shape_otp_bg"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:hint="@string/hint_hyph"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:padding="@dimen/dm_10dp"
-                    android:text=""
-                    app:CustomFontName="ProximaNovaReg" />
-
-                <com.wasfat.utils.CustomFontEditText
-                    android:id="@+id/edtThree"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginEnd="@dimen/dm_5dp"
-                    android:background="@drawable/shape_otp_bg"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:hint="@string/hint_hyph"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:padding="@dimen/dm_10dp"
-                    android:text=""
-                    app:CustomFontName="ProximaNovaReg" />
-
-                <com.wasfat.utils.CustomFontEditText
-                    android:id="@+id/edtFour"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:background="@drawable/shape_otp_bg"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:hint="@string/hint_hyph"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:padding="@dimen/dm_10dp"
-                    android:text=""
-                    app:CustomFontName="ProximaNovaReg" />
-
-                <com.wasfat.utils.CustomFontEditText
-                    android:id="@+id/edtFive"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginLeft="@dimen/_2sdp"
-                    android:background="@drawable/shape_otp_bg"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:hint="@string/hint_hyph"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:padding="@dimen/dm_10dp"
-                    android:text=""
-                    app:CustomFontName="ProximaNovaReg" />
-
-
-                <com.wasfat.utils.CustomFontEditText
-                    android:id="@+id/edtSix"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_marginLeft="@dimen/_2sdp"
-                    android:background="@drawable/shape_otp_bg"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:hint="@string/hint_hyph"
-                    android:inputType="number"
-                    android:maxLength="1"
-                    android:padding="@dimen/dm_10dp"
-                    android:text=""
-                    app:CustomFontName="ProximaNovaReg" />
+                    android:itemBackground="@color/grey_300"
+                    android:textColor="@color/colorBlack"
+                    android:textSize="@dimen/_13sdp"
+                    app:itemCount="6"
+                    app:itemSpacing="@dimen/_5sdp"
+                    app:itemHeight="@dimen/_40sdp"
+                    app:itemRadius="@dimen/_20sdp"
+                    app:itemWidth="@dimen/_40sdp"
+                    app:lineColor="@color/grey_300" />
 
 
             </LinearLayout>
